@@ -3,8 +3,8 @@ package playground.domain;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
+@Getter
 public class User {
 
     Long id;

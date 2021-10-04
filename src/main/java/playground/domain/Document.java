@@ -39,16 +39,27 @@ public class Document {
     public void approveBy(User approver, String approvalComment) {
         approverCheck(approver);
         for (int i = 0; i < documentApprovals.size(); i++) {
-            if (documentApprovals.get(i).getApprover().equals(approver)) {
-                checkPriorApprovals(i);
-                documentApprovals.get(i).setApprovalComment(approvalComment);
-                if (approvalComment.equals("결재 승인합니다.") || approvalComment.equals("확인했습니다.")) {
-                    documentApprovals.get(i).setApprovalState(ApprovalState.APPROVED);
-                }
+            DocumentApproval documentApproval = documentApprovals.get(i);
+
+            if (documentApproval.getApprover().equals(approver)) {
+                checkPriorApprovalsRemainNotApproved(i);
+                documentApproval.setApprovalComment(approvalComment);
+
+                setApprovalStateByApprovalComment(approvalComment, documentApproval);
             }
         }
         checkAllApprovals();
 
+    }
+
+    private void setApprovalStateByApprovalComment(String approvalComment, DocumentApproval documentApproval) {
+        if (approved(approvalComment)) {
+            documentApproval.setApprovalState(ApprovalState.APPROVED);
+        }
+    }
+
+    private boolean approved(String approvalComment) {
+        return approvalComment.equals("결재 승인합니다.") || approvalComment.equals("확인했습니다.");
     }
 
     private void checkAllApprovals() {
@@ -60,9 +71,9 @@ public class Document {
         approvalState = ApprovalState.APPROVED;
     }
 
-    private void checkPriorApprovals(int approvalIndex) {
-        for (int i=0; i<approvalIndex; i++) {
-            if(documentApprovals.get(i).getApprovalState() != ApprovalState.APPROVED) {
+    private void checkPriorApprovalsRemainNotApproved(int approvalIndex) {
+        for (int i = 0; i < approvalIndex; i++) {
+            if (documentApprovals.get(i).getApprovalState() != ApprovalState.APPROVED) {
                 throw new IllegalArgumentException("우선순위 결재가 아직 처리되지 않았습니다.");
             }
         }
@@ -73,7 +84,7 @@ public class Document {
                 .filter(approval -> approval.getApprover() == approver)
                 .findAny();
 
-        if(matchApproval.isEmpty()) {
+        if (matchApproval.isEmpty()) {
             throw new IllegalArgumentException("결재 권한이 없습니다.");
         }
     }
