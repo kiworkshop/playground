@@ -44,7 +44,7 @@ public class Document {
     }
 
     public void approveBy(User approver, String approvalComment) {
-        approverCheck(approver);
+        approverAuthorityCheck(approver);
         for (int i = 0; i < documentApprovals.size(); i++) {
             DocumentApproval documentApproval = documentApprovals.get(i);
 
@@ -60,12 +60,12 @@ public class Document {
     }
 
     private void setApprovalStateByApprovalComment(String approvalComment, DocumentApproval documentApproval) {
-        if (approved(approvalComment)) {
+        if (isApproved(approvalComment)) {
             documentApproval.setApprovalState(ApprovalState.APPROVED);
         }
     }
 
-    private boolean approved(String approvalComment) {
+    private boolean isApproved(String approvalComment) {
         return approvalComment.equals("결재 승인합니다.") || approvalComment.equals("확인했습니다.");
     }
 
@@ -86,7 +86,7 @@ public class Document {
         }
     }
 
-    private void approverCheck(User approver) {
+    private void approverAuthorityCheck(User approver) {
         Optional<DocumentApproval> matchApproval = documentApprovals.stream()
                 .filter(approval -> approval.identifyApprover(approver))
                 .findAny();
