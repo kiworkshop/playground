@@ -7,23 +7,30 @@ import playground.constants.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-@Builder
 @Getter
 public class Document {
 
-    Long id;
-    String title;
-    Category category;
-    String contents;
-    User drafter;
-    ApprovalState approvalState;
-    List<DocumentApproval> documentApprovals;
+    private final Long id;
+    private String title;
+    private Category category;
+    private String contents;
+    private final User drafter;
+    private ApprovalState approvalState = ApprovalState.DRAFTING;
+    private final List<DocumentApproval> documentApprovals = new ArrayList<>();
+
+    @Builder
+    public Document(Long id, String title, Category category, String contents, User drafter) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.contents = contents;
+        this.drafter = drafter;
+    }
 
     public void addApprovers(List<User> approvers) {
-        documentApprovals = new ArrayList<>();
-        approvalState = ApprovalState.DRAFTING;
 
         for (User approver : approvers) {
             DocumentApproval documentApproval = DocumentApproval.builder()
@@ -41,7 +48,7 @@ public class Document {
         for (int i = 0; i < documentApprovals.size(); i++) {
             DocumentApproval documentApproval = documentApprovals.get(i);
 
-            if (documentApproval.getApprover().equals(approver)) {
+            if (documentApproval.identifyApprover(approver)) {
                 checkPriorApprovalsRemainNotApproved(i);
                 documentApproval.setApprovalComment(approvalComment);
 
@@ -64,7 +71,7 @@ public class Document {
 
     private void checkAllApprovals() {
         for (DocumentApproval documentApproval : documentApprovals) {
-            if (documentApproval.getApprovalState() != ApprovalState.APPROVED) {
+            if (documentApproval.isNotApproved()) {
                 return;
             }
         }
@@ -73,7 +80,7 @@ public class Document {
 
     private void checkPriorApprovalsRemainNotApproved(int approvalIndex) {
         for (int i = 0; i < approvalIndex; i++) {
-            if (documentApprovals.get(i).getApprovalState() != ApprovalState.APPROVED) {
+            if (documentApprovals.get(i).isNotApproved()) {
                 throw new IllegalArgumentException("우선순위 결재가 아직 처리되지 않았습니다.");
             }
         }
@@ -81,11 +88,28 @@ public class Document {
 
     private void approverCheck(User approver) {
         Optional<DocumentApproval> matchApproval = documentApprovals.stream()
-                .filter(approval -> approval.getApprover() == approver)
+                .filter(approval -> approval.identifyApprover(approver))
                 .findAny();
 
         if (matchApproval.isEmpty()) {
             throw new IllegalArgumentException("결재 권한이 없습니다.");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Document)) {
+            return false;
+        }
+        Document document = (Document) o;
+        return getId().equals(document.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
