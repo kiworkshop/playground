@@ -1,6 +1,5 @@
 package learning;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +101,6 @@ class DocumentTest {
                 );
     }
 
-    @Disabled
     @DisplayName("문서를 결재하는 경우 내가 결재할 차례가 아니면 결재가 실패한다.")
     @Test
     void approveFail() {
@@ -149,5 +147,4 @@ class DocumentTest {
                 .drafter(drafter)
                 .build();
     }
-
 }

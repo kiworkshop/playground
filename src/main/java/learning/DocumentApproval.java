@@ -26,4 +26,8 @@ public class DocumentApproval {
         this.approvalState = APPROVED;
         this.approvalComment = approvalComment;
     }
+
+    public boolean isApproved() {
+        return approvalState == APPROVED;
+    }
 }

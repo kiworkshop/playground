@@ -38,7 +38,7 @@ public class Document {
         DocumentApproval currentApproval = documentApprovals.findBy(approver);
         currentApproval.approve(approvalComment);
 
-        if (documentApprovals.allAprove()) {
+        if (documentApprovals.allAproved()) {
             approvalState = APPROVED;
         }
     }
