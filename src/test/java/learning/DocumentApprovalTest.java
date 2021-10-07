@@ -59,6 +59,7 @@ class DocumentApprovalTest {
     @Test
     @DisplayName("전달받은 사용자와 등록된 결재자가 다른 지 확인한다.")
     void hasNotSameApprover() {
+        //given
         User approver = new User(1L, "결재자");
         User notApprover = new User(2L, "결재자아님");
         DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
@@ -71,6 +72,7 @@ class DocumentApprovalTest {
     @Test
     @DisplayName("결재 상태를 승인 상태로 변경한다.")
     void changeStateToApproved() {
+        //given
         User approver = new User(1L, "결재자");
         DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
         String approvalComment = "결재 승인하였습니다.";
@@ -83,6 +85,21 @@ class DocumentApprovalTest {
                 () -> assertThat(documentApproval.getApprovalState()).isEqualTo(ApprovalState.APPROVED),
                 () -> assertThat(documentApproval.getApprovalComment()).isEqualTo(approvalComment)
         );
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"1, true", "2, false"})
+    @DisplayName("마지막 결재자인지 확인한다.")
+    void isLastApprover(int lastApprovalOrder, boolean expected) {
+        //given
+        User approver = new User(1L, "결재자");
+        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+
+        //when
+        boolean isLastApproval = documentApproval.isLastApproval(lastApprovalOrder);
+
+        //then
+        assertThat(isLastApproval).isEqualTo(expected);
     }
 
     private DocumentApproval createDocumentApproval(final User approver, final ApprovalState approvalState,

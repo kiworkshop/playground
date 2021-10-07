@@ -49,17 +49,19 @@ public class Document {
 
     public void approveBy(final User approver, final String approvalComment) {
         checkRegisteredApprover(approver);
+        boolean isLastApprover = false;
 
         for (DocumentApproval documentApproval : documentApprovals) {
             checkPreviousDocumentApproval(documentApproval, approver);
 
             if (documentApproval.isNotApproved()) {
                 documentApproval.changeStateToApproved(approvalComment);
+                isLastApprover = documentApproval.isLastApproval(documentApprovals.size());
                 break;
             }
         }
 
-        if (isAllApproved()) {
+        if (isLastApprover) {
             approvalState = ApprovalState.APPROVED;
         }
     }
@@ -79,11 +81,6 @@ public class Document {
         if (documentApproval.isNotApproved() && documentApproval.hasNotSameApprover(approver)) {
             throw new IllegalArgumentException();
         }
-    }
-
-    private boolean isAllApproved() {
-        return documentApprovals.stream()
-                .allMatch(DocumentApproval::isApproved);
     }
 
     @Override

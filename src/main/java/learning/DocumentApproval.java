@@ -39,4 +39,8 @@ public class DocumentApproval {
         approvalState = ApprovalState.APPROVED;
         approvalComment = comment;
     }
+
+    public boolean isLastApproval(final int lastApprovalOrder) {
+        return this.approvalOrder == lastApprovalOrder;
+    }
 }
