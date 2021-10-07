@@ -30,4 +30,8 @@ public class DocumentApproval {
     public boolean isNotApproved() {
         return !isApproved();
     }
+
+    public boolean hasNotSameApprover(final User approver) {
+        return !this.approver.isSame(approver);
+    }
 }

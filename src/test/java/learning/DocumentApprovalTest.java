@@ -56,6 +56,18 @@ class DocumentApprovalTest {
         assertThat(isNotApproved).isEqualTo(expected);
     }
 
+    @Test
+    @DisplayName("전달받은 사용자와 등록된 결재자가 다른 지 확인한다.")
+    void hasNotSameApprover() {
+        User approver = new User(1L, "결재자");
+        User notApprover = new User(2L, "결재자아님");
+        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+
+        //when, then
+        assertThat(documentApproval.hasNotSameApprover(notApprover)).isTrue();
+        assertThat(documentApproval.hasNotSameApprover(approver)).isFalse();
+    }
+
     private DocumentApproval createDocumentApproval(final User approver, final ApprovalState approvalState,
                                                     final Integer approvalOrder, final String approvalComment) {
         return DocumentApproval.builder()
