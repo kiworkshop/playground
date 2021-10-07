@@ -43,7 +43,6 @@ class DocumentTest {
                 );
     }
 
-    @Disabled
     @DisplayName("문서를 결재하는 경우 내가 결재할 차례면 결재가 성공한다.")
     @Test
     void approveSuccess() {
@@ -72,7 +71,6 @@ class DocumentTest {
                 );
     }
 
-    @Disabled
     @DisplayName("문서를 결재하는 경우 내가 마지막 결재할 차례라면 문서의 상태가 결재완료로 변경된다.")
     @Test
     void approveComplete() {
@@ -120,7 +118,6 @@ class DocumentTest {
         assertThrows(IllegalArgumentException.class, () -> document.approveBy(approver2, "확인했습니다."));
     }
 
-    @Disabled
     @DisplayName("결재 대상 리스트에 내가 없으면 결재가 실패한다.")
     @Test
     void approveFail2() {
