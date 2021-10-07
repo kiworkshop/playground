@@ -68,6 +68,23 @@ class DocumentApprovalTest {
         assertThat(documentApproval.hasNotSameApprover(approver)).isFalse();
     }
 
+    @Test
+    @DisplayName("결재 상태를 승인 상태로 변경한다.")
+    void changeStateToApproved() {
+        User approver = new User(1L, "결재자");
+        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+        String approvalComment = "결재 승인하였습니다.";
+
+        //when
+        documentApproval.changeStateToApproved(approvalComment);
+
+        //then
+        assertAll(
+                () -> assertThat(documentApproval.getApprovalState()).isEqualTo(ApprovalState.APPROVED),
+                () -> assertThat(documentApproval.getApprovalComment()).isEqualTo(approvalComment)
+        );
+    }
+
     private DocumentApproval createDocumentApproval(final User approver, final ApprovalState approvalState,
                                                     final Integer approvalOrder, final String approvalComment) {
         return DocumentApproval.builder()

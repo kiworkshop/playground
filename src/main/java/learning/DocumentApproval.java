@@ -34,4 +34,9 @@ public class DocumentApproval {
     public boolean hasNotSameApprover(final User approver) {
         return !this.approver.isSame(approver);
     }
+
+    public void changeStateToApproved(final String comment) {
+        approvalState = ApprovalState.APPROVED;
+        approvalComment = comment;
+    }
 }
