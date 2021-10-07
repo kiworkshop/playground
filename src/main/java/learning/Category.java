@@ -11,5 +11,4 @@ public enum Category {
     PRODUCT_PURCHASING("물품구매");
 
     private final String text;
-
 }

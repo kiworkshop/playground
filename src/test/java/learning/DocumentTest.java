@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DocumentTest {
-    @Disabled
+
     @DisplayName("문서 생성하기")
     @Test
     void create() {

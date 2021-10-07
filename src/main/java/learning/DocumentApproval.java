@@ -1,11 +1,17 @@
 package learning;
 
-import lombok.Builder;
+import lombok.Getter;
 
-@Builder
+@Getter
 public class DocumentApproval {
     private final User approver;
     private final ApprovalState approvalState;
     private final int approvalOrder;
-    private final String approvalComment;
+    private String approvalComment;
+
+    public DocumentApproval(User approver, int approvalOrder) {
+        this.approver = approver;
+        this.approvalState = ApprovalState.DRAFTING;
+        this.approvalOrder = approvalOrder;
+    }
 }
