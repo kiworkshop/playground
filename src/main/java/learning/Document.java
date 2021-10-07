@@ -19,7 +19,7 @@ public class Document {
     private String contents;
     private User drafter;
     private ApprovalState approvalState;
-    private List<DocumentApproval> documentApprovals = new ArrayList<>();
+    private final List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Builder
     public Document(final Long id, final String title, final Category category,
