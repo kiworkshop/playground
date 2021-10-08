@@ -13,8 +13,12 @@ public class DocumentApproval {
     private int approvalOrder;
     private String approvalComment;
 
-    public void update(String approvalComment, ApprovalState approvalState) {
-        this.approvalComment= approvalComment;
+    public void update(ApprovalState approvalState, String approvalComment) {
         this.approvalState = approvalState;
+        this.approvalComment= approvalComment;
+    }
+
+    public boolean isOwnedBy(User user) {
+        return this.approver.equals(user);
     }
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -19,7 +19,7 @@ public class Document {
     private User drafter;
     private ApprovalState approvalState;
     @Builder.Default
-    private List<DocumentApproval> documentApprovals = new LinkedList<>();
+    private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     public void addApprovers(List<User> users) {
         users.forEach(user -> {
@@ -28,15 +28,35 @@ public class Document {
                 .approvalState(ApprovalState.DRAFTING)
                 .approvalOrder(1 + documentApprovals.size())
                 .build();
-
             documentApprovals.add(documentApproval);
         });
     }
 
-    public void approveBy(User approver, String approvalComment) {
-        documentApprovals.stream()
-            .filter(documentApproval -> documentApproval.getApprover().equals(approver))
-            .forEach(documentApproval -> documentApproval.update(approvalComment, ApprovalState.APPROVED));
+    public void approveBy(User user, String approvalComment) {
+        if (!isApprover(user)) {
+            throw new IllegalArgumentException();
+        }
+
+        DocumentApproval documentApproval = findCurrentOrderDocumentApproval();
+        if (!documentApproval.isOwnedBy(user)) {
+            throw new IllegalArgumentException();
+        }
+
+        documentApproval.update(ApprovalState.APPROVED, approvalComment);
+    }
+
+    private boolean isApprover(User user) {
+        return this.documentApprovals.stream()
+            .map(DocumentApproval::getApprover)
+            .anyMatch(approver -> approver.equals(user));
+    }
+
+    private DocumentApproval findCurrentOrderDocumentApproval() {
+        return this.documentApprovals.stream()
+            .filter(documentApproval -> ApprovalState.DRAFTING.equals(documentApproval.getApprovalState()))
+            .min(Comparator.comparingInt(DocumentApproval::getApprovalOrder))
+            .orElseThrow(() -> new IllegalArgumentException());
+        // TODO: 2021/10/09 적절한 exception 정의 및 테스트
     }
 
     public ApprovalState getApprovalState() {
