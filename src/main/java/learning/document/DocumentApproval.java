@@ -13,7 +13,8 @@ public class DocumentApproval {
     private int approvalOrder;
     private String approvalComment;
 
-    public void update(String approvalComment, ApprovalState approved) {
-
+    public void update(String approvalComment, ApprovalState approvalState) {
+        this.approvalComment= approvalComment;
+        this.approvalState = approvalState;
     }
 }
