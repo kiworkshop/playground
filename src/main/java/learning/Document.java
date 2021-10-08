@@ -10,7 +10,8 @@ import static learning.ApprovalState.DRAFTING;
 
 @Getter
 public class Document {
-    private final long id;
+
+    private final Long id;
     private final String title;
     private final Category category;
     private final String contents;
@@ -50,4 +51,5 @@ public class Document {
     public List<DocumentApproval> getDocumentApprovals() {
         return documentApprovals.getDocumentApprovals();
     }
+
 }

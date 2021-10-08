@@ -7,6 +7,7 @@ import static learning.ApprovalState.DRAFTING;
 
 @Getter
 public class DocumentApproval {
+
     private final User approver;
     private ApprovalState approvalState;
     private final int approvalOrder;
@@ -18,10 +19,6 @@ public class DocumentApproval {
         this.approvalOrder = approvalOrder;
     }
 
-    public long getApproverId() {
-        return approver.getId();
-    }
-
     public void approve(String approvalComment) {
         this.approvalState = APPROVED;
         this.approvalComment = approvalComment;
@@ -30,4 +27,9 @@ public class DocumentApproval {
     public boolean isApproved() {
         return approvalState == APPROVED;
     }
+
+    public Long getApproverId() {
+        return approver.getId();
+    }
+
 }

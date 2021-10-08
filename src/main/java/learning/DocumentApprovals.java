@@ -10,6 +10,7 @@ import static learning.ApprovalState.*;
 
 @Getter
 public class DocumentApprovals {
+
     private final List<DocumentApproval> documentApprovals = new LinkedList<>();
 
     public void add(DocumentApproval documentApproval) {
@@ -48,4 +49,5 @@ public class DocumentApprovals {
     private boolean isApproved(DocumentApproval documentApproval) {
         return documentApproval.isApproved();
     }
+
 }
