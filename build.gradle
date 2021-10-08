@@ -18,7 +18,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group 'playground'
 version '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
@@ -61,3 +61,4 @@ dependencies {
 //    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 }
+targetCompatibility = JavaVersion.VERSION_11
