@@ -25,7 +25,7 @@ public class DocumentApproval {
     }
 
     public boolean isApproved() {
-        return approvalState == APPROVED;
+        return approvalState.isApproved();
     }
 
     public Long getApproverId() {

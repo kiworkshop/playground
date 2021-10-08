@@ -13,4 +13,7 @@ public enum ApprovalState {
 
     private final String text;
 
+    public boolean isApproved() {
+        return this == APPROVED;
+    }
 }
