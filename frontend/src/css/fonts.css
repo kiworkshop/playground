@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "ARIAL";
+  src: url("../fonts/ARIAL.woff") format("woff"),
+  url("../fonts/ARIAL.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BM_EULJIRO";
+  src: url("../fonts/BMEULJIRO.woff") format("woff"),
+  url("../fonts/BMEULJIROTTF.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BM_HANNA_11yrs_old";
+  src: url("../fonts/BMHANNA_11yrs_woff.woff") format("woff"),
+  url("../fonts/BMHANNA_11yrs_ttf.ttf") format("truetype");
+}
