@@ -3,6 +3,7 @@ package playground.learning;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Document {
@@ -17,7 +18,7 @@ public class Document {
 
     private DocumentApprovals approvals;
     @Getter
-    private ApprovalState approvalState;    // TODO 없애????
+    private ApprovalState approvalState;
 
     @Builder
     public Document(Long id, String title, Category category, String contents, User drafter) {
@@ -29,6 +30,10 @@ public class Document {
 
         this.approvals = DocumentApprovals.empty();
         this.approvalState = ApprovalState.DRAFTING;
+    }
+
+    public void addApprover(User approver) {
+        addApprovers(Collections.singletonList(approver));
     }
 
     public void addApprovers(List<User> approvers) {

@@ -18,7 +18,8 @@ public class DocumentApprovals {
     }
 
     public void addApprovals(List<User> approvers) {
-        List<DocumentApproval> documentApprovals = IntStream.range(0, approvers.size())
+        List<DocumentApproval> documentApprovals =
+                IntStream.range(0, approvers.size())
                 .mapToObj(index -> DocumentApproval.of(approvers.get(index), index + 1))
                 .collect(Collectors.toList());
 
@@ -31,7 +32,7 @@ public class DocumentApprovals {
     }
 
     public void approveBy(User approver, String approvalComment) {
-        if (hasNoDocumentToApprove(approver)) {
+        if (isNotRegistered(approver)) {
             throw new IllegalArgumentException("님은 결재 리스트에 없다");
         }
 
@@ -43,7 +44,7 @@ public class DocumentApprovals {
         targetApproval.approve(approvalComment);
     }
 
-    private boolean hasNoDocumentToApprove(User approver) {
+    private boolean isNotRegistered(User approver) {
         return approvals.stream()
                 .noneMatch(documentApproval -> documentApproval.isFor(approver));
     }

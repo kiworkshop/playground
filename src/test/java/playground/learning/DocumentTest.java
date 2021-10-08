@@ -30,7 +30,6 @@ public class DocumentTest {
 
         // then
         assertThat(document)
-//                .extracting("title", "category", "contents", "ApprovalState", "drafter.id")
                 .extracting("title", "category", "contents", "approvalState", "drafter.id")
                 .containsExactly(title, Category.EDUCATION, contents, ApprovalState.DRAFTING, drafter.getId());
 
