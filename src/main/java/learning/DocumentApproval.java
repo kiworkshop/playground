@@ -40,7 +40,7 @@ public class DocumentApproval {
         approvalComment = comment;
     }
 
-    public boolean isLastApproval(final int lastApprovalOrder) {
-        return this.approvalOrder == lastApprovalOrder;
+    public boolean isSameOrder(final int approvalOrder) {
+        return this.approvalOrder == approvalOrder;
     }
 }

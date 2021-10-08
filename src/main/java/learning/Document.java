@@ -49,6 +49,7 @@ public class Document {
 
     public void approveBy(final User approver, final String approvalComment) {
         checkRegisteredApprover(approver);
+        int lastApprovalOrder = documentApprovals.size();
         boolean isLastApprover = false;
 
         for (DocumentApproval documentApproval : documentApprovals) {
@@ -56,7 +57,7 @@ public class Document {
 
             if (documentApproval.isNotApproved()) {
                 documentApproval.changeStateToApproved(approvalComment);
-                isLastApprover = documentApproval.isLastApproval(documentApprovals.size());
+                isLastApprover = documentApproval.isSameOrder(lastApprovalOrder);
                 break;
             }
         }

@@ -89,14 +89,14 @@ class DocumentApprovalTest {
 
     @ParameterizedTest
     @CsvSource(value = {"1, true", "2, false"})
-    @DisplayName("마지막 결재자인지 확인한다.")
-    void isLastApprover(int lastApprovalOrder, boolean expected) {
+    @DisplayName("순서가 일치하는지 확인한다.")
+    void isSameOrder(int approvalOrder, boolean expected) {
         //given
         User approver = new User(1L, "결재자");
         DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
 
         //when
-        boolean isLastApproval = documentApproval.isLastApproval(lastApprovalOrder);
+        boolean isLastApproval = documentApproval.isSameOrder(approvalOrder);
 
         //then
         assertThat(isLastApproval).isEqualTo(expected);
