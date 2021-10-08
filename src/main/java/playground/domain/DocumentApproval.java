@@ -17,7 +17,7 @@ public class DocumentApproval {
         this.approvalOrder = approvalOrder;
     }
 
-    public DocumentApproval approveBy(User approver, String approvalComment){
+    public DocumentApproval approveBy(User approver, String approvalComment) {
         this.approvalComment = approvalComment;
         this.approver = approver;
         this.approvalState = ApprovalState.APPROVED;
