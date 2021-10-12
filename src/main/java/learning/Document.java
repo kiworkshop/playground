@@ -5,8 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-import static learning.ApprovalState.APPROVED;
-import static learning.ApprovalState.DRAFTING;
+import static learning.ApprovalState.*;
 
 @Getter
 public class Document {
@@ -42,6 +41,12 @@ public class Document {
         if (documentApprovals.allAproved()) {
             approvalState = APPROVED;
         }
+    }
+
+    public void rejectBy(User approver, String approvalComment) {
+        DocumentApproval currentApproval = documentApprovals.findBy(approver);
+        currentApproval.reject(approvalComment);
+        approvalState = CANCELED;
     }
 
     public ApprovalState getApprovalState() {

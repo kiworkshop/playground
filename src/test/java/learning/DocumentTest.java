@@ -131,6 +131,34 @@ class DocumentTest {
         assertThrows(IllegalArgumentException.class, () -> document.approveBy(approver2, "확인했습니다."));
     }
 
+    @Test
+    @DisplayName("문서를 결재하는 경우 한 명이라도 거절을 하면 문서의 상태가 거절로 변경된다.")
+    void reject() {
+        //given
+        User drafter = createUser(1L, "기안자");
+        User approver1 = createUser(2L, "결재자1");
+        User approver2 = createUser(3L, "결재자2");
+        User approver3 = createUser(4L, "결재자3");
+
+        Document document = createDocument(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
+        document.addApprovers(Arrays.asList(approver1, approver2, approver3));
+
+        //when
+        document.approveBy(approver1, "승인합니다.");
+        document.rejectBy(approver2, "다시 확인하세요.");
+        document.approveBy(approver3, "확인했습니다.");
+
+        //then
+        assertThat(document.getApprovalState()).isEqualTo(ApprovalState.CANCELED);
+        assertThat(document.getDocumentApprovals())
+                .extracting("approver.id", "approvalState", "approvalOrder", "approvalComment")
+                .containsExactly(
+                        tuple(approver1.getId(), ApprovalState.APPROVED, 1, "승인합니다."),
+                        tuple(approver2.getId(), ApprovalState.CANCELED, 2, "다시 확인하세요."),
+                        tuple(approver3.getId(), ApprovalState.APPROVED, 3, "확인했습니다.")
+                );
+    }
+
     private User createUser(Long id, String name) {
         return User.builder()
                 .id(id)

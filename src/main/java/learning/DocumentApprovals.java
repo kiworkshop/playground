@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import static learning.ApprovalState.*;
 
@@ -28,7 +29,7 @@ public class DocumentApprovals {
 
     private DocumentApproval findTarget(User approver) {
         return documentApprovals.stream()
-                .filter(approval -> approval.getApproverId() == approver.getId())
+                .filter(approval -> Objects.equals(approval.getApproverId(), approver.getId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("결재 요청 대상자가 아닙니다."));
     }

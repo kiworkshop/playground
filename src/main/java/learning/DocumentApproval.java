@@ -2,8 +2,7 @@ package learning;
 
 import lombok.Getter;
 
-import static learning.ApprovalState.APPROVED;
-import static learning.ApprovalState.DRAFTING;
+import static learning.ApprovalState.*;
 
 @Getter
 public class DocumentApproval {
@@ -21,6 +20,11 @@ public class DocumentApproval {
 
     public void approve(String approvalComment) {
         this.approvalState = APPROVED;
+        this.approvalComment = approvalComment;
+    }
+
+    public void reject(String approvalComment) {
+        this.approvalState = CANCELED;
         this.approvalComment = approvalComment;
     }
 
