@@ -15,8 +15,8 @@ public class DocumentApproval {
     private String approvalComment;
 
     @Builder
-    public DocumentApproval(final User approver, final ApprovalState approvalState,
-                            final Integer approvalOrder, final String approvalComment) {
+    private DocumentApproval(final User approver, final ApprovalState approvalState,
+                             final Integer approvalOrder, final String approvalComment) {
         this.approver = approver;
         this.approvalState = approvalState;
         this.approvalOrder = approvalOrder;

@@ -1,5 +1,7 @@
 package learning;
 
+import fixture.DocumentApprovalFixture;
+import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,11 +16,11 @@ class DocumentApprovalTest {
     @DisplayName("문서 결재 정보를 생성한다.")
     void create() {
         //given
-        User approver = new User(1L, "결재자");
+        User approver = UserFixture.create(1L, "결재자");
         int approvalOrder = 1;
 
         //when
-        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
 
         //then
         assertThat(documentApproval)
@@ -31,8 +33,8 @@ class DocumentApprovalTest {
     @DisplayName("결재 승인 상태인지 확인한다.")
     void isApproved(ApprovalState approvalState, boolean expected) {
         //given
-        User approver = new User(1L, "결재자");
-        DocumentApproval documentApproval = createDocumentApproval(approver, approvalState, 1, null);
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
 
         //when
         boolean isApproved = documentApproval.isApproved();
@@ -46,8 +48,8 @@ class DocumentApprovalTest {
     @DisplayName("결재가 승인 상태가 아닌지 확인한다.")
     void isNotApproved(ApprovalState approvalState, boolean expected) {
         //given
-        User approver = new User(1L, "결재자");
-        DocumentApproval documentApproval = createDocumentApproval(approver, approvalState, 1, null);
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
 
         //when
         boolean isNotApproved = documentApproval.isNotApproved();
@@ -60,9 +62,9 @@ class DocumentApprovalTest {
     @DisplayName("전달받은 사용자와 등록된 결재자가 다른 지 확인한다.")
     void hasNotSameApprover() {
         //given
-        User approver = new User(1L, "결재자");
-        User notApprover = new User(2L, "결재자아님");
-        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+        User approver = UserFixture.create(1L, "결재자");
+        User notApprover = UserFixture.create(2L, "결재자아님");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
 
         //when, then
         assertThat(documentApproval.hasNotSameApprover(notApprover)).isTrue();
@@ -73,8 +75,8 @@ class DocumentApprovalTest {
     @DisplayName("결재 상태를 승인 상태로 변경한다.")
     void changeStateToApproved() {
         //given
-        User approver = new User(1L, "결재자");
-        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
         String approvalComment = "결재 승인하였습니다.";
 
         //when
@@ -92,23 +94,13 @@ class DocumentApprovalTest {
     @DisplayName("순서가 일치하는지 확인한다.")
     void isSameOrder(int approvalOrder, boolean expected) {
         //given
-        User approver = new User(1L, "결재자");
-        DocumentApproval documentApproval = createDocumentApproval(approver, ApprovalState.DRAFTING, 1, null);
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
 
         //when
         boolean isLastApproval = documentApproval.isSameOrder(approvalOrder);
 
         //then
         assertThat(isLastApproval).isEqualTo(expected);
-    }
-
-    private DocumentApproval createDocumentApproval(final User approver, final ApprovalState approvalState,
-                                                    final Integer approvalOrder, final String approvalComment) {
-        return DocumentApproval.builder()
-                .approver(approver)
-                .approvalState(approvalState)
-                .approvalOrder(approvalOrder)
-                .approvalComment(approvalComment)
-                .build();
     }
 }

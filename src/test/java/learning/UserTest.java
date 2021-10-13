@@ -1,5 +1,6 @@
 package learning;
 
+import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class UserTest {
         String name = "사용자";
 
         //when
-        User user = new User(id, name);
+        User user = UserFixture.create(id, name);
 
         //then
         assertThat(user).extracting("id", "name")
@@ -26,8 +27,8 @@ class UserTest {
     @DisplayName("같은 사용자인지 확인한다.")
     void isSame() {
         //given
-        User user1 = new User(1L, "사용자1");
-        User user2 = new User(2L, "사용자2");
+        User user1 = UserFixture.create(1L, "사용자1");
+        User user2 = UserFixture.create(2L, "사용자2");
 
         //when, then
         assertThat(user1.isSame(user1)).isTrue();

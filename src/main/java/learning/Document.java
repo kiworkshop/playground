@@ -22,8 +22,8 @@ public class Document {
     private final List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Builder
-    public Document(final Long id, final String title, final Category category,
-                    final String contents, final User drafter) {
+    private Document(final Long id, final String title, final Category category,
+                     final String contents, final User drafter) {
         this.id = id;
         this.title = title;
         this.category = category;

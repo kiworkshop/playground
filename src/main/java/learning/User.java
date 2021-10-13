@@ -15,7 +15,7 @@ public class User {
     private String name;
 
     @Builder
-    public User(final Long id, final String name) {
+    private User(final Long id, final String name) {
         this.id = id;
         this.name = name;
     }
