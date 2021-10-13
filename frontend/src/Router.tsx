@@ -45,7 +45,8 @@ const Router = () => {
   return (
     <HashRouter>
       <Switch>
-        <Route path="/" exact component={LoginPage}/>
+        {/* todo : login 기능이 생기면 주석 해제 */}
+        {/*<Route path="/" exact component={LoginPage}/>*/}
 
         <>
           <div className={classes.root}>
@@ -99,6 +100,9 @@ const Router = () => {
               <Container maxWidth="lg" className={classes.container}>
 
                 <Switch>
+                  {/* todo : login 기능이 생기면 제거 */}
+                  <Route path="/" exact component={MainPage}/>
+
                   <Route path="/main" exact component={MainPage}/>
                   <Route path="/documents/create" exact component={DocumentCreatePage}/>
                   <Route path="/documents/outbox" exact component={DocumentOutboxPage}/>
