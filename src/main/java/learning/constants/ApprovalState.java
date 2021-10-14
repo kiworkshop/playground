@@ -1,4 +1,4 @@
-package playground.constants;
+package learning.constants;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
