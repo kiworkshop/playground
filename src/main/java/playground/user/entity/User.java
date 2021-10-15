@@ -1,16 +1,12 @@
-package playground.learning;
+package playground.user.entity;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@EqualsAndHashCode
+@Getter
 @Builder
 public class User {
 
-    @Getter
     private Long id;
     private String name;
-
 }
-

@@ -1,4 +1,4 @@
-package playground.learning;
+package learning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class DocumentApprovals {
     public void addApprovals(List<User> approvers) {
         List<DocumentApproval> documentApprovals =
                 IntStream.range(0, approvers.size())
-                .mapToObj(index -> DocumentApproval.of(approvers.get(index), index + 1))
-                .collect(Collectors.toList());
+                        .mapToObj(index -> DocumentApproval.of(approvers.get(index), index + 1))
+                        .collect(Collectors.toList());
 
         this.approvals.addAll(documentApprovals);
     }
