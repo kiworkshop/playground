@@ -5,7 +5,7 @@ import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -29,9 +29,9 @@ class DocumentApprovalTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"APPROVED, true", "DRAFTING, false", "CANCELED, false"})
-    @DisplayName("결재 승인 상태인지 확인한다.")
-    void isApproved(ApprovalState approvalState, boolean expected) {
+    @EnumSource(value = ApprovalState.class, names = "APPROVED")
+    @DisplayName("결재 승인 상태일 경우, 참을 반환한다.")
+    void isApproved_true(ApprovalState approvalState) {
         //given
         User approver = UserFixture.create(1L, "결재자");
         DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
@@ -40,13 +40,28 @@ class DocumentApprovalTest {
         boolean isApproved = documentApproval.isApproved();
 
         //then
-        assertThat(isApproved).isEqualTo(expected);
+        assertThat(isApproved).isTrue();
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"APPROVED, false", "DRAFTING, true", "CANCELED, true"})
-    @DisplayName("결재가 승인 상태가 아닌지 확인한다.")
-    void isNotApproved(ApprovalState approvalState, boolean expected) {
+    @EnumSource(value = ApprovalState.class, names = {"DRAFTING", "CANCELED"})
+    @DisplayName("결재 승인 상태가 아닐 경우, 거짓을 반환한다.")
+    void isApproved_false(ApprovalState approvalState) {
+        //given
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
+
+        //when
+        boolean isApproved = documentApproval.isApproved();
+
+        //then
+        assertThat(isApproved).isFalse();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ApprovalState.class, names = {"DRAFTING", "CANCELED"})
+    @DisplayName("결재가 승인 상태가 아닐 경우, 참을 반환한다.")
+    void isNotApproved_true(ApprovalState approvalState) {
         //given
         User approver = UserFixture.create(1L, "결재자");
         DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
@@ -55,7 +70,22 @@ class DocumentApprovalTest {
         boolean isNotApproved = documentApproval.isNotApproved();
 
         //then
-        assertThat(isNotApproved).isEqualTo(expected);
+        assertThat(isNotApproved).isTrue();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ApprovalState.class, names = {"APPROVED"})
+    @DisplayName("결재가 승인 상태일 경우, 거짓을 반환한다.")
+    void isNotApproved_false(ApprovalState approvalState) {
+        //given
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, approvalState, 1, null);
+
+        //when
+        boolean isNotApproved = documentApproval.isNotApproved();
+
+        //then
+        assertThat(isNotApproved).isFalse();
     }
 
     @Test
@@ -89,18 +119,31 @@ class DocumentApprovalTest {
         );
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {"1, true", "2, false"})
-    @DisplayName("순서가 일치하는지 확인한다.")
-    void isSameOrder(int approvalOrder, boolean expected) {
+    @Test
+    @DisplayName("순서가 일치할 경우, 참을 반환한다.")
+    void isSameOrder() {
         //given
         User approver = UserFixture.create(1L, "결재자");
         DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
 
         //when
-        boolean isLastApproval = documentApproval.isSameOrder(approvalOrder);
+        boolean isLastApproval = documentApproval.isSameOrder(1);
 
         //then
-        assertThat(isLastApproval).isEqualTo(expected);
+        assertThat(isLastApproval).isTrue();
+    }
+
+    @Test
+    @DisplayName("순서가 일치하지 않을 경우, 거짓을 반환한다.")
+    void isSameOrder_false() {
+        //given
+        User approver = UserFixture.create(1L, "결재자");
+        DocumentApproval documentApproval = DocumentApprovalFixture.create(approver, ApprovalState.DRAFTING, 1, null);
+
+        //when
+        boolean isLastApproval = documentApproval.isSameOrder(2);
+
+        //then
+        assertThat(isLastApproval).isFalse();
     }
 }
