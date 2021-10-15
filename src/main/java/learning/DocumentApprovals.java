@@ -56,4 +56,8 @@ public class DocumentApprovals {
         return documentApprovals.stream()
                 .allMatch(DocumentApproval::isApproved);
     }
+
+    public boolean isNotEmpty() {
+        return !documentApprovals.isEmpty();
+    }
 }

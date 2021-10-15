@@ -32,10 +32,18 @@ public class Document {
     }
 
     public void addApprovers(final List<User> approvers) {
+        checkIfDocumentApprovalsIsEmpty();
+
         for (int i = 0; i < approvers.size(); i++) {
             User approver = approvers.get(i);
             DocumentApproval documentApproval = DocumentApproval.of(approver, i + 1);
             documentApprovals.add(documentApproval);
+        }
+    }
+
+    private void checkIfDocumentApprovalsIsEmpty() {
+        if (documentApprovals.isNotEmpty()) {
+            throw new IllegalStateException();
         }
     }
 
