@@ -1,6 +1,6 @@
 package fixture;
 
-import learning.User;
+import playground.domain.user.User;
 
 public class UserFixture {
 

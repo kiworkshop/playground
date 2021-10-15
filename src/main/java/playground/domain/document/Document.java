@@ -1,9 +1,12 @@
-package learning;
+package playground.domain.document;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import playground.domain.documentapproval.DocumentApproval;
+import playground.domain.documentapproval.DocumentApprovals;
+import playground.domain.user.User;
 
 import java.util.List;
 import java.util.Objects;

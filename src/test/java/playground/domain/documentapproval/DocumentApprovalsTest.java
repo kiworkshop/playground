@@ -1,8 +1,10 @@
-package learning;
+package playground.domain.documentapproval;
 
 import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import playground.domain.document.ApprovalState;
+import playground.domain.user.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;

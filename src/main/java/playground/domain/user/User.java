@@ -1,4 +1,4 @@
-package learning;
+package playground.domain.user;
 
 import lombok.AccessLevel;
 import lombok.Builder;

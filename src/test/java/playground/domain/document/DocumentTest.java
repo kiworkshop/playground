@@ -1,9 +1,11 @@
-package learning;
+package playground.domain.document;
 
 import fixture.DocumentFixture;
 import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import playground.domain.documentapproval.DocumentApproval;
+import playground.domain.user.User;
 
 import java.util.Arrays;
 import java.util.Collections;

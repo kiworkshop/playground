@@ -1,8 +1,8 @@
 package fixture;
 
-import learning.ApprovalState;
-import learning.DocumentApproval;
-import learning.User;
+import playground.domain.document.ApprovalState;
+import playground.domain.documentapproval.DocumentApproval;
+import playground.domain.user.User;
 
 public class DocumentApprovalFixture {
 

@@ -1,9 +1,11 @@
-package learning;
+package playground.domain.documentapproval;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import playground.domain.document.ApprovalState;
+import playground.domain.user.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

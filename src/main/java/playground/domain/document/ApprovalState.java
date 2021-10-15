@@ -1,4 +1,4 @@
-package learning;
+package playground.domain.document;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

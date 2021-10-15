@@ -1,8 +1,8 @@
 package fixture;
 
-import learning.Category;
-import learning.Document;
-import learning.User;
+import playground.domain.document.Category;
+import playground.domain.document.Document;
+import playground.domain.user.User;
 
 public class DocumentFixture {
 

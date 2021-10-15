@@ -1,4 +1,4 @@
-package learning;
+package playground.domain.user;
 
 import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;

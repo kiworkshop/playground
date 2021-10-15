@@ -1,13 +1,11 @@
-package learning;
+package playground.domain.documentapproval;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import playground.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DocumentApprovals {
 
     private final List<DocumentApproval> documentApprovals = new ArrayList<>();
