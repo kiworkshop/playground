@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class DocumentTest {
+class DocumentDtoTest {
 
     @DisplayName("문서 생성하기")
     @Test

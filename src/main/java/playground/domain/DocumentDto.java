@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Document {
+public class DocumentDto {
 
     private Long id;
     private String title;
