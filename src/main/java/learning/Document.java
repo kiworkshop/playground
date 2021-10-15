@@ -15,17 +15,26 @@ public class Document {
     private final Category category;
     private final String contents;
     private final User drafter;
-
     private ApprovalState approvalState = DRAFTING;
     private final DocumentApprovals documentApprovals = new DocumentApprovals();
 
-    @Builder
+    @Builder(builderClassName = "DocumentBuilder", builderMethodName = "create")
     private Document(Long id, String title, Category category, String contents, User drafter) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
+    }
+
+    @Builder(builderClassName = "DocumentAllBuilder", builderMethodName = "rowMapper")
+    private Document(Long id, String title, Category category, String contents, User drafter, ApprovalState approvalState) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.contents = contents;
+        this.drafter = drafter;
+        this.approvalState = approvalState;
     }
 
     public void addApprovers(List<User> approvers) {
@@ -56,5 +65,4 @@ public class Document {
     public List<DocumentApproval> getDocumentApprovals() {
         return documentApprovals.getDocumentApprovals();
     }
-
 }
