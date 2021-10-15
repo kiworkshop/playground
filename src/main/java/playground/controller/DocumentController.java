@@ -3,17 +3,16 @@ package playground.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import playground.domain.ApproveGenerationRequestDto;
 import playground.domain.DocumentDto;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.internalServerError;
-import static org.springframework.http.ResponseEntity.ok;
 
 @RestController(value = "api")
 @EnableAutoConfiguration
@@ -32,15 +31,12 @@ public class DocumentController {
             headers.add("keep-Alive", "timeout=60");
             headers.add("Connection", "keep-Alive");
 
-            DocumentDto document = jdbcTemplate.queryForObject("SELECT * FROM DOCUMENT WHERE ID = ?", String.class, documentId);
+            DocumentDto document = jdbcTemplate.queryForObject("SELECT * FROM DOCUMENT WHERE ID = ?", DocumentDto.class, documentId);
 
-            return ResponseEntity<DocumentDto>.ok()
-                    .headers(headers)
-                    .body(document);
+            return new ResponseEntity<>(document, headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity<DocumentDto>.internalServerError()
-                    .body(null);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -54,19 +50,30 @@ public class DocumentController {
             headers.add("keep-Alive", "timeout=60");
             headers.add("Connection", "keep-Alive");
 
-            List<DocumentDto> outbox = jdbcTemplate.queryForList("SELECT * FROM DOCUMENT WHERE ID = ? WHERE APPROVALSTATE = 'DRAFTING'", String.class,drafterId);
+            List<DocumentDto> outbox = jdbcTemplate.queryForList("SELECT * FROM DOCUMENT WHERE ID = ? WHERE APPROVALSTATE = 'DRAFTING'", DocumentDto.class, drafterId);
 
-            return ResponseEntity<List<DocumentDto>>.ok()
-                    .headers(headers)
-                    .body(outbox);
+            return new ResponseEntity<>(outbox, headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity<List<DocumentDto>>.internalServerError()
-                    .body(null);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @RequestMapping(value = "documents", method = RequestMethod.POST)
+    public void approveGenerationRequest(@RequestBody ApproveGenerationRequestDto approveGenerationRequest) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
+            String title = approveGenerationRequest.getTitle();
+            String category = approveGenerationRequest.getCategory();
+            String contents = approveGenerationRequest.getContents();
+            int drafterId = approveGenerationRequest.getDrafterId();
 
+            jdbcTemplate.update("INSERT INTO DOCUMENT values");
+        } catch (Exception e) {
+
+        }
+    }
 
 }
