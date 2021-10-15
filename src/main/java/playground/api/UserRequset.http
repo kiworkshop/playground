@@ -1,0 +1,2 @@
+### 사용자 1명 조회
+GET localhost:8080/api/users/1

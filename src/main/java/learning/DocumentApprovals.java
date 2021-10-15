@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static learning.ApprovalState.*;
+import static learning.ApprovalState.DRAFTING;
 
 @Getter
 public class DocumentApprovals {
