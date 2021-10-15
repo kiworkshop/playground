@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public class Document {
     private String contents;
     private User drafter;
     private ApprovalState approvalState;
-    private final List<DocumentApproval> documentApprovals = new ArrayList<>();
+    private final DocumentApprovals documentApprovals = new DocumentApprovals();
 
     @Builder
     private Document(final Long id, final String title, final Category category,
@@ -33,55 +32,23 @@ public class Document {
     }
 
     public void addApprovers(final List<User> approvers) {
-        int currentDocumentApprovalOrder = this.documentApprovals.size();
-
-        for (User approver : approvers) {
-            currentDocumentApprovalOrder += 1;
-            DocumentApproval documentApproval = DocumentApproval.builder()
-                    .approver(approver)
-                    .approvalState(ApprovalState.DRAFTING)
-                    .approvalOrder(currentDocumentApprovalOrder)
-                    .build();
-
-            this.documentApprovals.add(documentApproval);
+        for (int i = 0; i < approvers.size(); i++) {
+            User approver = approvers.get(i);
+            DocumentApproval documentApproval = DocumentApproval.of(approver, i + 1);
+            documentApprovals.add(documentApproval);
         }
     }
 
     public void approveBy(final User approver, final String approvalComment) {
-        checkRegisteredApprover(approver);
-        int lastApprovalOrder = documentApprovals.size();
-        boolean isLastApprover = false;
+        documentApprovals.approveBy(approver, approvalComment);
 
-        for (DocumentApproval documentApproval : documentApprovals) {
-            checkPreviousDocumentApproval(documentApproval, approver);
-
-            if (documentApproval.isNotApproved()) {
-                documentApproval.changeStateToApproved(approvalComment);
-                isLastApprover = documentApproval.isSameOrder(lastApprovalOrder);
-                break;
-            }
-        }
-
-        if (isLastApprover) {
+        if (documentApprovals.isAllApproved()) {
             approvalState = ApprovalState.APPROVED;
         }
     }
 
-    private void checkRegisteredApprover(final User approver) {
-        if (isNotRegisteredApprover(approver)) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    private boolean isNotRegisteredApprover(final User approver) {
-        return documentApprovals.stream()
-                .allMatch(documentApproval -> documentApproval.hasNotSameApprover(approver));
-    }
-
-    private void checkPreviousDocumentApproval(final DocumentApproval documentApproval, final User approver) {
-        if (documentApproval.isNotApproved() && documentApproval.hasNotSameApprover(approver)) {
-            throw new IllegalArgumentException();
-        }
+    public List<DocumentApproval> getDocumentApprovals() {
+        return documentApprovals.list();
     }
 
     @Override

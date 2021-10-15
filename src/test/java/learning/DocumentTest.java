@@ -1,5 +1,7 @@
 package learning;
 
+import fixture.DocumentFixture;
+import fixture.UserFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,15 +19,15 @@ class DocumentTest {
     @DisplayName("문서 생성하기")
     void create() {
         // given
-        User drafter = createUser(1L, "기안자");
-        User approver1 = createUser(2L, "결재자1");
-        User approver2 = createUser(3L, "결재자2");
+        User drafter = UserFixture.create(1L, "기안자");
+        User approver1 = UserFixture.create(2L, "결재자1");
+        User approver2 = UserFixture.create(3L, "결재자2");
 
         String title = "문서제목";
         String contents = "문서내용";
 
         // when
-        Document document = createDocument(1L, title, Category.EDUCATION, contents, drafter);
+        Document document = DocumentFixture.create(1L, title, Category.EDUCATION, contents, drafter);
         document.addApprovers(Arrays.asList(approver1, approver2));
 
         // then
@@ -46,11 +48,11 @@ class DocumentTest {
     @DisplayName("문서를 결재하는 경우 내가 결재할 차례면 결재가 성공한다.")
     void approveSuccess() {
         // given
-       User drafter = createUser(1L, "기안자");
-        User approver1 = createUser(2L, "결재자1");
-        User approver2 = createUser(3L, "결재자2");
+        User drafter = UserFixture.create(1L, "기안자");
+        User approver1 = UserFixture.create(2L, "결재자1");
+        User approver2 = UserFixture.create(3L, "결재자2");
 
-        Document document = createDocument(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
+        Document document = DocumentFixture.create(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
         document.addApprovers(Arrays.asList(approver1, approver2));
 
         String approvalComment = "결재 승인합니다.";
@@ -74,11 +76,11 @@ class DocumentTest {
     @DisplayName("문서를 결재하는 경우 내가 마지막 결재할 차례라면 문서의 상태가 결재완료로 변경된다.")
     void approveComplete() {
         // given
-        User drafter = createUser(1L, "기안자");
-        User approver1 = createUser(2L, "결재자1");
-        User approver2 = createUser(3L, "결재자2");
+        User drafter = UserFixture.create(1L, "기안자");
+        User approver1 = UserFixture.create(2L, "결재자1");
+        User approver2 = UserFixture.create(3L, "결재자2");
 
-        Document document = createDocument(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
+        Document document = DocumentFixture.create(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
         document.addApprovers(Arrays.asList(approver1, approver2));
 
         String approvalComment1 = "결재 승인합니다.";
@@ -105,11 +107,11 @@ class DocumentTest {
     @DisplayName("문서를 결재하는 경우 내가 결재할 차례가 아니면 결재가 실패한다.")
     void approveFail() {
         // given
-        User drafter = createUser(1L, "기안자");
-        User approver1 = createUser(2L, "결재자1");
-        User approver2 = createUser(3L, "결재자2");
+        User drafter = UserFixture.create(1L, "기안자");
+        User approver1 = UserFixture.create(2L, "결재자1");
+        User approver2 = UserFixture.create(3L, "결재자2");
 
-        Document document = createDocument(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
+        Document document = DocumentFixture.create(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
         document.addApprovers(Arrays.asList(approver1, approver2));
 
         // when // then
@@ -120,31 +122,14 @@ class DocumentTest {
     @Test
     void approveFail2() {
         // given
-        User drafter = createUser(1L, "기안자");
-        User approver1 = createUser(2L, "결재자1");
-        User approver2 = createUser(3L, "결재자2");
+        User drafter = UserFixture.create(1L, "기안자");
+        User approver1 = UserFixture.create(2L, "결재자1");
+        User approver2 = UserFixture.create(3L, "결재자2");
 
-        Document document = createDocument(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
+        Document document = DocumentFixture.create(1L, "문서제목", Category.EDUCATION, "문서내용", drafter);
         document.addApprovers(Collections.singletonList(approver1));
 
         // when // then
         assertThrows(IllegalArgumentException.class, () -> document.approveBy(approver2, "확인했습니다."));
-    }
-
-    private User createUser(Long id, String name) {
-        return User.builder()
-                .id(id)
-                .name(name)
-                .build();
-    }
-
-    private Document createDocument(Long id, String title, Category category, String contents, User drafter) {
-        return Document.builder()
-                .id(id)
-                .title(title)
-                .category(category)
-                .contents(contents)
-                .drafter(drafter)
-                .build();
     }
 }

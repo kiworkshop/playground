@@ -23,6 +23,10 @@ public class DocumentApproval {
         this.approvalComment = approvalComment;
     }
 
+    public static DocumentApproval of(final User approver, final int order) {
+        return new DocumentApproval(approver, ApprovalState.DRAFTING, order, null);
+    }
+
     public boolean isApproved() {
         return approvalState.isApproved();
     }
