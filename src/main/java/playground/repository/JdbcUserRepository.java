@@ -30,23 +30,6 @@ public class JdbcUserRepository implements UserRepository {
         return result.stream().findAny();
     }
 
-//    @Override
-//    public User save(User user) {
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update(new PreparedStatementCreator() {
-//            @Override
-//            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-//                PreparedStatement pstmt = con.prepareStatement(INSERT_USER, new String[] { "ID" });
-//                pstmt.setString(1, user.getName());
-//                return pstmt;
-//            }
-//        }, keyHolder);
-//
-//        Number key = keyHolder.getKey();
-//        return findById(key.longValue()).get();
-//    }
-
     @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);

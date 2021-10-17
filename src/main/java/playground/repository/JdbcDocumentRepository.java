@@ -1,9 +1,6 @@
 package playground.repository;
 
-import learning.ApprovalState;
-import learning.Category;
-import learning.Document;
-import learning.DocumentApproval;
+import learning.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,30 +36,9 @@ public class JdbcDocumentRepository implements DocumentRepository {
     }
 
     @Override
-    public List<DocumentApproval> findOutBox(Long userId) {
-        return jdbcTemplate.query(FINE_OUTBOX_DOCUMENTS, documentApprovalRowMapper(), userId);
+    public List<Document> findOutBox(Long userId) {
+        return jdbcTemplate.query(FINE_OUTBOX_DOCUMENTS, documentRowMapper(), userId);
     }
-
-//    @Override
-//    public Document save(Document document) {
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update(new PreparedStatementCreator() {
-//            @Override
-//            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-//                PreparedStatement pstmt = con.prepareStatement(INSERT_DOCUMENT, new String[]{"ID"});
-//                pstmt.setString(1, document.getTitle());
-//                pstmt.setString(2, document.getCategory().getText());
-//                pstmt.setString(3, document.getContents());
-//                pstmt.setLong(4, document.getDrafter().getId());
-//                pstmt.setString(5, document.getApprovalState().getText());
-//                return pstmt;
-//            }
-//        }, keyHolder);
-//
-//        Number key = keyHolder.getKey();
-//        return findById(key.longValue()).get();
-//    }
 
     @Override
     public Document save(Document document) {
@@ -86,17 +62,8 @@ public class JdbcDocumentRepository implements DocumentRepository {
                 .title(rs.getString("title"))
                 .contents(rs.getString("contents"))
                 .category(Category.findBy(rs.getString("category")))
-                .drafter(userRepository.findById(rs.getLong("drafter_id")).get())
+                .drafter(User.builder().id(rs.getLong("user_id")).name(rs.getString("user_name")).build())
                 .approvalState(ApprovalState.findBy(rs.getString("approval_state")))
-                .build();
-    }
-
-    private RowMapper<DocumentApproval> documentApprovalRowMapper() {
-        return (rs, rowNum) -> DocumentApproval.rowMapper()
-                .approver(userRepository.findById(rs.getLong("approver_id")).get())
-                .approvalState(ApprovalState.findBy(rs.getString("approval_state")))
-                .approvalOrder(rs.getInt("approval_order"))
-                .approvalComment(rs.getString("approval_comment"))
                 .build();
     }
 }

@@ -2,15 +2,16 @@
 GET http://localhost:8080/api/documents/1
 
 ### OUT BOX 문서 조회
-GET http://localhost:8080/api/documents/out/5
+GET http://localhost:8080/api/documents/out?userId=5
 
 ### 문서 저장
 POST http://localhost:8080/api/document
 Content-Type: application/json
 
 {
-  "title": "테스트 문서",
-  "category": "운영비",
-  "contents": "테스트 중입니다.",
-  "drafterId": 1
+  "title": "교육비 결재 요청",
+  "category": "EDUCATION",
+  "contents": "사외교육비 결재 요청드립니다.",
+  "drafterId": 1,
+  "approverIds": [1,2]
 }
