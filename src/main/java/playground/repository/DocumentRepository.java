@@ -10,7 +10,7 @@ public interface DocumentRepository {
 
     Optional<Document> findById(Long documentId);
 
-    List<DocumentApproval> findOutBox(Long userId);
+    List<Document> findOutBox(Long userId);
 
     Document save(Document document);
 }
