@@ -1,4 +1,4 @@
-package playground.learning;
+package learning;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

@@ -1,4 +1,4 @@
-package playground.learning;
+package learning;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

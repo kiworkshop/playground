@@ -1,4 +1,4 @@
-package playground.learning;
+package learning;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public enum ApprovalState {
         if (this == CANCELED) {
             throw new IllegalArgumentException("이미 결재자로부터 거절된 문서입니다.");
         }
-        
+
         return APPROVED;
     }
 
