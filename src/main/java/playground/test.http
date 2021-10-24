@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/documents/1
+GET http://localhost:8080/api/documents/4
 
 HTTP/1.1 200
 Accept: application/json
@@ -7,3 +7,17 @@ Date: Tue, 24 Aug 2021 13:55:45 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
+###
+POST http://localhost:8080/api/documents
+Content-Type: application/json
+
+{
+  "title": "교육비 결재 요청",
+  "category": "EDUCATION",
+  "contents": "사외교육비 결재 요청드립니다.",
+  "drafterId": 1,
+  "approverIds": [
+    1,
+    2
+  ]
+}
