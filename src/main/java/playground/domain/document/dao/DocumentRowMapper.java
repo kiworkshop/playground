@@ -24,6 +24,7 @@ public class DocumentRowMapper implements RowMapper<Document> {
                         .build())
                 .category(Category.valueOf(rs.getString("category")))
                 .approvalState(ApprovalState.valueOf(rs.getString("approval_state")))
+                .createdAt(rs.getTimestamp("created_at"))
                 .build();
     }
 }

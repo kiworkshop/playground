@@ -6,7 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import playground.domain.document.dto.AddDocumentRequest;
-import playground.domain.document.dto.DocumentDto;
+import playground.domain.document.dto.BoxDocument;
+import playground.domain.document.dto.OutBox;
+import playground.domain.document.dto.SingleDocument;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,12 +20,11 @@ public class DocumentControllerImpl implements DocumentController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<DocumentDto> findDocument(@PathVariable Long id) {
-        DocumentDto result = documentService.findById(id);
+    public ResponseEntity<SingleDocument> findDocument(@PathVariable Long id) {
+        SingleDocument result = documentService.findById(id);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(result);
     }
 
@@ -32,7 +35,16 @@ public class DocumentControllerImpl implements DocumentController {
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(documentId);
+    }
+
+    @Override
+    @GetMapping("/outbox")
+    public ResponseEntity<List<BoxDocument>> findOutbox(@RequestParam Long drafterId) {
+        OutBox outbox = documentService.findOutboxOf(drafterId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(outbox.getElements());
     }
 }

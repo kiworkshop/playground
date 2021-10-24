@@ -16,6 +16,7 @@ create table document
     drafter_id     bigint       not null,
     category       varchar(255) not null,
     approval_state varchar(255) not null,
+    created_at     timestamp    not null,
     foreign key (drafter_id) references user (id)
 );
 

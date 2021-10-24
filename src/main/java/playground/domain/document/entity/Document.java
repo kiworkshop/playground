@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import playground.domain.user.entity.User;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Builder
@@ -16,6 +17,7 @@ public class Document {
     private User drafter;
     private Category category;
     private ApprovalState approvalState;
+    private Timestamp createdAt;
 //    private DocumentApprovals approvals;
 
     @Override

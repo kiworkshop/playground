@@ -1,11 +1,4 @@
-GET http://localhost:8080/api/documents/4
-
-HTTP/1.1 200
-Accept: application/json
-Transfer-Encoding: chunked
-Date: Tue, 24 Aug 2021 13:55:45 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
+GET http://localhost:8080/api/documents/1
 
 ###
 POST http://localhost:8080/api/documents
@@ -21,3 +14,6 @@ Content-Type: application/json
     2
   ]
 }
+
+###
+GET http://localhost:8080/api/documents/outbox?drafterId=1

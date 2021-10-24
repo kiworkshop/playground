@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import playground.domain.document.dao.DocumentApprovalDao;
-import playground.domain.document.dto.AddDocumentApprovalParam;
+import playground.domain.document.dto.param.AddDocumentApprovalParam;
 
 import java.util.Arrays;
 import java.util.Collections;

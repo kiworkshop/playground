@@ -1,4 +1,4 @@
-package playground.domain.document.dto.sql;
+package playground.domain.document.dto.param.sql;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;

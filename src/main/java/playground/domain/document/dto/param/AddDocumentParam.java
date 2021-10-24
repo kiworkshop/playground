@@ -1,7 +1,8 @@
-package playground.domain.document.dto;
+package playground.domain.document.dto.param;
 
 import lombok.Builder;
 import lombok.Getter;
+import playground.domain.document.dto.AddDocumentRequest;
 
 import static playground.domain.document.entity.ApprovalState.DEFAULT_APPROVAL_STATE_TEXT;
 

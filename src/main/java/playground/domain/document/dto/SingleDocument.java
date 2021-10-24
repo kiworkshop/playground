@@ -9,7 +9,7 @@ import playground.domain.user.entity.User;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class DocumentDto {
+public class SingleDocument {
 
     private final Long id;
     private final String title;
@@ -21,8 +21,8 @@ public class DocumentDto {
     private final String approvalState;
     private final String approvalStateText;
 
-    public static DocumentDto of(Document document, User drafter) {
-        return DocumentDto.builder()
+    public static SingleDocument of(Document document, User drafter) {
+        return SingleDocument.builder()
                 .id(document.getId())
                 .title(document.getTitle())
                 .contents(document.getContents())

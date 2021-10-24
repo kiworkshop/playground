@@ -1,7 +1,8 @@
-package playground.domain.document.dto;
+package playground.domain.document.dto.param;
 
 import lombok.Builder;
 import lombok.Getter;
+import playground.domain.document.dto.AddDocumentRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import playground.domain.document.dao.DocumentApprovalDao;
-import playground.domain.document.dto.AddDocumentApprovalParam;
-import playground.domain.document.dto.sql.AddDocumentApprovalSqlParam;
+import playground.domain.document.dto.param.AddDocumentApprovalParam;
+import playground.domain.document.dto.param.sql.AddDocumentApprovalSqlParam;
 
 import java.util.List;
 

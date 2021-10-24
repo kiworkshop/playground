@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
-import playground.domain.document.dto.AddDocumentParam;
+import playground.domain.document.dto.param.AddDocumentParam;
 import playground.domain.document.entity.Document;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -60,5 +62,33 @@ class DocumentH2DaoTest {
 
         // then 
         assertThat(documentId).isNotNull();
+    }
+
+    @Test
+    @DisplayName("작성자 ID로 문서를 찾아온다.")
+    void find_by_drafter_success() {
+        // given
+        Long drafterId = 1L;
+
+        // when
+        List<Document> documents = documentH2Dao.findByDrafter(drafterId);
+
+        // then
+        assertThat(documents)
+                .extracting("drafter.id")
+                .containsOnly(drafterId);
+    }
+
+    @Test
+    @DisplayName("작성자가 작성한 문서가 없으면 빈 리스트를 반환한다.")
+    void find_by_drafter_success_empty() {
+        // given
+        Long drafterId = 2L;
+
+        // when
+        List<Document> documents = documentH2Dao.findByDrafter(drafterId);
+
+        // then
+        assertThat(documents).isEmpty();
     }
 }

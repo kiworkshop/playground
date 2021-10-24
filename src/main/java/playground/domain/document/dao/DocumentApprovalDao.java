@@ -1,6 +1,6 @@
 package playground.domain.document.dao;
 
-import playground.domain.document.dto.AddDocumentApprovalParam;
+import playground.domain.document.dto.param.AddDocumentApprovalParam;
 
 public interface DocumentApprovalDao {
 
