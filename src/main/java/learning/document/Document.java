@@ -4,12 +4,12 @@ import learning.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static learning.document.ApprovalState.DRAFTING;
+
 @Getter
-@Builder
 public class Document {
 
     private Long id;
@@ -18,23 +18,30 @@ public class Document {
     private String contents;
     private User drafter;
     private ApprovalState approvalState;
-    @Builder.Default
-    private List<DocumentApproval> documentApprovals = new ArrayList<>();
+    private DocumentApprovals documentApprovals = new DocumentApprovals();
 
-    public void addApprovers(List<User> users) {
+    @Builder
+    private Document(Long id, String title, Category category, String contents, User drafter, List<User> approvers) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.contents = contents;
+        this.drafter = drafter;
+        this.approvalState = DRAFTING;
+
+        addApprovers(approvers);
+    }
+
+    private void addApprovers(List<User> users) {
         users.forEach(user -> {
-            DocumentApproval documentApproval = DocumentApproval.builder()
-                .approver(user)
-                .approvalState(ApprovalState.DRAFTING)
-                .approvalOrder(1 + documentApprovals.size())
-                .build();
+            DocumentApproval documentApproval = DocumentApproval.of(user, 1 + documentApprovals.size());
             documentApprovals.add(documentApproval);
         });
     }
 
     public void approveBy(User user, String approvalComment) {
-        if (!isApprover(user)) {
-            throw new IllegalArgumentException();
+        if (!this.documentApprovals.isApprover(user)) {
+            throw new IllegalArgumentException("");
         }
 
         DocumentApproval documentApproval = findCurrentOrderDocumentApproval();
@@ -43,40 +50,32 @@ public class Document {
         }
 
         documentApproval.update(ApprovalState.APPROVED, approvalComment);
-    }
 
-    private boolean isApprover(User user) {
-        return this.documentApprovals.stream()
-            .map(DocumentApproval::getApprover)
-            .anyMatch(approver -> approver.equals(user));
+        if (allApproved()) {
+            this.approvalState = ApprovalState.APPROVED;
+        }
     }
 
     private DocumentApproval findCurrentOrderDocumentApproval() {
-        return this.documentApprovals.stream()
-            .filter(documentApproval -> ApprovalState.DRAFTING.equals(documentApproval.getApprovalState()))
+        return documentApprovals.getApprovals().stream()
+            .filter(documentApproval -> DRAFTING.equals(documentApproval.getApprovalState()))
             .min(Comparator.comparingInt(DocumentApproval::getApprovalOrder))
             .orElseThrow(() -> new IllegalArgumentException());
         // TODO: 2021/10/09 적절한 exception 정의 및 테스트
     }
 
-    public ApprovalState getApprovalState() {
-        if (allApproved()) {
-            return ApprovalState.APPROVED;
-        }
-        if (canceled()) {
-            return ApprovalState.CANCELED;
-        }
-        return ApprovalState.DRAFTING;
-    }
-
     private boolean allApproved() {
-        return documentApprovals.stream()
+        return documentApprovals.getApprovals().stream()
             .allMatch(documentApproval -> ApprovalState.APPROVED.equals(documentApproval.getApprovalState()));
     }
 
     private boolean canceled() {
-        return documentApprovals.stream()
+        return documentApprovals.getApprovals().stream()
             .anyMatch(documentApproval -> ApprovalState.CANCELED.equals(documentApproval.getApprovalState()));
+    }
+
+    public List<DocumentApproval> getDocumentApprovals() {
+        return this.documentApprovals.getApprovals();
     }
 }
 
