@@ -1,8 +1,8 @@
-package playground.controller.dto;
+package playground.document.controller.dto;
 
 import java.util.List;
 
-import playground.type.Category;
+import playground.document.type.Category;
 
 public class DocumentRequest {
 

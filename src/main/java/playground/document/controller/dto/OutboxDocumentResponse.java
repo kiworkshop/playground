@@ -1,7 +1,7 @@
-package playground.controller.dto;
+package playground.document.controller.dto;
 
-import playground.type.ApprovalState;
-import playground.type.Category;
+import playground.document.type.ApprovalState;
+import playground.document.type.Category;
 
 public class OutboxDocumentResponse {
 
