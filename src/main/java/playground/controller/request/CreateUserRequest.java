@@ -3,6 +3,7 @@ package playground.controller.request;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import playground.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -25,5 +26,9 @@ public class CreateUserRequest {
         this.email = email;
         this.password = password;
         this.name = name;
+    }
+
+    public User toUser() {
+        return new User(email, password, name);
     }
 }

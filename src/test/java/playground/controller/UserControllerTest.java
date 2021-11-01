@@ -5,18 +5,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import playground.common.AbstractControllerTest;
 import playground.controller.request.CreateUserRequest;
+import playground.service.UserService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends AbstractControllerTest {
 
+    @Mock
+    private UserService userService;
+
     @Override
     protected Object setController() {
-        return new UserController();
+        return new UserController(userService);
     }
 
     @Test
