@@ -1,13 +1,11 @@
 package playground.controller;
 
-import learning.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import playground.dto.UserRequest;
+import playground.dto.UserResponse;
 import playground.service.UserService;
 
 @RestController
@@ -18,8 +16,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> find(@PathVariable Long id) {
-        User user = userService.findOne(id);
+    public ResponseEntity<UserResponse> find(@PathVariable Long id) {
+        UserResponse user = userService.findOne(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<UserResponse> save(@RequestBody UserRequest requestDto) {
+        UserResponse user = userService.save(requestDto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

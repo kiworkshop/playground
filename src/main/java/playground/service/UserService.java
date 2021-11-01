@@ -3,6 +3,8 @@ package playground.service;
 import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import playground.dto.UserRequest;
+import playground.dto.UserResponse;
 import playground.repository.JdbcUserRepository;
 
 @Service
@@ -15,11 +17,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findOne(Long userId) {
-        return userRepository.findById(userId);
+    public UserResponse findOne(Long userId) {
+        User user = userRepository.findById(userId);
+        return UserResponse.convertFrom(user);
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public UserResponse save(UserRequest dto) {
+        User user = User.builder()
+                .name(dto.getName())
+                .build();
+        Long userId = userRepository.save(user);
+        return findOne(userId);
     }
 }

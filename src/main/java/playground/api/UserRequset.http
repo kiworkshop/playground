@@ -1,2 +1,10 @@
 ### 사용자 1명 조회
-GET localhost:8080/api/users/1
+GET http://localhost:8080/api/users/1
+
+### 사용자 저장
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "name": "userA"
+}

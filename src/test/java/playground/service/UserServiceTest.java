@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import playground.dto.UserRequest;
+import playground.dto.UserResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +22,7 @@ class UserServiceTest {
         //given
 
         //when
-        User user = userService.findOne(1L);
+        UserResponse user = userService.findOne(1L);
 
         //then
         assertThat(user.getName()).isEqualTo("user1");
@@ -29,10 +31,10 @@ class UserServiceTest {
     @Test
     void save() {
         //given
-        User user = User.builder().name("test").build();
+        UserRequest requestDto = UserRequest.builder().name("test").build();
 
         //when
-        User save = userService.save(user);
+        UserResponse save = userService.save(requestDto);
 
         //then
         assertThat(save.getName()).isEqualTo("test");
