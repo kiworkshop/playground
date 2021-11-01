@@ -10,5 +10,5 @@ public interface DocumentRepository {
 
     List<Document> findOutBox(Long userId);
 
-    Document save(Document document);
+    Long save(Document document);
 }

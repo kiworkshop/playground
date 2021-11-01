@@ -21,5 +21,4 @@ public enum Category {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("카테고리 항목이 아닙니다."));
     }
-
 }

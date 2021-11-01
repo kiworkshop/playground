@@ -1,14 +1,15 @@
 package playground.service;
 
 import learning.Category;
-import learning.Document;
-import learning.DocumentApproval;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import playground.dto.DocumentDto;
+import playground.dto.DocumentRequest;
+import playground.dto.DocumentResponse;
+import playground.dto.OutboxResponse;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ class DocumentServiceTest {
     @Test
     void findById() {
         //given //when
-        DocumentDto document = documentService.findOne(1L);
+        DocumentResponse document = documentService.findOne(1L);
 
         //then
         assertThat(document).extracting("title", "contents", "category", "approvalState", "userName")
@@ -40,7 +41,7 @@ class DocumentServiceTest {
     @Test
     void findOutBoxBy() {
         //given //when
-        List<DocumentDto> outBox = documentService.findOutBox(1L);
+        List<OutboxResponse> outBox = documentService.findOutBox(1L);
 
         //then
         assertThat(outBox.size()).isEqualTo(3);
@@ -55,15 +56,16 @@ class DocumentServiceTest {
     @Test
     void save() {
         //given
-        DocumentDto dto = DocumentDto.builder()
+        DocumentRequest requestDto = DocumentRequest.builder()
                 .title("문서100")
+                .category(Category.PRODUCT_PURCHASING)
                 .contents("제출합니다.")
-                .category(Category.PRODUCT_PURCHASING.name())
-                .userId(1L)
+                .drafterId(1L)
+                .approverIds(Arrays.asList(1L, 2L, 3L))
                 .build();
 
         //when
-        DocumentDto result = documentService.save(dto);
+        DocumentResponse result = documentService.save(requestDto);
 
         //then
         assertThat(result.getTitle()).isEqualTo("문서100");

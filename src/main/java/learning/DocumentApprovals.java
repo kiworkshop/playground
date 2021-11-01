@@ -50,5 +50,4 @@ public class DocumentApprovals {
     private boolean isApproved(DocumentApproval documentApproval) {
         return documentApproval.isApproved();
     }
-
 }

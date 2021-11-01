@@ -13,5 +13,8 @@ Content-Type: application/json
   "category": "EDUCATION",
   "contents": "사외교육비 결재 요청드립니다.",
   "drafterId": 1,
-  "approverIds": [1,2]
+  "approverIds": [
+    1,
+    2
+  ]
 }

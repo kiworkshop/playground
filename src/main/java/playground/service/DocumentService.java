@@ -1,12 +1,14 @@
 package playground.service;
 
-import learning.Category;
 import learning.Document;
 import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import playground.dto.DocumentDto;
+import playground.dto.DocumentRequest;
+import playground.dto.DocumentResponse;
+import playground.dto.OutboxResponse;
 import playground.repository.DocumentRepository;
+import playground.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,35 +17,39 @@ import java.util.stream.Collectors;
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DocumentService(DocumentRepository documentRepository) {
+    public DocumentService(DocumentRepository documentRepository, UserRepository userRepository) {
         this.documentRepository = documentRepository;
+        this.userRepository = userRepository;
     }
 
-    public DocumentDto findOne(Long documentId) {
+    public DocumentResponse findOne(Long documentId) {
         Document document = documentRepository.findById(documentId);
-        return DocumentDto.convertFrom(document);
+        return DocumentResponse.convertFrom(document);
     }
 
-    public List<DocumentDto> findOutBox(Long userId) {
+    public List<OutboxResponse> findOutBox(Long userId) {
         List<Document> outBox = documentRepository.findOutBox(userId);
         return outBox.stream()
-                .map(DocumentDto::convertOutBoxFrom)
+                .map(OutboxResponse::convertFrom)
                 .collect(Collectors.toList());
     }
 
-    public DocumentDto save(DocumentDto dto) {
+    public DocumentResponse save(DocumentRequest dto) {
+        User user = userRepository.findById(dto.getDrafterId());
         Document document = Document.create()
                 .title(dto.getTitle())
-                .category(Category.valueOf(dto.getCategory()))
+                .category(dto.getCategory())
                 .contents(dto.getContents())
-                .drafter(User.builder().id(dto.getUserId()).name(dto.getUserName()).build())
+                .drafter(user)
                 .build();
 
-        Document save = documentRepository.save(document);
+        Long id = documentRepository.save(document);
         //TODO documentApproval save
 
-        return DocumentDto.convertFrom(save);
+        Document saved = documentRepository.findById(id);
+        return DocumentResponse.convertFrom(saved);
     }
 }
