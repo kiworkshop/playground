@@ -21,18 +21,15 @@ import static playground.repository.SQLRepository.FINE_OUTBOX_DOCUMENTS;
 public class JdbcDocumentRepository implements DocumentRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserRepository userRepository;
 
     @Autowired
     public JdbcDocumentRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.userRepository = new JdbcUserRepository(dataSource);
     }
 
     @Override
-    public Optional<Document> findById(Long id) {
-        List<Document> result = jdbcTemplate.query(FIND_DOCUMENT_BY_ID, documentRowMapper(), id);
-        return result.stream().findAny();
+    public Document findById(Long id) {
+        return jdbcTemplate.queryForObject(FIND_DOCUMENT_BY_ID, documentRowMapper(), id);
     }
 
     @Override

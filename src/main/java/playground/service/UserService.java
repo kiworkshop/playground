@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import playground.repository.JdbcUserRepository;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
@@ -17,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findOne(Long userId) {
+    public User findOne(Long userId) {
         return userRepository.findById(userId);
     }
 

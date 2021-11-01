@@ -20,7 +20,7 @@ class UserServiceTest {
         //given
 
         //when
-        User user = userService.findOne(1L).get();
+        User user = userService.findOne(1L);
 
         //then
         assertThat(user.getName()).isEqualTo("user1");

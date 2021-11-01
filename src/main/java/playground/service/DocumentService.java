@@ -2,36 +2,28 @@ package playground.service;
 
 import learning.Category;
 import learning.Document;
-import learning.DocumentApproval;
 import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import playground.dto.DocumentDto;
 import playground.repository.DocumentRepository;
-import playground.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public DocumentService(DocumentRepository documentRepository, UserRepository userRepository) {
+    public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-        this.userRepository = userRepository;
     }
 
     public DocumentDto findOne(Long documentId) {
-        Optional<Document> document = documentRepository.findById(documentId);
-        if (document.isPresent()) {
-            return DocumentDto.convertFrom(document.get());
-        }
-        return DocumentDto.builder().build();
+        Document document = documentRepository.findById(documentId);
+        return DocumentDto.convertFrom(document);
     }
 
     public List<DocumentDto> findOutBox(Long userId) {
