@@ -34,4 +34,13 @@ public class UserRepository {
 
         return keyHolder.getKey().longValue();
     }
+
+    public User findById(final Long userId) {
+        String selectQuery = "select * from user where id = ?";
+
+        return jdbcTemplate.queryForObject(selectQuery, (rs, rowNum) ->
+                new User(rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("name")), userId);
+    }
 }

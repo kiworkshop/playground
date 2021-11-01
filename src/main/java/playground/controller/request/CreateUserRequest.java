@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 import playground.domain.User;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateUserRequest {
 
     @Email
-    @NotEmpty
+    @NotBlank
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String password;
 
-    @NotEmpty
+    @NotBlank
     private String name;
 
     public CreateUserRequest(final String email, final String password, final String name) {
