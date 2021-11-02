@@ -10,9 +10,7 @@ import playground.service.DocumentService;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class DocumentController {
 
