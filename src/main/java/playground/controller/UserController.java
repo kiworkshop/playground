@@ -17,8 +17,13 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserResponse> find(@PathVariable Long id) {
-        UserResponse user = userService.findOne(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        try {
+            UserResponse user = userService.findOne(id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/user")

@@ -38,12 +38,11 @@ public class DocumentService {
     }
 
     public DocumentResponse save(DocumentRequest dto) {
-        User user = userRepository.findById(dto.getDrafterId());
         Document document = Document.create()
                 .title(dto.getTitle())
                 .category(dto.getCategory())
                 .contents(dto.getContents())
-                .drafter(user)
+                .drafter(userRepository.findById(dto.getDrafterId()))
                 .build();
 
         Long id = documentRepository.save(document);

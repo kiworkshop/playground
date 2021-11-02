@@ -20,8 +20,13 @@ public class DocumentController {
 
     @GetMapping("/documents/{id}")
     public ResponseEntity<DocumentResponse> find(@PathVariable Long id) {
-        DocumentResponse document = documentService.findOne(id);
-        return ResponseEntity.ok(document);
+        try {
+            DocumentResponse document = documentService.findOne(id);
+            return ResponseEntity.ok(document);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/documents/out")

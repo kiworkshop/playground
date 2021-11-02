@@ -3,7 +3,6 @@ package playground.repository;
 import learning.ApprovalState;
 import learning.Category;
 import learning.Document;
-import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,10 +23,12 @@ import static playground.repository.SQLRepository.FINE_OUTBOX_DOCUMENTS;
 public class JdbcDocumentRepository implements DocumentRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JdbcDocumentRepository(DataSource dataSource) {
+    public JdbcDocumentRepository(DataSource dataSource, UserRepository userRepository) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class JdbcDocumentRepository implements DocumentRepository {
                 .title(rs.getString("title"))
                 .contents(rs.getString("contents"))
                 .category(Category.findBy(rs.getString("category")))
-                .drafter(User.builder().id(rs.getLong("drafter_id")).name(rs.getString("drafter_name")).build())
+                .drafter(userRepository.findById(rs.getLong("drafter_id")))
                 .approvalState(ApprovalState.findBy(rs.getString("approval_state")))
                 .insertDate(rs.getObject("insert_date", LocalDateTime.class))
                 .updateDate(rs.getObject("update_date", LocalDateTime.class))
