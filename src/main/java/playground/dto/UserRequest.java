@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @NoArgsConstructor
 public class UserRequest {
 
     private String name;
 
+    @Builder
+    public UserRequest(String name) {
+        this.name = name;
+    }
 }
