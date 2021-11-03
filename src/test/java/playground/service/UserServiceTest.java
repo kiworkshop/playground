@@ -11,10 +11,13 @@ import playground.controller.request.CreateUserRequest;
 import playground.domain.User;
 import playground.repository.UserRepository;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -56,25 +59,16 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("식별번호에 일치하는 사용자를 조회한다.")
-    void findById() {
+    @DisplayName("식별번호에 일치하는 모든 사용자를 조회한다.")
+    void findAllById() {
         //given
         User mockUser = mock(User.class);
-        given(userRepository.findById(anyLong())).willReturn(mockUser);
+        given(userRepository.findAllById(anyList())).willReturn(Collections.singletonList(mockUser));
 
         //when
-        User user = userService.findById(1L);
+        List<User> users = userService.findAllById(Collections.singletonList(1L));
 
         //then
-        assertThat(user).isNotNull();
-    }
-
-    @Test
-    @DisplayName("식별번호에 일치하는 사용자가 존재하지 않을 경우, 예외가 발생한다.")
-    void findById_fail_not_found() {
-        //when, then
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> userService.findById(1L))
-                .withMessageContaining("식별번호와 일치하는 회원이 존재하지 않습니다.");
+        assertThat(users).isNotEmpty();
     }
 }

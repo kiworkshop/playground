@@ -7,6 +7,8 @@ import playground.controller.request.CreateUserRequest;
 import playground.domain.User;
 import playground.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -31,15 +33,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findById(final Long userId) {
-        User user = userRepository.findById(userId);
-        checkExistence(userId, user);
-        return user;
-    }
-
-    private void checkExistence(final long userId, final User user) {
-        if (user == null) {
-            throw new IllegalArgumentException(String.format("[%d] 식별번호와 일치하는 회원이 존재하지 않습니다.", userId));
-        }
+    public List<User> findAllById(final List<Long> userIds) {
+        return userRepository.findAllById(userIds);
     }
 }

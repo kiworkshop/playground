@@ -9,6 +9,8 @@ import playground.domain.User;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class UserRepository {
@@ -19,7 +21,7 @@ public class UserRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public long save(final User user) {
+    public Long save(final User user) {
         String saveQuery = "insert into user (email, password, name) values (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -35,12 +37,13 @@ public class UserRepository {
         return keyHolder.getKey().longValue();
     }
 
-    public User findById(final Long userId) {
-        String selectQuery = "select * from user where id = ?";
+    public List<User> findAllById(final List<Long> userIds) {
+        String inSql = String.join(",", Collections.nCopies(userIds.size(), "?"));
+        String selectQuery = String.format("select * from user where id in(%s)", inSql);
 
-        return jdbcTemplate.queryForObject(selectQuery, (rs, rowNum) ->
+        return jdbcTemplate.query(selectQuery, (rs, rowNum) ->
                 new User(rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("name")), userId);
+                        rs.getString("name")), userIds);
     }
 }

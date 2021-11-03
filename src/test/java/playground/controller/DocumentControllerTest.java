@@ -4,9 +4,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import playground.common.AbstractControllerTest;
 import playground.controller.request.CreateDocumentRequest;
+import playground.service.DocumentService;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,9 +18,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class DocumentControllerTest extends AbstractControllerTest {
 
+    @Mock
+    private DocumentService documentService;
+
     @Override
     protected Object setController() {
-        return new DocumentController();
+        return new DocumentController(documentService);
     }
 
     @Test
