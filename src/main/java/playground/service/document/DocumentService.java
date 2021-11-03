@@ -8,6 +8,7 @@ import playground.domain.document.DocumentApproval;
 import playground.domain.user.User;
 import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
+import playground.service.document.response.SelectDocumentResponse;
 import playground.service.user.UserService;
 
 import java.util.ArrayList;
@@ -43,7 +44,11 @@ public class DocumentService {
 
     private void checkUserExistence(final Long drafterId, final List<Long> approvalIds) {
         ArrayList<Long> userIds = new ArrayList<>();
-        userIds.add(drafterId);
+
+        if (!approvalIds.contains(drafterId)) {
+            userIds.add(drafterId);
+        }
+
         userIds.addAll(approvalIds);
 
         List<User> users = userService.findAllById(userIds);
@@ -51,5 +56,13 @@ public class DocumentService {
         if (userIds.size() != users.size()) {
             throw new IllegalArgumentException("전달받은 회원 식별자와 일치하는 회원을 모두 찾지 못했습니다.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public SelectDocumentResponse select(final Long documentId) {
+        Document document = documentRepository.findById(documentId);
+        User user = userService.findById(document.getDrafterId());
+
+        return new SelectDocumentResponse(document, user);
     }
 }

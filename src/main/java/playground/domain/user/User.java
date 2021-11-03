@@ -1,5 +1,6 @@
 package playground.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -13,6 +14,14 @@ public class User {
     private String name;
 
     public User(final String email, final String password, final String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    @Builder(builderMethodName = "builderForDao")
+    public User(final Long id, final String email, final String password, final String name) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;

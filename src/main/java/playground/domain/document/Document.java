@@ -25,6 +25,17 @@ public class Document {
         this.approvalState = ApprovalState.DRAFTING;
     }
 
+    @Builder(builderMethodName = "builderForDao", builderClassName = "BuilderForDao")
+    private Document(final Long id, final String title, final String category,
+                     final String contents, final Long drafterId, final String approvalState) {
+        this.id = id;
+        this.title = title;
+        this.category = Category.valueOf(category);
+        this.contents = contents;
+        this.drafterId = drafterId;
+        this.approvalState = ApprovalState.valueOf(approvalState);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

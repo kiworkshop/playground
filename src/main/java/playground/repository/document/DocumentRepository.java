@@ -1,5 +1,6 @@
 package playground.repository.document;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -36,5 +37,23 @@ public class DocumentRepository {
         }, keyHolder);
 
         return keyHolder.getKey().longValue();
+    }
+
+    public Document findById(final Long documentId) {
+        String selectQuery = "select * from document where id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(selectQuery, (rs, rowNum) ->
+                    Document.builderForDao()
+                            .id(rs.getLong("id"))
+                            .title(rs.getString("title"))
+                            .category(rs.getString("category"))
+                            .contents(rs.getString("contents"))
+                            .drafterId(rs.getLong("drafter_id"))
+                            .approvalState(rs.getString("approval_state"))
+                            .build(), documentId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException(String.format("[%d] 번호에 해당하는 문서가 존재하지 않습니다.", documentId));
+        }
     }
 }

@@ -36,4 +36,9 @@ public class UserService {
     public List<User> findAllById(final List<Long> userIds) {
         return userRepository.findAllById(userIds);
     }
+
+    @Transactional(readOnly = true)
+    public User findById(final Long userId) {
+        return userRepository.findById(userId);
+    }
 }

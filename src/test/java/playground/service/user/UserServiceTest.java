@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -70,5 +71,31 @@ class UserServiceTest {
 
         //then
         assertThat(users).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("식별번호에 일치하는 사용자를 조회한다.")
+    void findById() {
+        //given
+        User mockUser = mock(User.class);
+        given(userRepository.findById(anyLong())).willReturn(mockUser);
+
+        //when
+        User user = userService.findById(1L);
+
+        //then
+        assertThat(user).isNotNull();
+    }
+
+    @Test
+    @DisplayName("식별번호에 일치하는 사용자가 존재하지 않을 경우, 예외가 발생한다.")
+    void findById_fail_not_found_user() {
+        //given
+        given(userRepository.findById(anyLong())).willThrow(new IllegalArgumentException("해당하는 회원이 존재하지 않습니다"));
+
+        //when, then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> userService.findById(1L))
+                .withMessageContaining("해당하는 회원이 존재하지 않습니다");
     }
 }
