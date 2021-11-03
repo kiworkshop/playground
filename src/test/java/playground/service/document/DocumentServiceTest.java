@@ -7,15 +7,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import playground.controller.document.request.CreateDocumentRequest;
+import playground.domain.document.ApprovalState;
 import playground.domain.document.Document;
 import playground.domain.user.User;
 import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.response.SelectDocumentResponse;
+import playground.service.document.response.SelectSingleOutBoxResponse;
 import playground.service.user.UserService;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -122,6 +125,43 @@ class DocumentServiceTest {
         //when, then
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> documentService.select(1L))
+                .withMessageContaining(errorMessage);
+    }
+
+    @Test
+    @DisplayName("Outbox 문서 리스트를 조회한다.")
+    void selectOutBox() {
+        //given
+        long drafterId = 1L;
+        Document document = Document.builderForDao()
+                .id(1L)
+                .title("교육비 결재")
+                .category("EDUCATION")
+                .contents("교육비")
+                .drafterId(drafterId)
+                .approvalState("DRAFTING")
+                .build();
+        given(documentRepository.findAllByDrafterIdAndApprovalState(anyLong(), any(ApprovalState.class)))
+                .willReturn(Collections.singletonList(document));
+
+        //when
+        List<SelectSingleOutBoxResponse> selectMultiOutboxResponse = documentService.selectOutBox(drafterId);
+
+        //then
+        assertThat(selectMultiOutboxResponse).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("Outbox 문서가 없다면, 예외가 발생한다.")
+    void selectOutBox_fail_empty_result() {
+        //given
+        String errorMessage = "현재 결재중인 문서가 존재하지 않습니다.";
+        given(documentRepository.findAllByDrafterIdAndApprovalState(anyLong(), any(ApprovalState.class)))
+                .willReturn(Collections.emptyList());
+
+        //when, then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> documentService.selectOutBox(1L))
                 .withMessageContaining(errorMessage);
     }
 }

@@ -116,4 +116,13 @@ class DocumentControllerTest extends AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("Outbox 문서 리스트를 조회한다.")
+    void selectOutBox() throws Exception {
+        mockMvc.perform(get("/api/documents/outbox")
+                .param("drafterId", "1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }

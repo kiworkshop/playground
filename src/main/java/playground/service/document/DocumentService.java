@@ -3,16 +3,19 @@ package playground.service.document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.controller.document.request.CreateDocumentRequest;
+import playground.domain.document.ApprovalState;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentApproval;
 import playground.domain.user.User;
 import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.response.SelectDocumentResponse;
+import playground.service.document.response.SelectSingleOutBoxResponse;
 import playground.service.user.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
@@ -64,5 +67,21 @@ public class DocumentService {
         User user = userService.findById(document.getDrafterId());
 
         return new SelectDocumentResponse(document, user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SelectSingleOutBoxResponse> selectOutBox(final Long drafterId) {
+        List<Document> documents = documentRepository.findAllByDrafterIdAndApprovalState(drafterId, ApprovalState.DRAFTING);
+        checkEmpty(documents);
+
+        return documents.stream()
+                .map(SelectSingleOutBoxResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    private void checkEmpty(final List<Document> documents) {
+        if (documents.isEmpty()) {
+            throw new IllegalArgumentException("현재 결재중인 문서가 존재하지 않습니다.");
+        }
     }
 }

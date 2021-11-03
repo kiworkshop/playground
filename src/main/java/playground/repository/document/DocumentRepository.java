@@ -5,11 +5,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import playground.domain.document.ApprovalState;
 import playground.domain.document.Document;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Component
 public class DocumentRepository {
@@ -55,5 +57,19 @@ public class DocumentRepository {
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalArgumentException(String.format("[%d] 번호에 해당하는 문서가 존재하지 않습니다.", documentId));
         }
+    }
+
+    public List<Document> findAllByDrafterIdAndApprovalState(final Long drafterId, final ApprovalState approvalState) {
+        String selectQuery = "select * from document where drafter_id = ? and approval_state = ? order by id desc";
+
+        return jdbcTemplate.query(selectQuery, (rs, rowNum) ->
+                Document.builderForDao()
+                        .id(rs.getLong("id"))
+                        .title(rs.getString("title"))
+                        .category(rs.getString("category"))
+                        .contents(rs.getString("contents"))
+                        .drafterId(rs.getLong("drafter_id"))
+                        .approvalState(rs.getString("approval_state"))
+                        .build(), drafterId, approvalState.name());
     }
 }
