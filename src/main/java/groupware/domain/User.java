@@ -1,4 +1,4 @@
-package playground.domain;
+package groupware.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

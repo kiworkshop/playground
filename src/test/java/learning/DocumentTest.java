@@ -2,7 +2,7 @@ package learning;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import playground.domain.*;
+import groupware.domain.*;
 
 import java.util.Arrays;
 import java.util.Collections;

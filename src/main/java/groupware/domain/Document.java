@@ -1,4 +1,4 @@
-package playground.domain;
+package groupware.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,27 +12,25 @@ public class Document {
     private Long id;
     private String title;
     private Category category;
-    private String contents;
+    private String content;
     private User drafter;
     private ApprovalState approvalState = ApprovalState.DRAFTING;
-    private List<User> approvals;
     private List<DocumentApproval> documentApprovals = new ArrayList<DocumentApproval>();
-    private int apprIndex;
+    private int approvalIndex;
 
     @Builder
     public Document(Long id, String title, Category category, String contents, User drafter) {
         this.id = id;
         this.title = title;
         this.category = category;
-        this.contents = contents;
+        this.content = contents;
         this.drafter = drafter;
     }
 
     public void addApprovers(List<User> approvals) {
-        this.approvals = approvals;
         AtomicInteger index = new AtomicInteger();
         index.getAndIncrement();
-        apprIndex = 0;
+        approvalIndex = 0;
         approvals.stream().forEach((approver) -> addDocumetApprovals(approver, index.getAndIncrement()));
     }
 
@@ -51,11 +49,11 @@ public class Document {
     }
 
     public void approveBy(User approver, String approvalComment) {
-        checkApproverTurn(approver);
-        documentApprovals.set(apprIndex, documentApprovals.get(apprIndex).approveBy(approver, approvalComment));
-        apprIndex++;
+        checkApprovalTurn(approver);
+        documentApprovals.set(approvalIndex, documentApprovals.get(approvalIndex).approveBy(approver, approvalComment));
+        approvalIndex++;
 
-        if (apprIndex >= documentApprovals.size()) {
+        if (approvalIndex >= documentApprovals.size()) {
             approvalState = ApprovalState.APPROVED;
         }
     }
@@ -64,10 +62,10 @@ public class Document {
         return approvalState;
     }
 
-    private boolean checkApproverTurn(User approver) {
-        if (!documentApprovals.get(apprIndex).getApprover().getId().equals(approver.getId())) {
+    private void checkApprovalTurn(User approver) {
+
+        if (!documentApprovals.get(approvalIndex).getApprover().getId().equals(approver.getId())) {
             throw new IllegalArgumentException();
         }
-        return true;
     }
 }
