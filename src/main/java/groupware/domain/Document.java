@@ -19,11 +19,11 @@ public class Document {
     private int approvalIndex;
 
     @Builder
-    public Document(Long id, String title, Category category, String contents, User drafter) {
+    public Document(Long id, String title, Category category, String content, User drafter) {
         this.id = id;
         this.title = title;
         this.category = category;
-        this.content = contents;
+        this.content = content;
         this.drafter = drafter;
     }
 

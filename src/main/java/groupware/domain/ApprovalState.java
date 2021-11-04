@@ -11,6 +11,6 @@ public enum ApprovalState {
     APPROVED("승인"),
     CANCELED("거절");
 
-    private final String text;
+    private final String status;
 
 }

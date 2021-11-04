@@ -31,7 +31,7 @@ class DocumentTest {
 
         // then
         assertThat(document)
-                .extracting("title", "category", "contents", "approvalState", "drafter.id")
+                .extracting("title", "ㅌ`category", "contents", "approvalState", "drafter.id")
                 .containsExactly(title, Category.EDUCATION, contents, ApprovalState.DRAFTING, drafter.getId());
 
         List<DocumentApproval> documentApprovals = document.getDocumentApprovals();
@@ -144,7 +144,7 @@ class DocumentTest {
                 .id(id)
                 .title(title)
                 .category(category)
-                .contents(contents)
+                .content(contents)
                 .drafter(drafter)
                 .build();
     }
