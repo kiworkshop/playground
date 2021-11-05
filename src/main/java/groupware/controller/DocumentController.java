@@ -1,7 +1,8 @@
 package groupware.controller;
 
-import groupware.dto.DocumentResponse;
 import groupware.dto.DocumentOutboxResponse;
+import groupware.dto.DocumentRequest;
+import groupware.dto.DocumentResponse;
 import groupware.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,5 +30,11 @@ public class DocumentController {
     public ResponseEntity<List<DocumentOutboxResponse>> getDocumentsOutbox(@RequestParam Long userId) {
         List<DocumentOutboxResponse> DocumentOutboxDtos = documentService.findDocumentsOutbox(userId);
         return new ResponseEntity<List<DocumentOutboxResponse>>(DocumentOutboxDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/document")
+    public ResponseEntity<Long> insertDocument(@RequestBody DocumentRequest documentRequest){
+        Long id = documentService.insertDocument(documentRequest);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 }

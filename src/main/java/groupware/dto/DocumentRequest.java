@@ -1,31 +1,21 @@
 package groupware.dto;
 
 import groupware.domain.Document;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
+@AllArgsConstructor
 public class DocumentRequest {
-    private Long id;
+
     private String title;
     private String category;
     private String contents;
-    private long userId;
-    private String approvalState;
-    private String userName;
-    private String categoryText;
-    private String approvalStateText;
+    private long drafterId;
+    private List<Long> approverIds;
 
-    public DocumentRequest(Document document) {
-        this.id = document.getId();
-        this.title = document.getTitle();
-        this.category = document.getCategory().name();
-        this.contents = document.getContent();
-        this.userId = document.getDrafter().getId();
-        this.approvalState = document.getApprovalState().name();
-        this.userName = document.getDrafter().getName();
-        this.categoryText = document.getCategory().getCategory();
-        this.approvalStateText = document.getApprovalState().getStatus();
-    }
 }

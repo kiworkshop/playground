@@ -2,6 +2,7 @@ package groupware.service;
 
 import groupware.dao.DocumentDao;
 import groupware.domain.Document;
+import groupware.dto.DocumentRequest;
 import groupware.dto.DocumentResponse;
 import groupware.dto.DocumentOutboxResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,9 @@ public class DocumentService {
             documentOutboxDtos.add(new DocumentOutboxResponse(documents.get(i)));
         }
         return  documentOutboxDtos;
+    }
+
+    public long insertDocument(DocumentRequest documentRequest) {
+        return documentDao.insertDocument(documentRequest);
     }
 }

@@ -12,8 +12,8 @@ create table document
     id              bigint not null auto_increment primary key,
     title           varchar(255),
     category        varchar(255),
-    content         text,
-    drafter      varchar(255),
+    contents         text,
+    drafter_id      varchar(255),
     approval_state  varchar(255)
 );
 create table document_approval
@@ -28,9 +28,10 @@ create table document_approval
 
 insert into user(id, name)
 values (1, '박우빈');
---
---
-insert into document(id, title, category, content, drafter, approval_state)
+insert into user(id, name)
+values (2, '이다은');
+
+insert into document(id, title, category, contents, drafter_id, approval_state)
     values (1, '첫번째 문서제목', 'EDUCATION', '문서내용', 1, 'DRAFTING');
 --insert into user(id, email, password, name)
 --values (2, 'wbluke2@gmail.com', '1234', '닉우빈');
