@@ -14,7 +14,8 @@ import playground.domain.DocumentDto;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-@RestController(value = "api")
+@RestController
+@RequestMapping("/api")
 @EnableAutoConfiguration
 public class DocumentController {
 
