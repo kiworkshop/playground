@@ -2,6 +2,7 @@ package playground.document.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import playground.document.entity.Document;
 import playground.document.entity.DocumentRepository;
 
@@ -13,15 +14,18 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
 
+    @Transactional(readOnly = false)
     public Long createDocument(Document document) {
         return documentRepository.save(document);
     }
 
+    @Transactional(readOnly = true)
     public Document getDocument(Long documentId) {
         return documentRepository.findById(documentId);
     }
 
+    @Transactional(readOnly = true)
     public List<Document> listOutboxDocuments(Long drafterId) {
-        return null;
+        return documentRepository.findAllByUserId(drafterId);
     }
 }
