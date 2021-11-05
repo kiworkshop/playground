@@ -5,14 +5,12 @@ import groupware.domain.Document;
 import groupware.domain.User;
 import groupware.dto.DocumentRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +26,7 @@ public class DocumentDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Document findById(Long Id) {
+    public Document findById(long id) {
         String query = "select * from document where id = ?";
         List<Document> documents = jdbcTemplate.query(query, new RowMapper<Document>() {
             @Override
@@ -43,7 +41,8 @@ public class DocumentDao {
                                 .build())
                         .build();
             }
-        }, Id);
+        }, id);
+
         return documents.get(0);
     }
 

@@ -17,7 +17,7 @@ public class DocumentResponse {
     private String categoryText;
     private String approvalStateText;
 
-    public DocumentResponse(Document document) {
+    public DocumentResponse(Document document, String userName) {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory().name();
@@ -27,5 +27,6 @@ public class DocumentResponse {
         this.userName = document.getDrafter().getName();
         this.categoryText = document.getCategory().getCategory();
         this.approvalStateText = document.getApprovalState().getStatus();
+        this.userName = userName;
     }
 }

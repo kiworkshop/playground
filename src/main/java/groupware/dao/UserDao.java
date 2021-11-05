@@ -19,15 +19,14 @@ public class UserDao {
     }
 
     public User findById(Long userId){
-        String query = "select * from user where user_id = ?";
+        String query = "select * from user where id = ?";
         List<User> user = jdbcTemplate.query(query, new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                User user = new User(
+                return new User(
                         rs.getLong("id"),
                         rs.getString("name")
                 );
-                return user;
             }
         }, userId);
         return user.get(0);

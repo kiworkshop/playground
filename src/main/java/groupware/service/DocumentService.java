@@ -1,7 +1,9 @@
 package groupware.service;
 
 import groupware.dao.DocumentDao;
+import groupware.dao.UserDao;
 import groupware.domain.Document;
+import groupware.domain.User;
 import groupware.dto.DocumentRequest;
 import groupware.dto.DocumentResponse;
 import groupware.dto.DocumentOutboxResponse;
@@ -16,16 +18,20 @@ public class DocumentService {
     @Autowired
     DocumentDao documentDao;
 
+    @Autowired
+    UserDao userDao;
+
     public DocumentResponse findDocumentBy(Long documentId) {
         Document document = documentDao.findById(documentId);
-        return new DocumentResponse(document);
+        User user = userDao.findById(document.getDrafter().getId());
+        return new DocumentResponse(document, user.getName());
     }
 
     public List<DocumentOutboxResponse> findDocumentsOutbox(Long userId) {
         List<Document> documents = documentDao.findDocumentsOutbox(userId);
         List<DocumentOutboxResponse> documentOutboxDtos = new ArrayList<>();
-        for (int i = 0; i < documents.size(); i++) {
-            documentOutboxDtos.add(new DocumentOutboxResponse(documents.get(i)));
+        for (Document document : documents) {
+            documentOutboxDtos.add(new DocumentOutboxResponse(document));
         }
         return  documentOutboxDtos;
     }
