@@ -6,19 +6,25 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DocumentOutboxDto {
+public class DocumentRequest {
     private Long id;
     private String title;
     private String category;
+    private String contents;
+    private long userId;
     private String approvalState;
+    private String userName;
     private String categoryText;
     private String approvalStateText;
 
-    public DocumentOutboxDto(Document document) {
+    public DocumentRequest(Document document) {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory().name();
+        this.contents = document.getContent();
+        this.userId = document.getDrafter().getId();
         this.approvalState = document.getApprovalState().name();
+        this.userName = document.getDrafter().getName();
         this.categoryText = document.getCategory().getCategory();
         this.approvalStateText = document.getApprovalState().getStatus();
     }
