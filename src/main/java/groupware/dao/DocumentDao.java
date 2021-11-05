@@ -39,6 +39,7 @@ public class DocumentDao {
                         .drafter(User.builder()
                                 .id(rs.getLong("drafter_id"))
                                 .build())
+                        .createdAt(rs.getDate("created_at"))
                         .build();
             }
         }, id);
@@ -47,7 +48,7 @@ public class DocumentDao {
     }
 
     public List<Document> findDocumentsOutbox(Long userId) {
-        String query = "select * from document where drafter_id = ? ";
+        String query = "select * from document where drafter_id = ? order by created_at desc";
         return jdbcTemplate.query(query, new RowMapper<Document>() {
             @Override
             public Document mapRow(ResultSet rs, int rowNum) throws SQLException {

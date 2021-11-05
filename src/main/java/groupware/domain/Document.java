@@ -3,6 +3,7 @@ package groupware.domain;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,14 +18,16 @@ public class Document {
     private ApprovalState approvalState = ApprovalState.DRAFTING;
     private List<DocumentApproval> documentApprovals = new ArrayList<DocumentApproval>();
     private int approvalIndex;
+    private Date createdAt;
 
     @Builder
-    public Document(Long id, String title, Category category, String content, User drafter) {
+    public Document(Long id, String title, Category category, String content, User drafter, Date createdAt) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.content = content;
         this.drafter = drafter;
+        this.createdAt = createdAt;
     }
 
     public void addApprovers(List<User> approvals) {

@@ -12,9 +12,10 @@ create table document
     id              bigint not null auto_increment primary key,
     title           varchar(255),
     category        varchar(255),
-    contents         text,
+    contents        text,
     drafter_id      varchar(255),
-    approval_state  varchar(255)
+    approval_state  varchar(255),
+    created_at         DATETIME DEFAULT NOW()
 );
 create table document_approval
 (
