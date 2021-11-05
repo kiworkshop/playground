@@ -41,4 +41,25 @@ public class DocumentDao {
         }, Id);
         return documents.get(0);
     }
+
+    public List<Document> findDocumentsOutbox(Long userId) {
+        String query = "select * from document where drafter = ? ";
+        List<Document> documents = jdbcTemplate.query(query, new RowMapper<Document>() {
+            @Override
+            public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Document document = Document.builder()
+                        .id(rs.getLong("id"))
+                        .title(rs.getString("title"))
+                        .category(Category.valueOf(rs.getString("category")))
+                        .content(rs.getString("content"))
+                        .drafter(User.builder()
+                                .id(rs.getLong("drafter"))
+                                .build())
+                        .build();
+                return document;
+            }
+        }, userId);
+        return documents;
+
+    }
 }
