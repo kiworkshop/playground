@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import playground.document.controller.dto.DocumentRequest;
 import playground.document.controller.dto.DocumentResponse;
 import playground.document.controller.dto.OutboxDocumentResponse;
-import playground.document.service.DocumentService;
+import playground.document.service.DocumentApplication;
 
 import java.util.List;
 
@@ -14,21 +14,23 @@ import java.util.List;
 @RestController
 public class DocumentController {
 
-    private final DocumentService documentService;
+    private final DocumentApplication documentApplication;
 
     @PostMapping(path = "/api/documents")
     public ResponseEntity<Void> createDocument(@RequestBody DocumentRequest documentRequest) {
-        documentService.createDocument(documentRequest);
+        documentApplication.createDocument(documentRequest);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/api/documents/{documentId}")
-    public DocumentResponse getDocument(@PathVariable Long documentId) {
-        return documentService.getDocument(documentId);
+    public ResponseEntity<DocumentResponse> getDocument(@PathVariable Long documentId) {
+        DocumentResponse response = documentApplication.getDocument(documentId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/api/documents/outbox")
-    public List<OutboxDocumentResponse> listOutboxDocuments(@RequestParam Long drafterId) {
-        return documentService.listOutboxDocuments(drafterId);
+    public ResponseEntity<List<OutboxDocumentResponse>> listOutboxDocuments(@RequestParam Long drafterId) {
+        List<OutboxDocumentResponse> response = documentApplication.listOutboxDocuments(drafterId);
+        return ResponseEntity.ok(response);
     }
 }

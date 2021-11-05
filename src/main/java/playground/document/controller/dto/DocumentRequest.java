@@ -2,8 +2,10 @@ package playground.document.controller.dto;
 
 import java.util.List;
 
+import lombok.Getter;
 import playground.document.type.Category;
 
+@Getter
 public class DocumentRequest {
 
     private String title;
