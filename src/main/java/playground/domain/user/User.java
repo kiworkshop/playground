@@ -1,27 +1,30 @@
-package learning;
+package playground.domain.user;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     private Long id;
+    private String email;
+    private String password;
     private String name;
 
-    @Builder
-    public User(final Long id, final String name) {
-        this.id = id;
+    public User(final String email, final String password, final String name) {
+        this.email = email;
+        this.password = password;
         this.name = name;
     }
 
-    public boolean isSame(final User user) {
-        return this.equals(user);
+    @Builder(builderMethodName = "builderForDao")
+    public User(final Long id, final String email, final String password, final String name) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
     }
 
     @Override
@@ -37,3 +40,4 @@ public class User {
         return Objects.hash(id);
     }
 }
+

@@ -24,7 +24,6 @@ repositories {
     mavenCentral()
 }
 
-
 test {
     useJUnitPlatform {
         includeEngines 'junit-jupiter', 'junit-vintage'
@@ -32,32 +31,18 @@ test {
 }
 
 dependencies {
-    // lombok
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.junit.platform:junit-platform-launcher:1.6.0'
+    runtimeOnly 'com.h2database:h2'
     compileOnly('org.projectlombok:lombok:1.18.20')
     annotationProcessor('org.projectlombok:lombok:1.18.20')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
     testCompileOnly('org.projectlombok:lombok:1.18.20')
     testAnnotationProcessor('org.projectlombok:lombok:1.18.20')
 
-    // Junit
-    implementation 'org.junit.platform:junit-platform-launcher:1.6.0'
-
-    // H2
-    runtimeOnly 'com.h2database:h2'
-
-    // Spring boot
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-
-    // JDBC
-//    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-
-    // JPA
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // validation
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
     // JWT
 //    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-
 }

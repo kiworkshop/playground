@@ -1,4 +1,4 @@
-package learning;
+package playground.domain.document;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,4 @@ public enum ApprovalState {
     CANCELED("거절");
 
     private final String text;
-
-    public boolean isApproved() {
-        return this == APPROVED;
-    }
 }
