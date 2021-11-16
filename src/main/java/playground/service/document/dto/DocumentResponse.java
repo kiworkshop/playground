@@ -9,6 +9,7 @@ import playground.domain.document.Document;
 @Getter
 @Builder
 public class DocumentResponse {
+
     private Long id;
     private String title;
     private Category category;

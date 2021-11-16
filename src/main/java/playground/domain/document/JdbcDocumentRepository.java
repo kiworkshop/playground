@@ -1,6 +1,6 @@
 package playground.domain.document;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -8,34 +8,32 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import playground.domain.user.UserRepository;
 
-import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class JdbcDocumentRepository implements DocumentRepository {
-    private static final String FIND_DOCUMENT_BY_ID = "select * from document where id = ?";
-    private static final String FINE_OUTBOX_DOCUMENTS = "select * from document inner join document_approval on document.id = document_approval.document_id where document_approval.approver_id = ? order by insert_date asc";
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
 
-    @Autowired
-    public JdbcDocumentRepository(DataSource dataSource, UserRepository userRepository) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.userRepository = userRepository;
-    }
-
     @Override
     public Document findById(Long id) {
-        return jdbcTemplate.queryForObject(FIND_DOCUMENT_BY_ID, documentRowMapper(), id);
+        String query = "select * from document where id = ?";
+        return jdbcTemplate.queryForObject(query, documentRowMapper(), id);
     }
 
     @Override
     public List<Document> findOutBox(Long userId) {
-        return jdbcTemplate.query(FINE_OUTBOX_DOCUMENTS, documentRowMapper(), userId);
+        String query = "select * from document " +
+                "inner join document_approval " +
+                "on document.id = document_approval.document_id " +
+                "where document_approval.approver_id = ? order by insert_date desc";
+
+        return jdbcTemplate.query(query, documentRowMapper(), userId);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package playground.service.document;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
 import playground.domain.user.UserRepository;
@@ -13,16 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public DocumentService(DocumentRepository documentRepository, UserRepository userRepository) {
-        this.documentRepository = documentRepository;
-        this.userRepository = userRepository;
-    }
 
     public DocumentResponse findOne(Long documentId) {
         Document document = documentRepository.findById(documentId);
@@ -36,6 +33,7 @@ public class DocumentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public DocumentResponse save(DocumentRequest dto) {
         Document document = Document.create()
                 .title(dto.getTitle())

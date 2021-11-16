@@ -9,6 +9,7 @@ import playground.domain.document.Document;
 @Getter
 @Builder
 public class OutboxResponse {
+
     private Long id;
     private String title;
     private Category category;

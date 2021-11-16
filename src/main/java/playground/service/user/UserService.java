@@ -1,27 +1,26 @@
 package playground.service.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import playground.domain.user.JdbcUserRepository;
 import playground.domain.user.User;
 import playground.service.user.dto.UserRequest;
 import playground.service.user.dto.UserResponse;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final JdbcUserRepository userRepository;
-
-    @Autowired
-    public UserService(JdbcUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public UserResponse findOne(Long userId) {
         User user = userRepository.findById(userId);
         return UserResponse.convertFrom(user);
     }
 
+    @Transactional
     public UserResponse save(UserRequest dto) {
         User user = User.builder()
                 .name(dto.getName())
