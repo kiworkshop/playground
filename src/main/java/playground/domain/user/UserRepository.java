@@ -1,6 +1,4 @@
-package playground.repository;
-
-import learning.User;
+package playground.domain.user;
 
 public interface UserRepository {
 

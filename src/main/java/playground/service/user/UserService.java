@@ -1,11 +1,11 @@
-package playground.service;
+package playground.service.user;
 
-import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import playground.dto.UserRequest;
-import playground.dto.UserResponse;
-import playground.repository.JdbcUserRepository;
+import playground.domain.user.JdbcUserRepository;
+import playground.domain.user.User;
+import playground.service.user.dto.UserRequest;
+import playground.service.user.dto.UserResponse;
 
 @Service
 public class UserService {

@@ -1,14 +1,12 @@
-package playground.repository;
+package playground.domain.document;
 
-import learning.ApprovalState;
-import learning.Category;
-import learning.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import playground.domain.user.UserRepository;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
@@ -16,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static playground.repository.SQLRepository.FIND_DOCUMENT_BY_ID;
-import static playground.repository.SQLRepository.FINE_OUTBOX_DOCUMENTS;
-
 @Repository
 public class JdbcDocumentRepository implements DocumentRepository {
+    private static final String FIND_DOCUMENT_BY_ID = "select * from document where id = ?";
+    private static final String FINE_OUTBOX_DOCUMENTS = "select * from document inner join document_approval on document.id = document_approval.document_id where document_approval.approver_id = ? order by insert_date asc";
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;

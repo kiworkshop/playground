@@ -1,6 +1,5 @@
-package playground.repository;
+package playground.domain.user;
 
-import learning.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,10 +11,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static playground.repository.SQLRepository.FIND_USER_BY_ID;
-
 @Repository
 public class JdbcUserRepository implements UserRepository {
+    private static final String FIND_USER_BY_ID = "select * from user where id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 

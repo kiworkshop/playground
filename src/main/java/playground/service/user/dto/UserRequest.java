@@ -1,4 +1,4 @@
-package playground.dto;
+package playground.service.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;

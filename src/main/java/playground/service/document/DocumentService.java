@@ -1,14 +1,13 @@
-package playground.service;
+package playground.service.document;
 
-import learning.Document;
-import learning.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import playground.dto.DocumentRequest;
-import playground.dto.DocumentResponse;
-import playground.dto.OutboxResponse;
-import playground.repository.DocumentRepository;
-import playground.repository.UserRepository;
+import playground.domain.document.Document;
+import playground.domain.document.DocumentRepository;
+import playground.domain.user.UserRepository;
+import playground.service.document.dto.DocumentRequest;
+import playground.service.document.dto.DocumentResponse;
+import playground.service.document.dto.OutboxResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

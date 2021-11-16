@@ -1,8 +1,8 @@
-package playground.dto;
+package playground.service.document.dto;
 
-import learning.Category;
 import lombok.Builder;
 import lombok.Getter;
+import playground.domain.document.Category;
 
 import java.util.List;
 

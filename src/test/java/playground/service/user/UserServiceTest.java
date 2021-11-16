@@ -1,11 +1,11 @@
-package playground.service;
+package playground.service.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import playground.dto.UserRequest;
-import playground.dto.UserResponse;
+import playground.service.user.dto.UserRequest;
+import playground.service.user.dto.UserResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

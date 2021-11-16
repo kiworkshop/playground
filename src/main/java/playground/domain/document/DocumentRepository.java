@@ -1,6 +1,4 @@
-package playground.repository;
-
-import learning.Document;
+package playground.domain.document;
 
 import java.util.List;
 

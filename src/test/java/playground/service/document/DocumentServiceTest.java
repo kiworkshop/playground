@@ -1,19 +1,19 @@
-package playground.service;
+package playground.service.document;
 
-import learning.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import playground.dto.DocumentRequest;
-import playground.dto.DocumentResponse;
-import playground.dto.OutboxResponse;
+import playground.domain.document.Category;
+import playground.service.document.dto.DocumentRequest;
+import playground.service.document.dto.DocumentResponse;
+import playground.service.document.dto.OutboxResponse;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @SpringBootTest
 @Transactional

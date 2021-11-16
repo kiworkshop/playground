@@ -3,10 +3,10 @@ package playground.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import playground.dto.DocumentRequest;
-import playground.dto.DocumentResponse;
-import playground.dto.OutboxResponse;
-import playground.service.DocumentService;
+import playground.service.document.DocumentService;
+import playground.service.document.dto.DocumentRequest;
+import playground.service.document.dto.DocumentResponse;
+import playground.service.document.dto.OutboxResponse;
 
 import java.util.List;
 
