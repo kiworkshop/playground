@@ -45,7 +45,6 @@ public class DocumentService {
         Long id = documentRepository.save(document);
         //TODO documentApproval save
 
-        Document saved = documentRepository.findById(id);
-        return DocumentResponse.convertFrom(saved);
+        return DocumentResponse.convertFrom(document);
     }
 }
