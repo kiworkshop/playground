@@ -13,6 +13,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Query(value = "select d from Document d " +
             "inner join DocumentApproval a " +
             "on d.id = a.document.id " +
-            "where a.approver.id = :userId order by a.insertDate desc")
+            "where a.approver.id = :userId order by a.insertDate asc")
     List<Document> findOutBox(@Param(value = "userId") Long userId);
 }
