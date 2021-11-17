@@ -1,12 +1,12 @@
-package groupware.service;
+package playground.service;
 
-import groupware.dao.DocumentDao;
-import groupware.dao.UserDao;
-import groupware.domain.Document;
-import groupware.domain.User;
-import groupware.dto.DocumentRequest;
-import groupware.dto.DocumentResponse;
-import groupware.dto.DocumentOutboxResponse;
+import playground.dao.DocumentDao;
+import playground.dao.UserDao;
+import playground.domain.Document;
+import playground.domain.User;
+import playground.dto.DocumentRequest;
+import playground.dto.DocumentResponse;
+import playground.dto.DocumentOutboxResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
-package groupware.dto;
+package playground.dto;
 
-import groupware.domain.Document;
+import playground.domain.Document;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +21,7 @@ public class DocumentResponse {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory().name();
-        this.contents = document.getContent();
+        this.contents = document.getContents();
         this.userId = document.getDrafter().getId();
         this.approvalState = document.getApprovalState().name();
         this.userName = document.getDrafter().getName();

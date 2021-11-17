@@ -1,4 +1,4 @@
-package groupware.domain;
+package playground.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,19 +13,19 @@ public class Document {
     private Long id;
     private String title;
     private Category category;
-    private String content;
+    private String contents;
     private User drafter;
     private ApprovalState approvalState = ApprovalState.DRAFTING;
-    private List<DocumentApproval> documentApprovals = new ArrayList<DocumentApproval>();
+    private List<DocumentApproval> documentApprovals = new ArrayList<>();
     private int approvalIndex;
     private Date createdAt;
 
     @Builder
-    public Document(Long id, String title, Category category, String content, User drafter, Date createdAt) {
+    public Document(Long id, String title, Category category, String contents, User drafter, Date createdAt) {
         this.id = id;
         this.title = title;
         this.category = category;
-        this.content = content;
+        this.contents = contents;
         this.drafter = drafter;
         this.createdAt = createdAt;
     }
@@ -34,7 +34,7 @@ public class Document {
         AtomicInteger index = new AtomicInteger();
         index.getAndIncrement();
         approvalIndex = 0;
-        approvals.stream().forEach((approver) -> addDocumetApprovals(approver, index.getAndIncrement()));
+        approvals.forEach(approver-> addDocumetApprovals(approver, index.getAndIncrement()));
     }
 
     public List<DocumentApproval> getDocumentApprovals() {

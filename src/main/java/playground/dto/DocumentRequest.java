@@ -1,6 +1,5 @@
-package groupware.dto;
+package playground.dto;
 
-import groupware.domain.Document;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package learning;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import groupware.domain.*;
+import playground.domain.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,7 +31,7 @@ class DocumentTest {
 
         // then
         assertThat(document)
-                .extracting("title", "ㅌ`category", "contents", "approvalState", "drafter.id")
+                .extracting("title", "category", "contents", "approvalState", "drafter.id")
                 .containsExactly(title, Category.EDUCATION, contents, ApprovalState.DRAFTING, drafter.getId());
 
         List<DocumentApproval> documentApprovals = document.getDocumentApprovals();
@@ -144,7 +144,7 @@ class DocumentTest {
                 .id(id)
                 .title(title)
                 .category(category)
-                .content(contents)
+                .contents(contents)
                 .drafter(drafter)
                 .build();
     }
