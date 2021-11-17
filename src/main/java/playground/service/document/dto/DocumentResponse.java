@@ -2,9 +2,9 @@ package playground.service.document.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import playground.domain.document.ApprovalState;
 import playground.domain.document.Category;
 import playground.domain.document.Document;
+import playground.domain.document.approval.ApprovalState;
 
 @Getter
 @Builder

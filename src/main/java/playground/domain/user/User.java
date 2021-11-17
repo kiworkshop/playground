@@ -1,17 +1,31 @@
 package playground.domain.user;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import playground.domain.document.BaseTimeEntity;
+import playground.domain.document.Document;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.List;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
-@Builder
-public class User {
+@Entity
+@NoArgsConstructor
+public class User extends BaseTimeEntity {
 
-    private final Long id;
-    private final String name;
-    private LocalDateTime insertDate;
-    private LocalDateTime updateDate;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
+    @Column(length = 100)
+    private String name;
+
+    @OneToMany(mappedBy = "drafter")
+    private List<Document> documents;
+
+    public User(String name) {
+        this.name = name;
+    }
 }

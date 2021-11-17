@@ -1,74 +1,83 @@
 package playground.service.document;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import playground.domain.document.ApprovalState;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import playground.domain.document.Category;
-import playground.service.document.dto.DocumentRequest;
-import playground.service.document.dto.DocumentResponse;
-import playground.service.document.dto.OutboxResponse;
+import playground.domain.document.Document;
+import playground.domain.document.DocumentRepository;
+import playground.domain.document.approval.ApprovalRepository;
+import playground.domain.document.approval.DocumentApproval;
+import playground.domain.user.User;
+import playground.domain.user.UserRepository;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static playground.domain.document.approval.ApprovalState.DRAFTING;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class DocumentServiceTest {
 
     @Autowired
-    private DocumentService documentService;
+    private UserRepository userRepository;
+    @Autowired
+    private DocumentRepository documentRepository;
+    @Autowired
+    private ApprovalRepository approvalRepository;
+
+    private User user1;
+    private User user2;
+
+    private Document document;
+
+    @BeforeEach
+    void setUp() {
+        user1 = userRepository.save(new User("user1"));
+        user2 = userRepository.save(new User("user2"));
+
+        document = documentRepository.save(createDocument("문서 제목", "제출합니다."));
+    }
 
     @Test
     void findById() {
-        //given //when
-        DocumentResponse document = documentService.findOne(1L);
+        //when
+        Optional<Document> findDocument = documentRepository.findById(document.getId());
 
         //then
-        assertThat(document).extracting("title", "contents", "category", "approvalState", "userName")
-                .containsExactly(
-                        document.getTitle(),
-                        document.getContents(),
-                        document.getCategory(),
-                        document.getApprovalState(),
-                        document.getUserName()
-                );
+        assertThat(findDocument).hasValueSatisfying(actual ->
+                assertThat(actual)
+                        .extracting("title", "contents", "category", "approvalState")
+                        .containsExactly(document.getTitle(), document.getContents(), document.getCategory(), document.getApprovalState())
+        );
     }
 
     @Test
     void findOutBoxBy() {
-        //given //when
-        List<OutboxResponse> outBox = documentService.findOutBox(1L);
+        //given
+        document.addDocumentApprovals(DocumentApproval.create(user1, 1));
+        document.addDocumentApprovals(DocumentApproval.create(user2, 2));
+
+        //when
+        List<Document> outBox = documentRepository.findOutBox(user2.getId());
 
         //then
-        assertThat(outBox.size()).isEqualTo(3);
+        assertThat(outBox.size()).isEqualTo(1);
         assertThat(outBox).extracting("title", "approvalState")
                 .containsExactly(
-                        tuple("문서1", ApprovalState.DRAFTING),
-                        tuple("문서2", ApprovalState.DRAFTING),
-                        tuple("문서3", ApprovalState.DRAFTING)
+                        tuple("문서 제목", DRAFTING)
                 );
     }
 
-    @Test
-    void save() {
-        //given
-        DocumentRequest requestDto = DocumentRequest.builder()
-                .title("문서100")
+    private Document createDocument(String title, String contents) {
+        return Document.builder()
+                .drafter(user1)
+                .title(title)
                 .category(Category.PRODUCT_PURCHASING)
-                .contents("제출합니다.")
-                .drafterId(1L)
-                .approverIds(Arrays.asList(1L, 2L, 3L))
+                .contents(contents)
                 .build();
-
-        //when
-        DocumentResponse result = documentService.save(requestDto);
-
-        //then
-        assertThat(result.getTitle()).isEqualTo("문서100");
     }
 }

@@ -2,61 +2,57 @@ package playground.domain.document;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import playground.domain.document.approval.ApprovalState;
+import playground.domain.document.approval.DocumentApproval;
 import playground.domain.user.User;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static playground.domain.document.ApprovalState.*;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
+import static playground.domain.document.approval.ApprovalState.DRAFTING;
 
 @Getter
-public class Document {
+@Entity
+@NoArgsConstructor
+public class Document extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
-    private final Long id;
-    private final String title;
-    private final Category category;
-    private final String contents;
-    private final User drafter;
-    private ApprovalState approvalState = DRAFTING;
-    private final DocumentApprovals documentApprovals = new DocumentApprovals();
-    private LocalDateTime insertDate;
-    private LocalDateTime updateDate;
+    private String title;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Lob
+    private String contents;
+
+    @ManyToOne(fetch = LAZY)
+    private User drafter;
+
+    @Enumerated(EnumType.STRING)
+    private ApprovalState approvalState;
+
+    @OneToMany(cascade = ALL)
+    private List<DocumentApproval> documentApprovals;
 
     @Builder
-    private Document(Long id, String title, Category category, String contents, User drafter) {
-        this.id = id;
+    public Document(String title, Category category, String contents, User drafter) {
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
+        this.approvalState = DRAFTING;
+        this.documentApprovals = new ArrayList<>();
     }
 
-    public void addApprovers(List<User> approvers) {
-        for (int i = 0; i < approvers.size(); i++) {
-            documentApprovals.add(new DocumentApproval(id, approvers.get(i), (i + 1)));
-        }
-    }
-
-    public void approveBy(User approver, String approvalComment) {
-        DocumentApproval currentApproval = documentApprovals.findBy(approver);
-        currentApproval.approve(approvalComment);
-
-        if (documentApprovals.allAproved()) {
-            approvalState = APPROVED;
-        }
-    }
-
-    public void rejectBy(User approver, String approvalComment) {
-        DocumentApproval currentApproval = documentApprovals.findBy(approver);
-        currentApproval.reject(approvalComment);
-        approvalState = CANCELED;
-    }
-
-    public ApprovalState getApprovalState() {
-        return approvalState;
-    }
-
-    public List<DocumentApproval> getDocumentApprovals() {
-        return documentApprovals.getDocumentApprovals();
+    public void addDocumentApprovals(DocumentApproval documentApproval) {
+        this.documentApprovals.add(documentApproval);
+        documentApproval.setDocument(this);
     }
 }
