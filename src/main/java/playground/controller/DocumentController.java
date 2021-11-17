@@ -8,9 +8,11 @@ import playground.service.document.dto.DocumentRequest;
 import playground.service.document.dto.DocumentResponse;
 import playground.service.document.dto.OutboxResponse;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class DocumentController {
 
@@ -18,13 +20,8 @@ public class DocumentController {
 
     @GetMapping("/documents/{id}")
     public ResponseEntity<DocumentResponse> find(@PathVariable Long id) {
-        try {
-            DocumentResponse document = documentService.findOne(id);
-            return ResponseEntity.ok(document);
-
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        DocumentResponse document = documentService.findOne(id);
+        return ResponseEntity.ok(document);
     }
 
     @GetMapping("/documents/out")
@@ -36,6 +33,6 @@ public class DocumentController {
     @PostMapping("/document")
     public ResponseEntity<DocumentResponse> save(@RequestBody DocumentRequest requestDto) {
         DocumentResponse document = documentService.save(requestDto);
-        return ResponseEntity.ok(document);
+        return ResponseEntity.created(URI.create("/documents/" + document.getId())).body(document);
     }
 }

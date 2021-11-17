@@ -13,19 +13,11 @@ public class DocumentApproval {
     private final int approvalOrder;
     private String approvalComment;
 
-    @Builder(builderClassName = "DocumentApprovalBuilder", builderMethodName = "create")
+    @Builder
     public DocumentApproval(User approver, int approvalOrder) {
         this.approver = approver;
         this.approvalState = DRAFTING;
         this.approvalOrder = approvalOrder;
-    }
-
-    @Builder(builderClassName = "DocumentAllBuilder", builderMethodName = "rowMapper")
-    public DocumentApproval(User approver, ApprovalState approvalState, int approvalOrder, String approvalComment) {
-        this.approver = approver;
-        this.approvalState = approvalState;
-        this.approvalOrder = approvalOrder;
-        this.approvalComment = approvalComment;
     }
 
     public void approve(String approvalComment) {

@@ -14,8 +14,6 @@ public class OutboxResponse {
     private String title;
     private Category category;
     private ApprovalState approvalState;
-    private String categoryText;
-    private String approvalStateText;
 
     public static OutboxResponse convertFrom(Document document) {
         return OutboxResponse.builder()
@@ -23,8 +21,14 @@ public class OutboxResponse {
                 .title(document.getTitle())
                 .category(document.getCategory())
                 .approvalState(document.getApprovalState())
-                .categoryText(document.getCategory().getText())
-                .approvalStateText(document.getApprovalState().getText())
                 .build();
+    }
+
+    public String getCategoryText() {
+        return category.getText();
+    }
+
+    public String getApprovalStateText() {
+        return approvalState.getText();
     }
 }

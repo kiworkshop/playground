@@ -167,7 +167,7 @@ class DocumentTest {
     }
 
     private Document createDocument(Long id, String title, Category category, String contents, User drafter) {
-        return Document.create()
+        return Document.builder()
                 .id(id)
                 .title(title)
                 .category(category)

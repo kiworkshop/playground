@@ -3,8 +3,11 @@ package playground.service.document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.document.ApprovalRepository;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApprovals;
 import playground.domain.document.DocumentRepository;
+import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 import playground.service.document.dto.DocumentRequest;
 import playground.service.document.dto.DocumentResponse;
@@ -18,8 +21,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DocumentService {
 
-    private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
+    private final DocumentRepository documentRepository;
+    private final ApprovalRepository approvalRepository;
 
     public DocumentResponse findOne(Long documentId) {
         Document document = documentRepository.findById(documentId);
@@ -35,15 +39,13 @@ public class DocumentService {
 
     @Transactional
     public DocumentResponse save(DocumentRequest dto) {
-        Document document = Document.create()
-                .title(dto.getTitle())
-                .category(dto.getCategory())
-                .contents(dto.getContents())
-                .drafter(userRepository.findById(dto.getDrafterId()))
-                .build();
+        User drafter = userRepository.findById(dto.getDrafterId());
 
-        Long id = documentRepository.save(document);
-        //TODO documentApproval save
+        Document document = dto.toDocument(drafter);
+        Long documentId = documentRepository.save(document);
+
+        DocumentApprovals approvals = DocumentApprovals.create(dto.getApproverIds(), documentId, drafter);
+        approvalRepository.saveAll(approvals);
 
         return DocumentResponse.convertFrom(document);
     }

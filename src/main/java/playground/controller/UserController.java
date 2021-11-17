@@ -9,6 +9,7 @@ import playground.service.user.dto.UserRequest;
 import playground.service.user.dto.UserResponse;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 

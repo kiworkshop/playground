@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.document.ApprovalState;
 import playground.domain.document.Category;
 import playground.service.document.dto.DocumentRequest;
 import playground.service.document.dto.DocumentResponse;
@@ -45,11 +46,11 @@ class DocumentServiceTest {
 
         //then
         assertThat(outBox.size()).isEqualTo(3);
-        assertThat(outBox).extracting("id", "title", "approvalState")
+        assertThat(outBox).extracting("title", "approvalState")
                 .containsExactly(
-                        tuple(outBox.get(0).getId(), outBox.get(0).getTitle(), outBox.get(0).getApprovalState()),
-                        tuple(outBox.get(1).getId(), outBox.get(1).getTitle(), outBox.get(1).getApprovalState()),
-                        tuple(outBox.get(2).getId(), outBox.get(2).getTitle(), outBox.get(2).getApprovalState())
+                        tuple("문서1", ApprovalState.DRAFTING),
+                        tuple("문서2", ApprovalState.DRAFTING),
+                        tuple("문서3", ApprovalState.DRAFTING)
                 );
     }
 

@@ -17,8 +17,6 @@ public class DocumentResponse {
     private Long userId;
     private ApprovalState approvalState;
     private String userName;
-    private String categoryText;
-    private String approvalStateText;
 
     public static DocumentResponse convertFrom(Document document) {
         return DocumentResponse.builder()
@@ -29,8 +27,14 @@ public class DocumentResponse {
                 .userId(document.getDrafter().getId())
                 .userName(document.getDrafter().getName())
                 .approvalState(document.getApprovalState())
-                .categoryText(document.getCategory().getText())
-                .approvalStateText(document.getApprovalState().getText())
                 .build();
+    }
+
+    public String getCategoryText() {
+        return category.getText();
+    }
+
+    public String getApprovalStateText() {
+        return approvalState.getText();
     }
 }

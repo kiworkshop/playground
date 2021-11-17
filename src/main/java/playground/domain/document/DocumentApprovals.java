@@ -15,6 +15,18 @@ public class DocumentApprovals {
 
     private final List<DocumentApproval> documentApprovals = new LinkedList<>();
 
+    public static DocumentApprovals create(List<Long> approverIds, Long documentId, User drafter) {
+        DocumentApprovals documentApprovals = new DocumentApprovals();
+        for (int i = 0; i < approverIds.size(); i++) {
+            documentApprovals.add(DocumentApproval.builder()
+                    .documentId(documentId)
+                    .approver(drafter)
+                    .approvalOrder(i + 1)
+                    .build());
+        }
+        return documentApprovals;
+    }
+
     public void add(DocumentApproval documentApproval) {
         this.documentApprovals.add(documentApproval);
     }
@@ -50,5 +62,9 @@ public class DocumentApprovals {
 
     private boolean isApproved(DocumentApproval documentApproval) {
         return documentApproval.isApproved();
+    }
+
+    public List<DocumentApproval> values() {
+        return documentApprovals;
     }
 }

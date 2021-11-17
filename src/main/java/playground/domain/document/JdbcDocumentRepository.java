@@ -1,6 +1,7 @@
 package playground.domain.document;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -25,13 +26,12 @@ public class JdbcDocumentRepository implements DocumentRepository {
         String query = "select * from document where id = ?";
         return jdbcTemplate.queryForObject(
                 query,
-                (rs, rowNum) -> Document.rowMapper()
+                (rs, rowNum) -> Document.builder()
                         .id(rs.getLong("id"))
                         .title(rs.getString("title"))
                         .category(Category.findBy(rs.getString("category")))
                         .contents(rs.getString("contents"))
                         .drafter(userRepository.findById(rs.getLong("drafter_id")))
-                        .approvalState(ApprovalState.findBy(rs.getString("approval_state")))
                         .build(),
                 id);
     }
@@ -45,11 +45,10 @@ public class JdbcDocumentRepository implements DocumentRepository {
 
         return jdbcTemplate.query(
                 query,
-                (rs, rowNum) -> Document.rowMapper()
+                (rs, rowNum) -> Document.builder()
                         .id(rs.getLong("id"))
                         .title(rs.getString("title"))
                         .category(Category.findBy(rs.getString("category")))
-                        .approvalState(ApprovalState.findBy(rs.getString("approval_state")))
                         .build(),
                 userId);
     }

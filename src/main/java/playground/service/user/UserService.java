@@ -22,10 +22,7 @@ public class UserService {
 
     @Transactional
     public UserResponse save(UserRequest dto) {
-        User user = User.builder()
-                .name(dto.getName())
-                .build();
-        Long userId = userRepository.save(user);
+        Long userId = userRepository.save(dto.toUser());
         return findOne(userId);
     }
 }

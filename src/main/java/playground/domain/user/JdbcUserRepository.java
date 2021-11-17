@@ -1,6 +1,7 @@
 package playground.domain.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -26,8 +27,8 @@ public class JdbcUserRepository implements UserRepository {
                         .name(rs.getString("name"))
                         .insertDate(rs.getObject("insert_date", LocalDateTime.class))
                         .updateDate(rs.getObject("update_date", LocalDateTime.class))
-                        .build()
-                , id);
+                        .build(),
+                id);
     }
 
     @Override

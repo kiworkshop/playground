@@ -10,24 +10,18 @@ import static playground.domain.document.ApprovalState.*;
 @Getter
 public class DocumentApproval {
 
+    private final Long documentId;
     private final User approver;
     private ApprovalState approvalState;
     private final int approvalOrder;
     private String approvalComment;
 
-    @Builder(builderClassName = "DocumentApprovalBuilder", builderMethodName = "create")
-    public DocumentApproval(User approver, int approvalOrder) {
+    @Builder
+    public DocumentApproval(Long documentId, User approver, int approvalOrder) {
+        this.documentId = documentId;
         this.approver = approver;
         this.approvalState = DRAFTING;
         this.approvalOrder = approvalOrder;
-    }
-
-    @Builder(builderClassName = "DocumentAllBuilder", builderMethodName = "rowMapper")
-    public DocumentApproval(User approver, ApprovalState approvalState, int approvalOrder, String approvalComment) {
-        this.approver = approver;
-        this.approvalState = approvalState;
-        this.approvalOrder = approvalOrder;
-        this.approvalComment = approvalComment;
     }
 
     public void approve(String approvalComment) {
@@ -47,5 +41,4 @@ public class DocumentApproval {
     public Long getApproverId() {
         return approver.getId();
     }
-
 }
