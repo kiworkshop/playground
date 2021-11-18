@@ -9,5 +9,10 @@ spring:
     url: jdbc:h2:mem:userdb;DB_CLOSE_DELAY=-1
     username: sa
     password:
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    # show-sql: true # DDL 출력
 server:
   port: 8080

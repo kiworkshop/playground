@@ -3,11 +3,24 @@ package playground.domain;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.persistence.*;
+
 @Getter
+@Entity
 public class DocumentApproval {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User approver;
+
+    @Enumerated(EnumType.STRING)
     private ApprovalState approvalState;
+
     private int approvalOrder;
+
     private String approvalComment;
 
     @Builder

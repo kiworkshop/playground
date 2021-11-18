@@ -1,30 +1,30 @@
-drop table if exists user;
-drop table if exists document;
-drop table if exists document_approval;
-
-create table user
-(
-    id       bigint not null auto_increment primary key,
-    name     varchar(255)
-);
-create table document
-(
-    id              bigint not null auto_increment primary key,
-    title           varchar(255),
-    category        varchar(255),
-    contents        text,
-    drafter_id      varchar(255),
-    approval_state  varchar(255),
-    created_at         DATETIME DEFAULT NOW()
-);
-create table document_approval
-(
-    id                  bigint not null auto_increment primary key,
-    document_id         bigint,
-    approver_id            varchar(255),
-    approval_order      bigint,
-    approval_comment    varchar(255)
-);
+--drop table if exists user;
+--drop table if exists document;
+--drop table if exists document_approval;
+--
+--create table user
+--(
+--    id       bigint not null auto_increment primary key,
+--    name     varchar(255)
+--);
+--create table document
+--(
+--    id              bigint not null auto_increment primary key,
+--    title           varchar(255),
+--    category        varchar(255),
+--    contents        text,
+--    drafter_id      varchar(255),
+--    approval_state  varchar(255),
+--    created_at         DATETIME DEFAULT NOW()
+--);
+--create table document_approval
+--(
+--    id                  bigint not null auto_increment primary key,
+--    document_id         bigint,
+--    approver_id            varchar(255),
+--    approval_order      bigint,
+--    approval_comment    varchar(255)
+--);
 
 
 insert into user(id, name)

@@ -2,22 +2,42 @@ package playground.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
+@Entity
 public class Document {
+    @Id
+    @GeneratedValue
     private Long id;
+
     private String title;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
     private String contents;
+
+    @ManyToOne
+    @JoinColumn(name = "drafter_id")
     private User drafter;
+
+    @Enumerated(EnumType.STRING)
     private ApprovalState approvalState = ApprovalState.DRAFTING;
+
+    @Transient
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
+
+    @Transient
     private int approvalIndex;
+
+    @CreatedDate
     private Date createdAt;
 
     @Builder
