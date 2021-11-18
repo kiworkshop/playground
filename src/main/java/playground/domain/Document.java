@@ -1,8 +1,11 @@
 package playground.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import playground.dto.DocumentRequest;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -12,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Document {
     @Id
     @GeneratedValue
@@ -80,6 +85,7 @@ public class Document {
             approvalState = ApprovalState.APPROVED;
         }
     }
+
 
     public ApprovalState getApprovalState() {
         return approvalState;

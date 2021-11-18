@@ -29,4 +29,17 @@ public class DocumentResponse {
         this.approvalStateText = document.getApprovalState().getStatus();
         this.userName = userName;
     }
+
+    public DocumentResponse(Document document) {
+        this.id = document.getId();
+        this.title = document.getTitle();
+        this.category = document.getCategory().name();
+        this.contents = document.getContents();
+        this.userId = document.getDrafter().getId();
+        this.approvalState = document.getApprovalState().name();
+        this.userName = document.getDrafter().getName();
+        this.categoryText = document.getCategory().getCategory();
+        this.approvalStateText = document.getApprovalState().getStatus();
+        this.userName = document.getDrafter().getName();
+    }
 }
