@@ -1,4 +1,4 @@
-package playground.constants;
+package playground.domain.document;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ApprovalState {
 
-    DRAFTING("결재중"),
+    DRAFTING("기안"),
     APPROVED("승인"),
-    CANCELED("거절");
+    CANCELED("거절"),
+    ;
 
     private final String text;
+
 }

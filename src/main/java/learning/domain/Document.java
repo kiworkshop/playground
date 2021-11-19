@@ -1,9 +1,9 @@
-package playground.domain;
+package learning.domain;
 
 import lombok.Builder;
 import lombok.Getter;
-import playground.constants.ApprovalState;
-import playground.constants.Category;
+import learning.constants.ApprovalState;
+import learning.constants.Category;
 
 import java.util.ArrayList;
 import java.util.List;

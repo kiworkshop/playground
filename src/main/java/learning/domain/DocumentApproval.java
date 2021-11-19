@@ -1,8 +1,8 @@
-package playground.domain;
+package learning.domain;
 
 import lombok.Builder;
 import lombok.Setter;
-import playground.constants.ApprovalState;
+import learning.constants.ApprovalState;
 
 @Builder
 @Setter

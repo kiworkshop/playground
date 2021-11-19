@@ -1,4 +1,4 @@
-package playground.constants;
+package playground.domain.document;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Category {
 
-    OPERATING_EXPRESS("운영비"),
-    EDUCATION("교육"),
-    PRODUCT_PURCHASING("물품구매");
+    OPERATING_EXPENSES("운영비"),
+    EDUCATION("교육")
+    ;
 
     private final String text;
+
 }

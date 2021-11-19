@@ -2,11 +2,11 @@ package learning;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import playground.constants.ApprovalState;
-import playground.constants.Category;
-import playground.domain.Document;
-import playground.domain.DocumentApproval;
-import playground.domain.User;
+import learning.constants.ApprovalState;
+import learning.constants.Category;
+import learning.domain.Document;
+import learning.domain.DocumentApproval;
+import learning.domain.User;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class DocumentTest {
+class DocumentDtoTest {
 
     @DisplayName("문서 생성하기")
     @Test

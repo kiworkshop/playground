@@ -1,4 +1,4 @@
-package playground.domain;
+package learning.domain;
 
 import lombok.Builder;
 import lombok.Getter;
