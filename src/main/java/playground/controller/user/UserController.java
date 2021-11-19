@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import playground.controller.user.request.CreateUserRequest;
 import playground.service.user.UserService;
+import playground.service.user.request.CreateUserRequest;
 
 import javax.validation.Valid;
 
