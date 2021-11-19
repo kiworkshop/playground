@@ -66,7 +66,7 @@ public class DocumentApplication {
 
     @Transactional(readOnly = true)
     public List<OutboxDocumentResponse> listOutboxDocuments(Long drafterId) {
-        List<Document> documents = documentService.listOutboxDocuments(drafterId);
+        List<Document> documents = documentService.listDocumentsByUserId(drafterId);
 
         return documents.stream()
             .map(OutboxDocumentResponse::from)

@@ -25,7 +25,7 @@ public class DocumentService {
     }
 
     @Transactional(readOnly = true)
-    public List<Document> listOutboxDocuments(Long drafterId) {
-        return documentRepository.findAllByUserId(drafterId);
+    public List<Document> listDocumentsByUserId(Long userId) {
+        return documentRepository.findAllByUserId(userId);
     }
 }
