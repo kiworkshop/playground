@@ -12,9 +12,10 @@ spring:
     sql-script-encoding: UTF-8
   jpa:
     defer-datasource-initialization: true
+    show-sql: true
+    format-sql: true
     hibernate:
       ddl-auto: create
-      show-sql: true
-      format-sql: true
+
 server:
   port: 8080
