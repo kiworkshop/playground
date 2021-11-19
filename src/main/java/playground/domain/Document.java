@@ -1,39 +1,65 @@
 package playground.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import playground.dto.DocumentRequest;
 
+import javax.persistence.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Document {
+    @Id
+    @GeneratedValue
     private Long id;
+
     private String title;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
     private String contents;
+
+    @ManyToOne
+    @JoinColumn(name = "drafter_id")
     private User drafter;
+
+    @Enumerated(EnumType.STRING)
     private ApprovalState approvalState = ApprovalState.DRAFTING;
-    private List<User> approvals;
-    private List<DocumentApproval> documentApprovals = new ArrayList<DocumentApproval>();
-    private int apprIndex;
+
+    @Transient
+    private List<DocumentApproval> documentApprovals = new ArrayList<>();
+
+    @Transient
+    private int approvalIndex;
+
+    @CreatedDate
+    private Date createdAt;
 
     @Builder
-    public Document(Long id, String title, Category category, String contents, User drafter) {
+    public Document(Long id, String title, Category category, String contents, User drafter, Date createdAt) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
+        this.createdAt = createdAt;
     }
 
     public void addApprovers(List<User> approvals) {
-        this.approvals = approvals;
         AtomicInteger index = new AtomicInteger();
         index.getAndIncrement();
-        apprIndex = 0;
-        approvals.stream().forEach((approver) -> addDocumetApprovals(approver, index.getAndIncrement()));
+        approvalIndex = 0;
+        approvals.forEach(approver-> addDocumetApprovals(approver, index.getAndIncrement()));
     }
 
     public List<DocumentApproval> getDocumentApprovals() {
@@ -51,23 +77,24 @@ public class Document {
     }
 
     public void approveBy(User approver, String approvalComment) {
-        checkApproverTurn(approver);
-        documentApprovals.set(apprIndex, documentApprovals.get(apprIndex).approveBy(approver, approvalComment));
-        apprIndex++;
+        checkApprovalTurn(approver);
+        documentApprovals.set(approvalIndex, documentApprovals.get(approvalIndex).approveBy(approver, approvalComment));
+        approvalIndex++;
 
-        if (apprIndex >= documentApprovals.size()) {
+        if (approvalIndex >= documentApprovals.size()) {
             approvalState = ApprovalState.APPROVED;
         }
     }
+
 
     public ApprovalState getApprovalState() {
         return approvalState;
     }
 
-    private boolean checkApproverTurn(User approver) {
-        if (!documentApprovals.get(apprIndex).getApprover().getId().equals(approver.getId())) {
+    private void checkApprovalTurn(User approver) {
+
+        if (!documentApprovals.get(approvalIndex).getApprover().getId().equals(approver.getId())) {
             throw new IllegalArgumentException();
         }
-        return true;
     }
 }
