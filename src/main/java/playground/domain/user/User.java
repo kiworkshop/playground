@@ -9,10 +9,11 @@ import javax.persistence.*;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class User extends BaseTimeEntity {
 
     @Id

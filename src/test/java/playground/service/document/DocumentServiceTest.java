@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import playground.domain.document.Category;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
-import playground.domain.document.approval.ApprovalRepository;
 import playground.domain.document.approval.DocumentApproval;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
@@ -26,8 +25,6 @@ class DocumentServiceTest {
     private UserRepository userRepository;
     @Autowired
     private DocumentRepository documentRepository;
-    @Autowired
-    private ApprovalRepository approvalRepository;
 
     private User user1;
     private User user2;

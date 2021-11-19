@@ -21,15 +21,3 @@ values (1, 1, 1, 'APPROVED', 1, '', '2021-11-17 17:50:57'),
 
        (7, 3, 3, 'APPROVED', 1, '', '2021-11-17 17:50:57'),
        (8, 1, 3, 'CANCELED', 2, '', '2021-11-17 19:50:57');
-
-insert into document_document_approvals(document_id, document_approvals_id)
-values (1, 1),
-       (1, 2),
-       (1, 3),
-
-       (2, 4),
-       (2, 5),
-       (2, 6),
-
-       (3, 7),
-       (3, 8);

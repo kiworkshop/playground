@@ -10,20 +10,23 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 import static playground.domain.document.approval.ApprovalState.DRAFTING;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class DocumentApproval extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "document_id", foreignKey = @ForeignKey(name = "fk_approval_document"))
     private Document document;
 
     @OneToOne
+    @JoinColumn(name = "approver_id", foreignKey = @ForeignKey(name = "fk_document_approver"))
     private User approver;
 
     @Enumerated(EnumType.STRING)

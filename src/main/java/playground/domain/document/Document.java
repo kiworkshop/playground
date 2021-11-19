@@ -14,11 +14,13 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 import static playground.domain.document.approval.ApprovalState.DRAFTING;
 
 @Getter
+@Table(name = "document")
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Document extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,12 +35,13 @@ public class Document extends BaseTimeEntity {
     private String contents;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "drafter_id", foreignKey = @ForeignKey(name = "fk_document_drafter"))
     private User drafter;
 
     @Enumerated(EnumType.STRING)
     private ApprovalState approvalState;
 
-    @OneToMany(cascade = ALL)
+    @OneToMany(mappedBy = "document", cascade = ALL, orphanRemoval = true)
     private List<DocumentApproval> documentApprovals;
 
     @Builder
