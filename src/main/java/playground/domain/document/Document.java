@@ -4,16 +4,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "DOCUMENT")
 @Getter
 @NoArgsConstructor
 public class Document {
 
+    @Id
+    @Column(name = "ID")
     private Long id;
 
     private String title;
     private Category category;
     private String contents;
 
+    @Enumerated(EnumType.STRING)
     private ApprovalState approvalState;
     private Long drafterId;
 
