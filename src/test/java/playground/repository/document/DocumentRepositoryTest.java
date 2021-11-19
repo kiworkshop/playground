@@ -1,104 +1,88 @@
 package playground.repository.document;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import playground.domain.document.ApprovalState;
-import playground.domain.document.Category;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import playground.domain.document.Document;
+import playground.domain.document.vo.ApprovalState;
+import playground.domain.document.vo.Category;
+import playground.domain.user.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnitUtil;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class DocumentRepositoryTest {
 
     @Autowired
     private DocumentRepository documentRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
+    private PersistenceUnitUtil persistenceUnitUtil;
+
+    @BeforeEach
+    void setUp() {
+        persistenceUnitUtil = entityManagerFactory.getPersistenceUnitUtil();
+    }
+
     @Test
-    @DisplayName("문서를 저장한다.")
-    void save() {
+    @DisplayName("기안자의 정보가 포함된 문서를 조회한다.")
+    void findByIdWithDrafter() {
         //given
+        User drafter = new User("test@naver.com", "Password123!", "drafter");
+        entityManager.persist(drafter);
         Document document = Document.builder()
-                .title("교육비 결재")
-                .category("EDUCATION")
-                .contents("교육비")
-                .drafterId(1L)
+                .drafter(drafter)
+                .category(Category.EDUCATION)
+                .title("교육비 정산")
+                .contents("교육비 정산 결재")
                 .build();
+        documentRepository.save(document);
+        entityManager.flush();
+        entityManager.clear();
 
         //when
-        long documentId = documentRepository.save(document);
+        Optional<Document> fetchedDocument = documentRepository.findByIdWithDrafter(document.getId());
 
         //then
-        assertThat(documentId).isNotZero();
+        assertThat(fetchedDocument).isNotEmpty();
+        assertThat(persistenceUnitUtil.isLoaded(fetchedDocument.get().getDrafter())).isTrue();
     }
 
-    @Test
-    @DisplayName("문서를 조회한다.")
-    void findById() {
-        //given
-        String title = "교육비 결재";
-        String category = "EDUCATION";
-        String contents = "교육비";
-        long drafterId = 1L;
 
+    @Test
+    @DisplayName("기안자의 정보가 포함된 조건에 맞는 모든 문서를 조회한다.")
+    void findAllWithDrafter() {
+        //given
+        User drafter = new User("test@naver.com", "Password123!", "drafter");
+        entityManager.persist(drafter);
         Document document = Document.builder()
-                .title(title)
-                .category(category)
-                .contents(contents)
-                .drafterId(drafterId)
+                .drafter(drafter)
+                .category(Category.EDUCATION)
+                .title("교육비 정산")
+                .contents("교육비 정산 결재")
                 .build();
-        long documentId = documentRepository.save(document);
+        documentRepository.save(document);
+        entityManager.flush();
+        entityManager.clear();
 
         //when
-        Document fetchedDocument = documentRepository.findById(documentId);
+        List<Document> documents = documentRepository.findAllWithDrafter(drafter.getId(), ApprovalState.DRAFTING);
 
         //then
-        assertThat(fetchedDocument)
-                .extracting("title", "category", "contents", "drafterId", "approvalState")
-                .containsExactly(title, Category.valueOf(category), contents, drafterId, ApprovalState.DRAFTING);
-    }
-
-    @Test
-    @DisplayName("식별번호에 일치하는 문서가 존재하지 않을 경우, 예외가 발생한다.")
-    void findById_fail_empty_result() {
-        //when, then
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> documentRepository.findById(0L))
-                .withMessageContaining("해당하는 문서가 존재하지 않습니다.");
-    }
-
-    @Test
-    @DisplayName("기안자 식별번호화 결재 상태가 일치하는 문서들을 조회한다.")
-    void findAllByDrafterIdAndApprovalState() {
-        //given
-        long drafterId = 1L;
-        Document document1 = Document.builder()
-                .title("교육비 결재")
-                .category("EDUCATION")
-                .contents("교육비")
-                .drafterId(drafterId)
-                .build();
-
-        Document document2 = Document.builder()
-                .title("운영비 결재")
-                .category("OPERATING_EXPENSES")
-                .contents("운영비")
-                .drafterId(drafterId)
-                .build();
-        documentRepository.save(document1);
-        documentRepository.save(document2);
-
-        //when
-        List<Document> documents = documentRepository.findAllByDrafterIdAndApprovalState(drafterId, ApprovalState.DRAFTING);
-
-        //then
-        assertThat(documents).hasSize(2);
+        assertThat(documents).hasSize(1);
+        assertThat(persistenceUnitUtil.isLoaded(documents.get(0).getDrafter())).isTrue();
     }
 }
