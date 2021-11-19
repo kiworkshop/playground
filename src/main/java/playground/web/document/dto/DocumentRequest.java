@@ -1,4 +1,4 @@
-package playground.document.controller.dto;
+package playground.web.document.dto;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ public class DocumentRequest {
     private String title;
     private Category category;
     private String contents;
+
     private Long drafterId;
     private List<Long> approverIds;
 }

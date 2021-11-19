@@ -3,13 +3,14 @@ package playground.document.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import playground.document.controller.dto.DocumentRequest;
+import playground.web.document.dto.DocumentRequest;
 import playground.document.controller.dto.DocumentResponse;
 import playground.document.controller.dto.OutboxDocumentResponse;
 import playground.document.entity.Document;
 import playground.document.entity.DocumentApproval;
 import playground.user.entity.User;
 import playground.user.service.UserService;
+import playground.web.document.dto.OutboxDocumentRequest;
 
 import java.util.Comparator;
 import java.util.List;
@@ -65,7 +66,7 @@ public class DocumentApplication {
     }
 
     @Transactional(readOnly = true)
-    public List<OutboxDocumentResponse> listOutboxDocuments(Long drafterId) {
+    public List<OutboxDocumentResponse> listOutboxDocuments(OutboxDocumentRequest drafterId) {
         List<Document> documents = documentService.listDocumentsByUserId(drafterId);
 
         return documents.stream()
