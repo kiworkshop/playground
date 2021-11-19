@@ -42,13 +42,7 @@ public class DocumentService {
         User drafter = findUser(dto.getDrafterId());
         Document document = dto.toDocument(drafter);
 
-        int approvalOrder = 0;
-        for (Long approvalId : dto.getApproverIds()) {
-            User approver = findApprover(approvalId);
-            DocumentApproval documentApproval = DocumentApproval.create(approver, approvalOrder++);
-            document.addDocumentApprovals(documentApproval);
-        }
-
+        setDocumentApproval(dto.getApproverIds(), document);
         documentRepository.save(document);
         return DocumentResponse.convertFrom(document);
     }
@@ -56,6 +50,15 @@ public class DocumentService {
     private User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("문서 기안 사용자를 찾을 수 없습니다."));
+    }
+
+    private void setDocumentApproval(List<Long> approvalIds, Document document) {
+        int approvalOrder = 0;
+        for (Long approvalId : approvalIds) {
+            User approver = findApprover(approvalId);
+            DocumentApproval documentApproval = DocumentApproval.create(approver, approvalOrder++);
+            document.addDocumentApprovals(documentApproval);
+        }
     }
 
     private User findApprover(Long approvalId) {
