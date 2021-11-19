@@ -7,3 +7,14 @@ spring:
   h2:
     console:
       enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
