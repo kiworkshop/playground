@@ -3,7 +3,7 @@ package playground.web.document.dto;
 import java.util.List;
 
 import lombok.Getter;
-import playground.document.type.Category;
+import playground.type.Category;
 
 @Getter
 public class DocumentRequest {

@@ -1,15 +1,15 @@
-package playground.document.service;
+package playground.service.document;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.service.document.dto.DocumentResponse;
+import playground.service.document.dto.OutboxDocumentResponse;
 import playground.web.document.dto.DocumentRequest;
-import playground.document.controller.dto.DocumentResponse;
-import playground.document.controller.dto.OutboxDocumentResponse;
-import playground.document.entity.Document;
-import playground.document.entity.DocumentApproval;
-import playground.user.entity.User;
-import playground.user.service.UserService;
+import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
+import playground.domain.user.User;
+import playground.service.user.UserService;
 import playground.web.document.dto.OutboxDocumentRequest;
 
 import java.util.Comparator;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static playground.document.type.ApprovalState.DRAFTING;
+import static playground.type.ApprovalState.DRAFTING;
 
 @RequiredArgsConstructor
 @Service
@@ -27,7 +27,6 @@ public class DocumentApplication {
     private static DocumentApprovalService documentApprovalService;
     private static UserService userService;
 
-    @Transactional(readOnly = false)
     public void createDocument(DocumentRequest request) {
         Document document = this.covertFrom(request);
         Long documentId = documentService.createDocument(document);
@@ -66,7 +65,7 @@ public class DocumentApplication {
     }
 
     @Transactional(readOnly = true)
-    public List<OutboxDocumentResponse> listOutboxDocuments(OutboxDocumentRequest drafterId) {
+    public List<OutboxDocumentResponse> listOutboxDocuments(OutboxDocumentRequest request) {
         List<Document> documents = documentService.listDocumentsByUserId(drafterId);
 
         return documents.stream()

@@ -1,4 +1,4 @@
-package playground.user.entity;
+package playground.domain.user;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

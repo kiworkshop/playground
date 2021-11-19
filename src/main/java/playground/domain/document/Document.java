@@ -1,12 +1,13 @@
-package playground.document.entity;
+package playground.domain.document;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import playground.document.type.ApprovalState;
-import playground.document.type.Category;
+import playground.type.ApprovalState;
+import playground.type.Category;
 
 @Getter
+@Entity
 public class Document {
 
     @Setter

@@ -1,4 +1,4 @@
-package playground.document.entity;
+package playground.domain.document;
 
 public interface DocumentApprovalRepository {
 

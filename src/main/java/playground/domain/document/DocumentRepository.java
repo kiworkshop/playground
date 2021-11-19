@@ -1,4 +1,4 @@
-package playground.document.entity;
+package playground.domain.document;
 
 import java.util.List;
 

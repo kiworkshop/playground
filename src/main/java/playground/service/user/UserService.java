@@ -1,10 +1,10 @@
-package playground.user.service;
+package playground.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import playground.user.entity.User;
-import playground.user.entity.UserRepository;
+import playground.domain.user.User;
+import playground.domain.user.UserRepository;
 
 @RequiredArgsConstructor
 @Service

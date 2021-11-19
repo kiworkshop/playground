@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import playground.web.document.dto.DocumentRequest;
-import playground.document.controller.dto.DocumentResponse;
-import playground.document.controller.dto.OutboxDocumentResponse;
-import playground.document.service.DocumentApplication;
+import playground.service.document.dto.DocumentResponse;
+import playground.service.document.dto.OutboxDocumentResponse;
+import playground.service.document.DocumentApplication;
 import playground.web.document.dto.OutboxDocumentRequest;
 
 import java.util.List;

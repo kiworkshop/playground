@@ -1,10 +1,10 @@
-package playground.document.service;
+package playground.service.document;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import playground.document.entity.Document;
-import playground.document.entity.DocumentRepository;
+import playground.domain.document.Document;
+import playground.domain.document.DocumentRepository;
 
 import java.util.List;
 

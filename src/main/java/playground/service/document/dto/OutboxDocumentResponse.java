@@ -1,33 +1,28 @@
-package playground.document.controller.dto;
+package playground.service.document.dto;
 
 import lombok.Builder;
-import playground.document.entity.Document;
-import playground.document.type.ApprovalState;
-import playground.document.type.Category;
-import playground.user.entity.User;
+import lombok.Getter;
+import playground.domain.document.Document;
+import playground.type.ApprovalState;
+import playground.type.Category;
 
 @Builder
-public class DocumentResponse {
+@Getter
+public class OutboxDocumentResponse {
 
     private Long id;
     private String title;
     private Category category;
-    private String contents;
-    private Long userId;
     private ApprovalState approvalState;
-    private String userName;
     private String categoryText;
     private String approvalStateText;
 
-    public static DocumentResponse from(Document document, User user) {
-        return DocumentResponse.builder()
+    public static OutboxDocumentResponse from(Document document) {
+        return OutboxDocumentResponse.builder()
             .id(document.getId())
             .title(document.getTitle())
             .category(document.getCategory())
-            .contents(document.getContents())
-            .userId(user.getId())
             .approvalState(document.getApprovalState())
-            .userName(user.getName())
             .categoryText(document.getCategory().getText())
             .approvalStateText(document.getApprovalState().getText())
             .build();

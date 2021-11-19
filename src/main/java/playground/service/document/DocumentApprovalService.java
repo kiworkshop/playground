@@ -1,10 +1,10 @@
-package playground.document.service;
+package playground.service.document;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import playground.document.entity.DocumentApproval;
-import playground.document.entity.DocumentApprovalRepository;
+import playground.domain.document.DocumentApproval;
+import playground.domain.document.DocumentApprovalRepository;
 
 @RequiredArgsConstructor
 @Service

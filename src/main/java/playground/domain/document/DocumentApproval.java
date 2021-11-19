@@ -1,8 +1,8 @@
-package playground.document.entity;
+package playground.domain.document;
 
 import lombok.Builder;
 import lombok.Getter;
-import playground.document.type.ApprovalState;
+import playground.type.ApprovalState;
 
 @Getter
 public class DocumentApproval {
