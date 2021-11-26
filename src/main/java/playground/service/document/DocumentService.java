@@ -5,27 +5,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
+import playground.type.ApprovalState;
 
 import java.util.List;
+import java.util.Optional;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
 
-    @Transactional(readOnly = false)
-    public Long createDocument(Document document) {
+    @Transactional
+    public Document createDocument(Document document) {
         return documentRepository.save(document);
     }
 
-    @Transactional(readOnly = true)
-    public Document getDocument(Long documentId) {
+    public Optional<Document> findById(Long documentId) {
         return documentRepository.findById(documentId);
     }
 
-    @Transactional(readOnly = true)
-    public List<Document> listDocumentsByUserId(Long userId) {
-        return documentRepository.findAllByUserId(userId);
+    public List<Document> findAllByDrafterIdAndApprovalState(Long drafterId, ApprovalState approvalState) {
+        return documentRepository.findDocumentsByDrafterIdAndApprovalState(drafterId, approvalState);
     }
 }

@@ -6,14 +6,21 @@ import org.springframework.transaction.annotation.Transactional;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
-    private static UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public User getUser(Long userId) {
+    public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+    public List<User> findAllById(List<Long> approverIds) {
+        return userRepository.findAllById(approverIds);
     }
 }

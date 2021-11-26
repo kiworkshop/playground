@@ -3,13 +3,13 @@ package playground.service.document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.user.User;
 import playground.service.document.dto.DocumentResponse;
 import playground.service.document.dto.OutboxDocumentResponse;
-import playground.web.document.dto.DocumentRequest;
+import playground.service.user.UserService;
+import playground.web.document.dto.DocumentCreateRequest;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentApproval;
-import playground.domain.user.User;
-import playground.service.user.UserService;
 import playground.web.document.dto.OutboxDocumentRequest;
 
 import java.util.Comparator;
@@ -19,58 +19,49 @@ import java.util.stream.IntStream;
 
 import static playground.type.ApprovalState.DRAFTING;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class DocumentApplication {
 
-    private static DocumentService documentService;
-    private static DocumentApprovalService documentApprovalService;
-    private static UserService userService;
+    private final DocumentService documentService;
+    private final UserService userService;
 
-    public void createDocument(DocumentRequest request) {
-        Document document = this.covertFrom(request);
-        Long documentId = documentService.createDocument(document);
+    public void create(DocumentCreateRequest request) {
+        User drafter = userService.findById(request.getDrafterId())
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")); // TODO: 2021/11/26 UserNotFoundException 
+        Document document = request.toEntity(drafter);
 
-        List<Long> approverIds = request.getApproverIds();
-        IntStream.range(0, approverIds.size())
-            .forEach(
-                index -> {
-                    DocumentApproval documentApproval = DocumentApproval.builder()
-                        .approverId(approverIds.get(index))
-                        .documentId(documentId)
-                        .approvalState(DRAFTING)
-                        .approvalOrder(index + 1)
-                        .build();
-                    documentApprovalService.create(documentApproval);
-                }
-            );
+        List<User> approvers = userService.findAllById(request.getApproverIds());
+        IntStream.range(0, approvers.size())
+            .mapToObj(index -> DocumentApproval.builder()
+                .approver(approvers.get(index))
+                .approvalState(DRAFTING)
+                .approvalOrder(index + 1)
+                .build()
+            )
+            .forEach(document::addDocumentApproval);
+
+        documentService.createDocument(document);
     }
 
-    private Document covertFrom(DocumentRequest request) {
-        return Document.builder()
-            .title(request.getTitle())
-            .category(request.getCategory())
-            .contents(request.getContents())
-            .drafterId(request.getDrafterId())
-            .approvalState(DRAFTING)
-            .build();
+    public DocumentResponse findDocument(Long documentId) {
+        Document document = documentService.findById(documentId)
+            .orElseThrow(() -> new IllegalArgumentException()); // TODO: 2021/11/19 DocumentNotFoundException
+        return new DocumentResponse(document);
     }
 
-    @Transactional(readOnly = true)
-    public DocumentResponse getDocument(Long documentId) {
-        Document document = documentService.getDocument(documentId);
-        User user = userService.getUser(document.getDrafterId());
+    public List<OutboxDocumentResponse> findOutboxDocuments(OutboxDocumentRequest request) {
+        List<Document> documents = documentService.findAllByDrafterIdAndApprovalState(request.getDrafterId(), DRAFTING);
 
-        return DocumentResponse.from(document, user);
+        return convertOutboxDocumentResponseFrom(documents);
     }
 
-    @Transactional(readOnly = true)
-    public List<OutboxDocumentResponse> listOutboxDocuments(OutboxDocumentRequest request) {
-        List<Document> documents = documentService.listDocumentsByUserId(drafterId);
-
+    private List<OutboxDocumentResponse> convertOutboxDocumentResponseFrom(List<Document> documents) {
         return documents.stream()
-            .map(OutboxDocumentResponse::from)
+            .map(OutboxDocumentResponse::new)
             .sorted(Comparator.comparing(OutboxDocumentResponse::getId))
             .collect(Collectors.toList());
     }
+
 }
