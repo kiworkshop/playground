@@ -1,12 +1,14 @@
 package playground.service.document.dto;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import playground.domain.document.Document;
+import playground.domain.user.User;
 import playground.type.ApprovalState;
 import playground.type.Category;
-import playground.domain.user.User;
 
-@Builder
+@Getter
+@NoArgsConstructor
 public class DocumentResponse {
 
     private Long id;
@@ -16,20 +18,25 @@ public class DocumentResponse {
     private Long userId;
     private ApprovalState approvalState;
     private String userName;
-    private String categoryText;
-    private String approvalStateText;
 
-    public static DocumentResponse from(Document document, User user) {
-        return DocumentResponse.builder()
-            .id(document.getId())
-            .title(document.getTitle())
-            .category(document.getCategory())
-            .contents(document.getContents())
-            .userId(user.getId())
-            .approvalState(document.getApprovalState())
-            .userName(user.getName())
-            .categoryText(document.getCategory().getText())
-            .approvalStateText(document.getApprovalState().getText())
-            .build();
+    public DocumentResponse(Document document) {
+        this.id = document.getId();
+        this.title = document.getTitle();
+        this.category = document.getCategory();
+        this.contents = document.getContents();
+        this.approvalState = document.getApprovalState();
+
+        User drafter = document.getDrafter();
+        this.userId = drafter.getId();
+        this.userName = drafter.getName();
     }
+
+    public String getCategoryText() {
+        return category.getText();
+    }
+
+    public String getApprovalStateText() {
+        return approvalState.getText();
+    }
+
 }
