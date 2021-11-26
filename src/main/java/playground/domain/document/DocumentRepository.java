@@ -1,10 +1,11 @@
 package playground.domain.document;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import playground.type.ApprovalState;
+
 import java.util.List;
 
-public interface DocumentRepository {
+public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    Long save(Document document);
-    Document findById(Long documentId);
-    List<Document> findAllByUserId(Long drafterId);
+    List<Document> findDocumentsByDrafterIdAndApprovalState(Long drafterId, ApprovalState approvalState);
 }

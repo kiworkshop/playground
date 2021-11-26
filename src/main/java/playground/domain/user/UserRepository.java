@@ -1,6 +1,6 @@
 package playground.domain.user;
 
-public interface UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    User findById(Long userId);
+public interface UserRepository extends JpaRepository<User, Long> {
 }
