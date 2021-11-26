@@ -2,8 +2,8 @@ package playground.domain.document;
 
 import lombok.*;
 import playground.domain.user.User;
-import playground.type.ApprovalState;
-import playground.type.Category;
+import playground.common.type.ApprovalState;
+import playground.common.type.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;

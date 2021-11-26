@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.Document;
 import playground.domain.user.User;
-import playground.type.ApprovalState;
-import playground.type.Category;
+import playground.common.type.ApprovalState;
+import playground.common.type.Category;
 
 @Getter
 @NoArgsConstructor

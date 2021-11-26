@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static playground.type.ApprovalState.DRAFTING;
+import static playground.common.type.ApprovalState.DRAFTING;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

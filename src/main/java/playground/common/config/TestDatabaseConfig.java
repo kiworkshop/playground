@@ -1,4 +1,4 @@
-package playground;
+package playground.common.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.h2.tools.Server;
@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration
-public class PlaygroundConfig {
+public class TestDatabaseConfig {
 
     @ConfigurationProperties("spring.datasource.hikari")
     @Bean

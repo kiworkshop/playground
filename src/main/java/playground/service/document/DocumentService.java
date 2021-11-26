@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
-import playground.type.ApprovalState;
+import playground.common.type.ApprovalState;
 
 import java.util.List;
 import java.util.Optional;

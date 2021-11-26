@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.user.User;
-import playground.type.ApprovalState;
+import playground.common.type.ApprovalState;
 
 import javax.persistence.*;
 

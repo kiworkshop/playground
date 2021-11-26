@@ -1,7 +1,7 @@
 package playground.domain.document;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import playground.type.ApprovalState;
+import playground.common.type.ApprovalState;
 
 import java.util.List;
 
