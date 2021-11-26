@@ -1,15 +1,28 @@
 spring:
   jpa:
+    open-in-view: false
     show-sql: true
+    generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
 
-  h2:
-    console:
-      enabled: true
+    database-platform: h2
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:tcp://localhost/~/test
+      jdbc-url: jdbc:h2:tcp://localhost:9099/mem:testdb
       driver-class-name: org.h2.Driver
       username: sa
       password:
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/h2/data.sql
