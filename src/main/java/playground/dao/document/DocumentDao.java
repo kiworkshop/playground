@@ -25,12 +25,12 @@ public class DocumentDao {
         return jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> Document.builder()
-                        .id(id)
+//                        .id(id)
                         .title(rs.getString("title"))
                         .category(Category.valueOf(rs.getString("category")))
                         .contents(rs.getString("contents"))
                         .approvalState(ApprovalState.valueOf(rs.getString("approval_state")))
-                        .drafterId(rs.getLong("drafter_id"))
+//                        .drafterId(rs.getLong("drafter_id"))
                         .build(),
                 id
         );
@@ -42,11 +42,11 @@ public class DocumentDao {
         return jdbcTemplate.query(
                 sql,
                 (rs, rowNum) -> Document.builder()
-                        .id(rs.getLong("id"))
+//                        .id(rs.getLong("id"))
                         .title(rs.getString("title"))
                         .category(Category.valueOf(rs.getString("category")))
                         .approvalState(approvalState)
-                        .drafterId(drafterId)
+//                        .drafterId(drafterId)
                         .build(),
                 drafterId,
                 approvalState.name()
@@ -64,7 +64,7 @@ public class DocumentDao {
                     pstmt.setString(2, document.getCategory().name());
                     pstmt.setString(3, document.getContents());
                     pstmt.setString(4, document.getApprovalState().name());
-                    pstmt.setLong(5, document.getDrafterId());
+//                    pstmt.setLong(5, document.getDrafterId());
                     return pstmt;
                 },
                 keyHolder

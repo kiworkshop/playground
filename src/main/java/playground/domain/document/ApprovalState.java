@@ -9,8 +9,7 @@ public enum ApprovalState {
 
     DRAFTING("기안"),
     APPROVED("승인"),
-    CANCELED("거절"),
-    ;
+    CANCELED("거절");
 
     private final String text;
 

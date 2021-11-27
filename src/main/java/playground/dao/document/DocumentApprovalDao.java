@@ -20,18 +20,18 @@ public class DocumentApprovalDao {
         String sql = "insert into document_approval(document_id, approver_id, approval_state, approval_order, approval_comment) values(?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(
-                connection -> {
-                    PreparedStatement pstmt = connection.prepareStatement(sql, new String[]{"id"});
-                    pstmt.setLong(1, documentApproval.getDocumentId());
-                    pstmt.setLong(2, documentApproval.getApproverId());
-                    pstmt.setString(3, documentApproval.getApprovalState().name());
-                    pstmt.setInt(4, documentApproval.getApprovalOrder());
-                    pstmt.setString(5, documentApproval.getApprovalComment());
-                    return pstmt;
-                },
-                keyHolder
-        );
+//        jdbcTemplate.update(
+//                connection -> {
+//                    PreparedStatement pstmt = connection.prepareStatement(sql, new String[]{"id"});
+//                    pstmt.setLong(1, documentApproval.getDocumentId());
+//                    pstmt.setLong(2, documentApproval.getApproverId());
+//                    pstmt.setString(3, documentApproval.getApprovalState().name());
+//                    pstmt.setInt(4, documentApproval.getApprovalOrder());
+//                    pstmt.setString(5, documentApproval.getApprovalComment());
+//                    return pstmt;
+//                },
+//                keyHolder
+//        );
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
