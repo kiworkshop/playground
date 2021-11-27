@@ -1,9 +1,3 @@
-### 문서 1건 조회
-GET http://localhost:8080/api/documents/1
-
-### OUT BOX 문서 조회
-GET http://localhost:8080/api/documents/out?userId=5
-
 ### 문서 저장
 POST http://localhost:8080/api/document
 Content-Type: application/json
@@ -18,3 +12,9 @@ Content-Type: application/json
     2
   ]
 }
+
+### 문서 1건 조회
+GET http://localhost:8080/api/documents/1
+
+### OUT BOX 문서 조회
+GET http://localhost:8080/api/documents/out?userId=1

@@ -21,25 +21,13 @@ public class Document {
     private LocalDateTime insertDate;
     private LocalDateTime updateDate;
 
-    @Builder(builderClassName = "DocumentBuilder", builderMethodName = "create")
+    @Builder
     private Document(Long id, String title, Category category, String contents, User drafter) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
-    }
-
-    @Builder(builderClassName = "DocumentAllBuilder", builderMethodName = "rowMapper")
-    private Document(Long id, String title, Category category, String contents, User drafter, ApprovalState approvalState, LocalDateTime insertDate, LocalDateTime updateDate) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.contents = contents;
-        this.drafter = drafter;
-        this.approvalState = approvalState;
-        this.insertDate = insertDate;
-        this.updateDate = updateDate;
     }
 
     public void addApprovers(List<User> approvers) {

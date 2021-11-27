@@ -1,8 +1,8 @@
-package playground.dto;
+package playground.service.user.dto;
 
-import learning.User;
 import lombok.Builder;
 import lombok.Getter;
+import playground.domain.user.User;
 
 import java.time.LocalDateTime;
 

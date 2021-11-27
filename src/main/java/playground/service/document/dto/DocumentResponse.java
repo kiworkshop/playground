@@ -1,14 +1,15 @@
-package playground.dto;
+package playground.service.document.dto;
 
-import learning.ApprovalState;
-import learning.Category;
-import learning.Document;
 import lombok.Builder;
 import lombok.Getter;
+import playground.domain.document.Category;
+import playground.domain.document.Document;
+import playground.domain.document.approval.ApprovalState;
 
 @Getter
 @Builder
 public class DocumentResponse {
+
     private Long id;
     private String title;
     private Category category;
@@ -16,8 +17,6 @@ public class DocumentResponse {
     private Long userId;
     private ApprovalState approvalState;
     private String userName;
-    private String categoryText;
-    private String approvalStateText;
 
     public static DocumentResponse convertFrom(Document document) {
         return DocumentResponse.builder()
@@ -28,8 +27,14 @@ public class DocumentResponse {
                 .userId(document.getDrafter().getId())
                 .userName(document.getDrafter().getName())
                 .approvalState(document.getApprovalState())
-                .categoryText(document.getCategory().getText())
-                .approvalStateText(document.getApprovalState().getText())
                 .build();
+    }
+
+    public String getCategoryText() {
+        return category.getText();
+    }
+
+    public String getApprovalStateText() {
+        return approvalState.getText();
     }
 }

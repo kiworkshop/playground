@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import playground.dto.UserRequest;
-import playground.dto.UserResponse;
-import playground.service.UserService;
+import playground.service.user.UserService;
+import playground.service.user.dto.UserRequest;
+import playground.service.user.dto.UserResponse;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
