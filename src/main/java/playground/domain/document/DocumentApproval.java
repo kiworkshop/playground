@@ -1,9 +1,6 @@
 package playground.domain.document;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import playground.domain.user.User;
 import playground.common.type.ApprovalState;
 
@@ -11,24 +8,28 @@ import javax.persistence.*;
 
 @Getter
 @EqualsAndHashCode(of = {"id"})
-@NoArgsConstructor
-@Table(name = "documentApproval")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "document_approval")
 @Entity
 public class DocumentApproval {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User approver;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Document document;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ApprovalState approvalState;
 
+    @Column(nullable = false)
     private Integer approvalOrder;
 
     private String approvalComment;

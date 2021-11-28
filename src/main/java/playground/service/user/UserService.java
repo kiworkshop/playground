@@ -20,7 +20,7 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public List<User> findAllById(List<Long> approverIds) {
-        return userRepository.findAllById(approverIds);
+    public List<User> findAllById(List<Long> userIds) {
+        return userRepository.findAllById(userIds);
     }
 }

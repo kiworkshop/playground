@@ -26,7 +26,7 @@ public class DocumentService {
         return documentRepository.findById(documentId);
     }
 
-    public List<Document> findAllByDrafterIdAndApprovalState(Long drafterId, ApprovalState approvalState) {
-        return documentRepository.findDocumentsByDrafterIdAndApprovalState(drafterId, approvalState);
+    public List<Document> findAllByDrafterIdAndApprovalStateOrderByIdDesc(Long drafterId, ApprovalState approvalState) {
+        return documentRepository.findByDrafterIdAndApprovalStateOrderByIdDesc(drafterId, approvalState);
     }
 }

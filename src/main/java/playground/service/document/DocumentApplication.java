@@ -9,13 +9,12 @@ import playground.service.document.dto.OutboxDocumentResponse;
 import playground.service.user.UserService;
 import playground.web.document.dto.DocumentCreateRequest;
 import playground.domain.document.Document;
-import playground.domain.document.DocumentApproval;
 import playground.web.document.dto.OutboxDocumentRequest;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static playground.common.type.ApprovalState.DRAFTING;
 
@@ -28,39 +27,56 @@ public class DocumentApplication {
     private final UserService userService;
 
     public void create(DocumentCreateRequest request) {
-        User drafter = userService.findById(request.getDrafterId())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")); // TODO: 2021/11/26 UserNotFoundException 
-        Document document = request.toEntity(drafter);
+        List<User> orderedApprovers = createOrderedApprovers(request);
+        User drafter = findUserById(request.getDrafterId());
 
-        List<User> approvers = userService.findAllById(request.getApproverIds());
-        IntStream.range(0, approvers.size())
-            .mapToObj(index -> DocumentApproval.builder()
-                .approver(approvers.get(index))
-                .approvalState(DRAFTING)
-                .approvalOrder(index + 1)
-                .build()
-            )
-            .forEach(document::addDocumentApproval);
+        Document document = request.toEntity(drafter);
+        document.createApprovals(orderedApprovers);
 
         documentService.createDocument(document);
     }
 
+    private List<User> createOrderedApprovers(DocumentCreateRequest request) {
+        Map<Long, User> approversById = createApproverMap(request);
+
+        List<User> orderedApprovers = new ArrayList<>();
+        for (Long approverId : request.getApproverIds()) {
+            orderedApprovers.add(approversById.get(approverId));
+        }
+        return orderedApprovers;
+    }
+
+    private Map<Long, User> createApproverMap(DocumentCreateRequest request) {
+        List<User> approvers = userService.findAllById(request.getApproverIds());
+        return approvers.stream()
+            .collect(Collectors.toMap(User::getId, user -> user));
+    }
+
+    private User findUserById(Long userId) {
+        return userService.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 사용자입니다. userId = %s", userId)));
+    }
+
     public DocumentResponse findDocument(Long documentId) {
-        Document document = documentService.findById(documentId)
-            .orElseThrow(() -> new IllegalArgumentException()); // TODO: 2021/11/19 DocumentNotFoundException
-        return new DocumentResponse(document);
+        Document document = findDocumentById(documentId);
+        User drafter = document.getDrafter();
+
+        return new DocumentResponse(document, drafter);
+    }
+
+    private Document findDocumentById(Long documentId) {
+        return documentService.findById(documentId)
+            .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 문서입니다. documentId = %s", documentId)));
     }
 
     public List<OutboxDocumentResponse> findOutboxDocuments(OutboxDocumentRequest request) {
-        List<Document> documents = documentService.findAllByDrafterIdAndApprovalState(request.getDrafterId(), DRAFTING);
-
+        List<Document> documents = documentService.findAllByDrafterIdAndApprovalStateOrderByIdDesc(request.getDrafterId(), DRAFTING);
         return convertOutboxDocumentResponseFrom(documents);
     }
 
     private List<OutboxDocumentResponse> convertOutboxDocumentResponseFrom(List<Document> documents) {
         return documents.stream()
             .map(OutboxDocumentResponse::new)
-            .sorted(Comparator.comparing(OutboxDocumentResponse::getId))
             .collect(Collectors.toList());
     }
 
