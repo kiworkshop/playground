@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static playground.common.type.ApprovalState.DRAFTING;
+import static playground.domain.document.ApprovalState.DRAFTING;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

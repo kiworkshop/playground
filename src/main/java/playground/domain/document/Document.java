@@ -2,15 +2,13 @@ package playground.domain.document;
 
 import lombok.*;
 import playground.domain.user.User;
-import playground.common.type.ApprovalState;
-import playground.common.type.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static playground.common.type.ApprovalState.DRAFTING;
+import static playground.domain.document.ApprovalState.DRAFTING;
 
 @Getter
 @EqualsAndHashCode(of = "id")
