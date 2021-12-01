@@ -26,7 +26,7 @@ public class DocumentResponse {
         this.approvalState = document.getApprovalState().name();
         this.userName = document.getDrafter().getName();
         this.categoryText = document.getCategory().getCategory();
-        this.approvalStateText = document.getApprovalState().getStatus();
+        this.approvalStateText = document.getApprovalState().name();
         this.userName = userName;
     }
 
@@ -39,7 +39,7 @@ public class DocumentResponse {
         this.approvalState = document.getApprovalState().name();
         this.userName = document.getDrafter().getName();
         this.categoryText = document.getCategory().getCategory();
-        this.approvalStateText = document.getApprovalState().getStatus();
+        this.approvalStateText = document.getApprovalState().getName();
         this.userName = document.getDrafter().getName();
     }
 }
