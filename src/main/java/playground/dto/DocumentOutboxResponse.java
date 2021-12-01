@@ -19,7 +19,7 @@ public class DocumentOutboxResponse {
         this.title = document.getTitle();
         this.category = document.getCategory().name();
         this.approvalState = document.getApprovalState().name();
-        this.categoryText = document.getCategory().getCategory();
+        this.categoryText = document.getCategory().getName();
         this.approvalStateText = document.getApprovalState().getName();
     }
 }

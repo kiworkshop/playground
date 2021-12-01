@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import playground.dto.DocumentRequest;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -59,7 +58,7 @@ public class Document {
         AtomicInteger index = new AtomicInteger();
         index.getAndIncrement();
         approvalIndex = 0;
-        approvals.forEach(approver-> addDocumetApprovals(approver, index.getAndIncrement()));
+        approvals.forEach(approver -> addDocumetApprovals(approver, index.getAndIncrement()));
     }
 
     public List<DocumentApproval> getDocumentApprovals() {

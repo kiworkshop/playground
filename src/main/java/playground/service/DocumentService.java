@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import playground.domain.Category;
 import playground.domain.Document;
 import playground.domain.User;
+import playground.dto.CategoryResponse;
 import playground.dto.DocumentOutboxResponse;
 import playground.dto.DocumentRequest;
 import playground.dto.DocumentResponse;
@@ -41,7 +42,8 @@ public class DocumentService {
         documentRepository.save(document);
         return document.getId();
     }
-    private Document getDocumentBy(DocumentRequest documentRequest){
+
+    private Document getDocumentBy(DocumentRequest documentRequest) {
         User drafter = userRepository.findById(documentRequest.getDrafterId()).get();
         return Document.builder()
                 .title(documentRequest.getTitle())
@@ -49,5 +51,13 @@ public class DocumentService {
                 .contents(documentRequest.getContents())
                 .drafter(drafter)
                 .build();
+    }
+
+    public List<CategoryResponse> getCatcories() {
+        List<CategoryResponse> categoryResponses = new ArrayList<>();
+        for (Category category : Category.values()) {
+            categoryResponses.add(new CategoryResponse(category.toString(), category.getName()));
+        }
+        return categoryResponses;
     }
 }
