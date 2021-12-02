@@ -4,11 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import playground.domain.Category;
 import playground.domain.Document;
+import playground.domain.DocumentApproval;
 import playground.domain.User;
-import playground.dto.CategoryResponse;
-import playground.dto.DocumentOutboxResponse;
-import playground.dto.DocumentRequest;
-import playground.dto.DocumentResponse;
+import playground.dto.*;
+import playground.repository.DocumentApprovalRepository;
 import playground.repository.DocumentRepository;
 import playground.repository.UserRepository;
 
@@ -23,9 +22,22 @@ public class DocumentService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    DocumentApprovalRepository documentApprovalRepository;
+
     public DocumentResponse findDocumentBy(Long documentId) {
         Document document = documentRepository.findById(documentId).get();
-        return new DocumentResponse(document);
+        //Drafter
+        //approvers
+        //categoryText
+        //approvalStatText
+        User drafter = userRepository.findById(document.getDrafter().getId()).get();
+        List<DocumentApproval> approvars = documentApprovalRepository.findByDocument(document);
+        List<ApprovalResponse> approvalsResponse = new ArrayList<>();
+        for (DocumentApproval approvar : approvars) {
+            approvalsResponse.add(new ApprovalResponse(approvar));
+        }
+        return new DocumentResponse(document, new UserResponse(drafter), approvalsResponse);
     }
 
     public List<DocumentOutboxResponse> findDocumentsOutbox(Long userId) {
