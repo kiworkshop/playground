@@ -12,7 +12,7 @@ import playground.service.user.request.CreateUserRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/api/user")
+@RequestMapping(path = "/api/users")
 public class UserController {
 
     private final UserService userService;

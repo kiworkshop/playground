@@ -29,7 +29,7 @@ public class UserControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", "정산시스템팀");
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
@@ -42,7 +42,7 @@ public class UserControllerTest extends AbstractControllerTest {
     void create_fail_invalid_email(String invalidEmail) throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest(invalidEmail, "password", "김성빈", "정산시스템팀");
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
@@ -55,7 +55,7 @@ public class UserControllerTest extends AbstractControllerTest {
     void create_fail_empty_password(String invalidPassword) throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", invalidPassword, "김성빈", "정산시스템팀");
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
@@ -68,7 +68,7 @@ public class UserControllerTest extends AbstractControllerTest {
     void create_fail_empty_name(String invalidName) throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", invalidName, "정산시스템팀");
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
@@ -81,7 +81,7 @@ public class UserControllerTest extends AbstractControllerTest {
     void create_fail_empty_team(String invalidTeamName) throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", invalidTeamName);
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
