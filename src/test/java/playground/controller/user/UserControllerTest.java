@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
@@ -37,7 +38,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("사용자 생성 요청을 받아 사용자를 생성 후, HTTP 201을 반환한다.")
     void create() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", "정산시스템팀", TEAM_MEMBER.getText());
+        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", 1L, TEAM_MEMBER.getText());
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -50,7 +51,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @ValueSource(strings = {"idnaver.com", "", "@naver.com"})
     @DisplayName("이메일 형식이 올바르지 않을 경우, 예외가 발생한다.")
     void create_fail_invalid_email(String invalidEmail) throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest(invalidEmail, "password", "김성빈", "정산시스템팀", TEAM_MEMBER.getText());
+        CreateUserRequest createUserRequest = new CreateUserRequest(invalidEmail, "password", "김성빈", 1L, TEAM_MEMBER.getText());
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -63,7 +64,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @NullAndEmptySource
     @DisplayName("비밀번호가 공백 또는 null있을 경우, 예외가 발생한다.")
     void create_fail_empty_password(String invalidPassword) throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", invalidPassword, "김성빈", "정산시스템팀", TEAM_MEMBER.getText());
+        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", invalidPassword, "김성빈", 1L, TEAM_MEMBER.getText());
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -76,7 +77,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @NullAndEmptySource
     @DisplayName("이름이 공백 또는 null일 경우, 예외가 발생한다.")
     void create_fail_empty_name(String invalidName) throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", invalidName, "정산시스템팀", TEAM_MEMBER.getText());
+        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", invalidName, 1L, TEAM_MEMBER.getText());
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -86,10 +87,10 @@ public class UserControllerTest extends AbstractControllerTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
-    @DisplayName("팀명이 공백 또는 null일 경우, 예외가 발생한다.")
-    void create_fail_empty_team(String invalidTeamName) throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", invalidTeamName, TEAM_MEMBER.getText());
+    @NullSource
+    @DisplayName("팀 식별번호가 null일 경우, 예외가 발생한다.")
+    void create_fail_empty_team(Long invalidTeamId) throws Exception {
+        CreateUserRequest createUserRequest = new CreateUserRequest("seongbeen93@naver.com", "password", "김성빈", invalidTeamId, TEAM_MEMBER.getText());
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON)

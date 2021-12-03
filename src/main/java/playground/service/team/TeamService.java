@@ -20,12 +20,6 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Team findByName(final String teamName) {
-        return teamRepository.findByName(teamName)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("[%s] 팀 이름에 해당하는 팀이 존재하지 않습니다.", teamName)));
-    }
-
     @Transactional
     public void create(final CreateTeamRequest createTeamRequest) {
         Team team = createTeamRequest.toTeam();

@@ -26,7 +26,7 @@ public class UserService {
 
     @Transactional
     public void create(final CreateUserRequest createUserRequest) {
-        Team team = teamService.findByName(createUserRequest.getTeamName());
+        Team team = teamService.findById(createUserRequest.getTeamId());
         User user = createUserRequest.toUser(team);
         save(user);
     }

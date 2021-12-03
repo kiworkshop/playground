@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -45,11 +44,11 @@ class UserServiceTest {
 
     @Test
     @DisplayName("사용자를 저장한다.")
-    void save() {
+    void create() {
         //given
         Team team = mock(Team.class);
-        given(teamService.findByName(anyString())).willReturn(team);
-        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀", TEAM_MEMBER.name());
+        given(teamService.findById(anyLong())).willReturn(team);
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", 1L, TEAM_MEMBER.name());
 
         //when
         userService.create(createUserRequest);
@@ -60,12 +59,12 @@ class UserServiceTest {
 
     @Test
     @DisplayName("중복된 이메일일 경우, 예외가 발생한다.")
-    void save_fail_duplicated_email() {
+    void create_fail_duplicated_email() {
         //given
         Team team = mock(Team.class);
-        given(teamService.findByName(anyString())).willReturn(team);
+        given(teamService.findById(anyLong())).willReturn(team);
         given(userRepository.save(any(User.class))).willThrow(new DuplicateKeyException("이메일 중복"));
-        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀", TEAM_MEMBER.name());
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", 1L, TEAM_MEMBER.name());
 
         //when, then
         assertThatIllegalArgumentException()
@@ -75,12 +74,12 @@ class UserServiceTest {
 
     @Test
     @DisplayName("팀이 존재하지 않을 경우, 에외가 발생한다.")
-    void save_fail_team_not_found() {
+    void create_fail_team_not_found() {
         //given
         Team team = mock(Team.class);
-        given(teamService.findByName(anyString())).willReturn(team);
+        given(teamService.findById(anyLong())).willReturn(team);
         given(userRepository.save(any(User.class))).willThrow(new DuplicateKeyException("이메일 중복"));
-        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀", TEAM_MEMBER.name());
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", 1L, TEAM_MEMBER.name());
 
         //when, then
         assertThatIllegalArgumentException()
