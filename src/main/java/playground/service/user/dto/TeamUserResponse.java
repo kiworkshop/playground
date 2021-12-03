@@ -6,6 +6,9 @@ import playground.domain.user.JobPosition;
 import playground.domain.user.Team;
 import playground.domain.user.User;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Builder
 public class TeamUserResponse {
@@ -15,13 +18,19 @@ public class TeamUserResponse {
     private String name;
     private String jobPositionText;
 
-    public static TeamUserResponse convertFrom(User user, Team team, JobPosition jobPosition) {
+    public static TeamUserResponse of(User user, Team team) {
         return TeamUserResponse.builder()
                 .id(user.getId())
-                .jobPosition(jobPosition)
+                .jobPosition(user.getJobPosition())
                 .teamName(team.getName())
                 .name(user.getName())
                 .build();
+    }
+
+    public static List<TeamUserResponse> ofList(List<User> users, Team team) {
+        return users.stream()
+                .map(user -> of(user, team))
+                .collect(Collectors.toList());
     }
 
     public String getJobPositionText() {

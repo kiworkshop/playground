@@ -1,10 +1,10 @@
 package playground.domain.user;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -20,10 +20,11 @@ public class Team {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "team", cascade = ALL, orphanRemoval = true)
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public Team(String name) {
         this.name = name;

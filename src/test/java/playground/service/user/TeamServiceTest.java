@@ -23,12 +23,12 @@ class TeamServiceTest {
     private TeamRepository teamRepository;
 
     @AfterEach
-    public void cleanup() {
+    public void cleanUp() {
         teamRepository.deleteAllInBatch();
     }
 
     @Test
-    @DisplayName("전체 팀을 조회")
+    @DisplayName("전체 팀 조회")
     void findTeams() {
         // given
         teamRepository.save(new Team("정산시스템팀"));

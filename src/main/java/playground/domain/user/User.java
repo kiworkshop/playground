@@ -9,6 +9,7 @@ import playground.domain.document.Document;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -33,6 +34,7 @@ public class User extends BaseTimeEntity {
     private String email;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "team_id", foreignKey = @ForeignKey(value = NO_CONSTRAINT))
     private Team team;
 
     @Enumerated(value = STRING)

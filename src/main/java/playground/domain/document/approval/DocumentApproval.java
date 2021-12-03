@@ -9,6 +9,7 @@ import playground.domain.user.User;
 
 import javax.persistence.*;
 
+import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -23,11 +24,11 @@ public class DocumentApproval extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "document_id", foreignKey = @ForeignKey(name = "fk_approval_document"))
+    @JoinColumn(name = "document_id", foreignKey = @ForeignKey(value = NO_CONSTRAINT))
     private Document document;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "approver_id", foreignKey = @ForeignKey(name = "fk_document_approver"))
+    @JoinColumn(name = "approver_id", foreignKey = @ForeignKey(value = NO_CONSTRAINT))
     private User approver;
 
     @Enumerated(EnumType.STRING)
