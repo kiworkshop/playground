@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class Document {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -35,7 +35,7 @@ public class Document {
     @Enumerated(EnumType.STRING)
     private ApprovalState approvalState = ApprovalState.DRAFTING;
 
-    @Transient
+    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Transient
@@ -45,13 +45,19 @@ public class Document {
     private Date createdAt;
 
     @Builder
-    public Document(Long id, String title, Category category, String contents, User drafter, Date createdAt) {
+    public Document(Long id, String title, Category category, String contents, User drafter, List<DocumentApproval> documentApprovals, Date createdAt) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
+        this.documentApprovals = documentApprovals;
         this.createdAt = createdAt;
+    }
+
+    public void addDocumentApproval(final DocumentApproval documentApproval){
+        documentApprovals.add(documentApproval);
+        documentApproval.setDocument(this);
     }
 
     public void addApprovers(List<User> approvals) {

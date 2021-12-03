@@ -11,6 +11,7 @@ import playground.repository.DocumentApprovalRepository;
 import playground.repository.DocumentRepository;
 import playground.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +28,7 @@ public class DocumentService {
 
     public DocumentResponse findDocumentBy(Long documentId) {
         Document document = documentRepository.findById(documentId).get();
-        //Drafter
-        //approvers
-        //categoryText
-        //approvalStatText
-        User drafter = userRepository.findById(document.getDrafter().getId()).get();
-        List<DocumentApproval> approvars = documentApprovalRepository.findByDocument(document);
-        List<ApprovalResponse> approvalsResponse = new ArrayList<>();
-        for (DocumentApproval approvar : approvars) {
-            approvalsResponse.add(new ApprovalResponse(approvar));
-        }
-        return new DocumentResponse(document, new UserResponse(drafter), approvalsResponse);
+        return new DocumentResponse(document);
     }
 
     public List<DocumentOutboxResponse> findDocumentsOutbox(Long userId) {
@@ -49,9 +40,12 @@ public class DocumentService {
         return documentOutboxDtos;
     }
 
+    @Transactional
     public long insertDocument(DocumentRequest documentRequest) {
         Document document = getDocumentBy(documentRequest);
         documentRepository.save(document);
+        List<DocumentApproval> documentApprovals = getDocumentApprovals(documentRequest.getApproverIds(), document);
+        documentApprovals.stream().forEach((documentApproval) -> documentApprovalRepository.save(documentApproval));
         return document.getId();
     }
 
@@ -71,5 +65,14 @@ public class DocumentService {
             categoryResponses.add(new CategoryResponse(category.toString(), category.getName()));
         }
         return categoryResponses;
+    }
+
+    private List<DocumentApproval> getDocumentApprovals(List<Long> approvars, Document document) {
+        List<DocumentApproval> documentApprovals = new ArrayList<>();
+        for (int i = 0; i < approvars.size(); i++) {
+            User approvar = userRepository.findById(approvars.get(i)).get();
+            documentApprovals.add(new DocumentApproval(approvar, i, document));
+        }
+        return documentApprovals;
     }
 }

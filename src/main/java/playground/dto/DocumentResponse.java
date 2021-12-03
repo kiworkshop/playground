@@ -3,7 +3,9 @@ package playground.dto;
 import lombok.Getter;
 import lombok.Setter;
 import playground.domain.Document;
+import playground.domain.DocumentApproval;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,40 +20,23 @@ public class DocumentResponse {
     private String categoryText;
     private String approvalStateText;
 
-    public DocumentResponse(Document document, UserResponse drafter, List<ApprovalResponse> approvers) {
+    public DocumentResponse(Document document) {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory().name();
         this.contents = document.getContents();
-        this.drafter = drafter;
-        this.approvers = approvers;
+        this.drafter = new UserResponse(document.getDrafter());
+        this.approvers = getApprovars(document.getDocumentApprovals());
         this.categoryText = document.getCategory().getName();
         this.approvalStateText = document.getApprovalState().getName();
     }
 
-//    public DocumentResponse(Document document, String userName) {
-//        this.id = document.getId();
-//        this.title = document.getTitle();
-//        this.category = document.getCategory().name();
-//        this.contents = document.getContents();
-//        this.userId = document.getDrafter().getId();
-//        this.approvalState = document.getApprovalState().name();
-//        this.userName = document.getDrafter().getName();
-//        this.categoryText = document.getCategory().getName();
-//        this.approvalStateText = document.getApprovalState().name();
-//        this.userName = userName;
-//    }
-//
-//    public DocumentResponse(Document document) {
-//        this.id = document.getId();
-//        this.title = document.getTitle();
-//        this.category = document.getCategory().name();
-//        this.contents = document.getContents();
-//        this.userId = document.getDrafter().getId();
-//        this.approvalState = document.getApprovalState().name();
-//        this.userName = document.getDrafter().getName();
-//        this.categoryText = document.getCategory().getName();
-//        this.approvalStateText = document.getApprovalState().getName();
-//        this.userName = document.getDrafter().getName();
-//    }
+    private List<ApprovalResponse> getApprovars(List<DocumentApproval> approvars) {
+        System.out.println("---------------"+approvars.size());
+        List<ApprovalResponse> approvarsResponse = new ArrayList<>();
+        for (DocumentApproval documentApproval : approvars) {
+            approvarsResponse.add(new ApprovalResponse(documentApproval));
+        }
+        return approvarsResponse;
+    }
 }
