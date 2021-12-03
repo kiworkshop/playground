@@ -18,7 +18,7 @@ public class DocumentResponse {
     private ApprovalState approvalState;
     private String userName;
 
-    public static DocumentResponse convertFrom(Document document) {
+    public static DocumentResponse of(Document document) {
         return DocumentResponse.builder()
                 .id(document.getId())
                 .title(document.getTitle())

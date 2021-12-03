@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
-import playground.domain.document.approval.DocumentApproval;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 import playground.exception.NotFoundException;
@@ -29,13 +28,13 @@ public class DocumentService {
     public DocumentResponse findOne(Long documentId) {
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new NotFoundException("문서를 찾을 수 없습니다."));
-        return DocumentResponse.convertFrom(document);
+        return DocumentResponse.of(document);
     }
 
     public List<OutboxResponse> findOutBox(Long userId) {
         List<Document> outBox = documentRepository.findOutBox(userId);
         return outBox.stream()
-                .map(OutboxResponse::convertFrom)
+                .map(OutboxResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +45,7 @@ public class DocumentService {
         Document document = request.toDocument(drafter, aprovers);
 
         documentRepository.save(document);
-        return DocumentResponse.convertFrom(document);
+        return DocumentResponse.of(document);
     }
 
     private List<User> createApproversInOrder(DocumentRequest request) {

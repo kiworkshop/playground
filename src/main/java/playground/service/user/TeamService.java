@@ -22,6 +22,7 @@ public class TeamService {
         return TeamResponse.ofList(teams);
     }
 
+    @Transactional
     public TeamResponse saveTeam(TeamRequest request) {
         Team team = teamRepository.save(request.toTeam());
         return TeamResponse.of(team);
