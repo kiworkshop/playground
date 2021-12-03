@@ -64,7 +64,6 @@ class DocumentRepositoryTest {
         assertThat(persistenceUnitUtil.isLoaded(fetchedDocument.get().getDrafter())).isTrue();
     }
 
-
     @Test
     @DisplayName("기안자의 정보가 포함된 조건에 맞는 모든 문서를 조회한다.")
     void findAllWithDrafter() {

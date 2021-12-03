@@ -13,6 +13,7 @@ import playground.common.AbstractControllerTest;
 import playground.service.team.TeamService;
 import playground.service.team.request.CreateTeamRequest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,5 +54,13 @@ class TeamControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createTeamRequest)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("모든 팀을 조회한다.")
+    void selectAll() throws Exception {
+        mockMvc.perform(get("/api/teams")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

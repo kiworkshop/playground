@@ -2,12 +2,14 @@ package playground.controller.team;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.team.TeamService;
 import playground.service.team.request.CreateTeamRequest;
+import playground.service.team.response.SelectTeamsResponse;
 
 import javax.validation.Valid;
 
@@ -25,5 +27,11 @@ public class TeamController {
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateTeamRequest createTeamRequest) {
         teamService.save(createTeamRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<SelectTeamsResponse> selectAll() {
+        SelectTeamsResponse selectTeamsResponse = teamService.selectAll();
+        return ResponseEntity.ok(selectTeamsResponse);
     }
 }
