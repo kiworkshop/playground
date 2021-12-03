@@ -11,6 +11,7 @@ import playground.domain.document.vo.Category;
 import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.domain.user.vo.JobPosition;
+import playground.service.document.response.SelectCategoryResponse;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -101,5 +102,53 @@ class DocumentRepositoryTest {
         //then
         assertThat(documents).hasSize(1);
         assertThat(persistenceUnitUtil.isLoaded(documents.get(0).getDrafter())).isTrue();
+    }
+
+    @Test
+    @DisplayName("중복 제거된 문서 항목을 반환한다.")
+    void findCategories() {
+        //given
+        Team team = new Team("정산시스템팀");
+        entityManager.persist(team);
+
+        User drafter = User.builder()
+                .email("test@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+        entityManager.persist(drafter);
+
+        Document document = Document.builder()
+                .drafter(drafter)
+                .category(Category.EDUCATION)
+                .title("교육비 정산")
+                .contents("교육비 정산 결재")
+                .build();
+        Document document2 = Document.builder()
+                .drafter(drafter)
+                .category(Category.EDUCATION)
+                .title("교육비 정산")
+                .contents("교육비 정산 결재")
+                .build();
+        Document document3 = Document.builder()
+                .drafter(drafter)
+                .category(Category.OPERATING_EXPENSES)
+                .title("교육비 정산")
+                .contents("교육비 정산 결재")
+                .build();
+        documentRepository.save(document);
+        documentRepository.save(document2);
+        documentRepository.save(document3);
+
+        //when
+        List<SelectCategoryResponse> selectCategoryResponses = documentRepository.findCategories();
+
+        //then
+        assertThat(selectCategoryResponses).hasSize(2);
+        assertThat(selectCategoryResponses)
+                .extracting("category")
+                .containsExactly(Category.EDUCATION, Category.OPERATING_EXPENSES);
     }
 }

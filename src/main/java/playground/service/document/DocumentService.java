@@ -7,6 +7,7 @@ import playground.domain.document.vo.ApprovalState;
 import playground.domain.user.User;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.request.CreateDocumentRequest;
+import playground.service.document.response.SelectCategoryResponse;
 import playground.service.document.response.SelectDocumentResponse;
 import playground.service.document.response.SelectSingleOutBoxResponse;
 import playground.service.user.UserService;
@@ -79,5 +80,9 @@ public class DocumentService {
         if (documents.isEmpty()) {
             throw new IllegalArgumentException("현재 결재중인 문서가 존재하지 않습니다.");
         }
+    }
+
+    public List<SelectCategoryResponse> findCategories() {
+        return documentRepository.findCategories();
     }
 }

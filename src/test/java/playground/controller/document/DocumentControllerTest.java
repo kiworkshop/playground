@@ -125,4 +125,12 @@ class DocumentControllerTest extends AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("모든 문서 항목을 조회한다.")
+    void findCategories() throws Exception {
+        mockMvc.perform(get("/api/documents/categories")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }

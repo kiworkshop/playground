@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.document.DocumentService;
 import playground.service.document.request.CreateDocumentRequest;
+import playground.service.document.response.SelectCategoryResponse;
 import playground.service.document.response.SelectDocumentResponse;
 import playground.service.document.response.SelectSingleOutBoxResponse;
 
@@ -43,5 +44,11 @@ public class DocumentController {
     public ResponseEntity<List<SelectSingleOutBoxResponse>> findOutBox(final @RequestParam Long drafterId) {
         List<SelectSingleOutBoxResponse> selectMultiOutBoxResponse = documentService.findOutBox(drafterId);
         return ResponseEntity.ok(selectMultiOutBoxResponse);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<SelectCategoryResponse>> findCategories() {
+        List<SelectCategoryResponse> selectCategoryResponses = documentService.findCategories();
+        return ResponseEntity.ok(selectCategoryResponses);
     }
 }
