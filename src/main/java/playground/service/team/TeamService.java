@@ -6,10 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import playground.domain.team.Team;
 import playground.repository.team.TeamRepository;
 import playground.service.team.request.CreateTeamRequest;
-import playground.service.team.response.SelectTeamsResponse;
+import playground.service.team.response.SelectTeamResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
@@ -35,10 +36,13 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public SelectTeamsResponse findAll() {
+    public List<SelectTeamResponse> findAll() {
         List<Team> teams = teamRepository.findAll();
         checkEmpty(teams);
-        return new SelectTeamsResponse(teams);
+
+        return teams.stream()
+                .map(SelectTeamResponse::new)
+                .collect(Collectors.toList());
     }
 
     private void checkEmpty(final List<Team> teams) {

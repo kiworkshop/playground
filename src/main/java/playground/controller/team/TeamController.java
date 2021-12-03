@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.team.TeamService;
 import playground.service.team.request.CreateTeamRequest;
-import playground.service.team.response.SelectTeamsResponse;
+import playground.service.team.response.SelectTeamResponse;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/teams")
@@ -30,8 +31,8 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<SelectTeamsResponse> findAll() {
-        SelectTeamsResponse selectTeamsResponse = teamService.findAll();
-        return ResponseEntity.ok(selectTeamsResponse);
+    public ResponseEntity<List<SelectTeamResponse>> findAll() {
+        List<SelectTeamResponse> selectTeamResponses = teamService.findAll();
+        return ResponseEntity.ok(selectTeamResponses);
     }
 }

@@ -10,11 +10,12 @@ import org.springframework.dao.DuplicateKeyException;
 import playground.domain.team.Team;
 import playground.repository.team.TeamRepository;
 import playground.service.team.request.CreateTeamRequest;
-import playground.service.team.response.SelectTeamsResponse;
+import playground.service.team.response.SelectTeamResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,13 +69,14 @@ class TeamServiceTest {
         //given
         Team team1 = new Team("정산시스템팀");
         Team team2 = new Team("서비스개발팀");
-        given(teamRepository.findAll()).willReturn(Arrays.asList(team1, team2));
+        List<Team> teams = Arrays.asList(team1, team2);
+        given(teamRepository.findAll()).willReturn(teams);
 
         //when
-        SelectTeamsResponse selectTeamsResponse = teamService.findAll();
+        List<SelectTeamResponse> selectTeamResponses = teamService.findAll();
 
         //then
-        assertThat(selectTeamsResponse).isNotNull();
+        assertThat(selectTeamResponses).hasSize(teams.size());
     }
 
     @Test

@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.user.UserService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectAllUserInTeamResponse;
+import playground.service.user.response.SelectUserResponse;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/users")
@@ -31,8 +32,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<SelectAllUserInTeamResponse> findAllUserInTeam(@RequestParam final Long teamId) {
-        SelectAllUserInTeamResponse selectAllUserInTeamResponse = userService.findAllUserInTeam(teamId);
-        return ResponseEntity.ok(selectAllUserInTeamResponse);
+    public ResponseEntity<List<SelectUserResponse>> findAllUserInTeam(@RequestParam final Long teamId) {
+        List<SelectUserResponse> selectUserResponses = userService.findAllUserInTeam(teamId);
+        return ResponseEntity.ok(selectUserResponses);
     }
 }

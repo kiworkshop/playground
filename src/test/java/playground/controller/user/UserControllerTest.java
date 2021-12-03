@@ -13,7 +13,7 @@ import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.service.user.UserService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectAllUserInTeamResponse;
+import playground.service.user.response.SelectUserResponse;
 
 import java.util.Collections;
 
@@ -109,8 +109,8 @@ public class UserControllerTest extends AbstractControllerTest {
         given(user.getJobPosition()).willReturn(TEAM_MEMBER);
         given(user.getTeam()).willReturn(team);
         given(team.getName()).willReturn("운영팀");
-        SelectAllUserInTeamResponse selectAllUserInTeamResponse = new SelectAllUserInTeamResponse(Collections.singletonList(user));
-        given(userService.findAllUserInTeam(anyLong())).willReturn(selectAllUserInTeamResponse);
+        SelectUserResponse selectUserResponse = new SelectUserResponse(user);
+        given(userService.findAllUserInTeam(anyLong())).willReturn(Collections.singletonList(selectUserResponse));
 
         mockMvc.perform(get("/api/users")
                 .param("teamId", "1")

@@ -8,10 +8,11 @@ import playground.domain.user.User;
 import playground.repository.user.UserRepository;
 import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectAllUserInTeamResponse;
+import playground.service.user.response.SelectUserResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -60,8 +61,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public SelectAllUserInTeamResponse findAllUserInTeam(final Long teamId) {
+    public List<SelectUserResponse> findAllUserInTeam(final Long teamId) {
         Team team = teamService.findById(teamId);
-        return new SelectAllUserInTeamResponse(team.getUsers());
+
+        return team.getUsers().stream()
+                .map(SelectUserResponse::new)
+                .collect(Collectors.toList());
     }
 }
