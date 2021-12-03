@@ -9,14 +9,13 @@ import playground.domain.Document;
 import playground.domain.Team;
 import playground.domain.User;
 import playground.dto.DocumentResponse;
-import playground.repository.DocumentApprovalRepository;
 import playground.repository.DocumentRepository;
 import playground.repository.TeamRepositiory;
 import playground.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static playground.domain.Category.EDUCATION;
 import static playground.domain.Rank.TEAM_MEMBER;
-import static playground.domain.Category.*;
 
 @SpringBootTest
 public class DocumentServiceTest {
@@ -37,7 +36,6 @@ public class DocumentServiceTest {
         documentRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
         teamRepositiory.deleteAllInBatch();
-        // deleteAll() 과 차이점은 무엇일까?
     }
 
     @DisplayName("id로 Document 단건을 조회한다")
