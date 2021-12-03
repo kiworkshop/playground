@@ -52,4 +52,10 @@ public class TeamService {
             throw new EntityNotFoundException("존재하는 팀이 없습니다.");
         }
     }
+
+    @Transactional(readOnly = true)
+    public Team findById(final Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 팀이 존재하지 않습니다.", teamId)));
+    }
 }

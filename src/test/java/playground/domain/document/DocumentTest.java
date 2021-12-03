@@ -6,6 +6,7 @@ import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
 import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -20,7 +21,13 @@ class DocumentTest {
         Category category = Category.EDUCATION;
         String contents = "교육비";
         Team team = mock(Team.class);
-        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
+        User drafter = User.builder()
+                .email("test@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
 
         //when
         Document document = Document.builder()

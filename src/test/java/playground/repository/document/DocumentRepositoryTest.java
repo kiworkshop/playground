@@ -10,6 +10,7 @@ import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
 import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -44,7 +45,13 @@ class DocumentRepositoryTest {
         //given
         Team team = new Team("정산시스템팀");
         entityManager.persist(team);
-        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
+        User drafter = User.builder()
+                .email("test@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
         entityManager.persist(drafter);
         Document document = Document.builder()
                 .drafter(drafter)
@@ -70,7 +77,13 @@ class DocumentRepositoryTest {
         //given
         Team team = new Team("정산시스템팀");
         entityManager.persist(team);
-        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
+        User drafter = User.builder()
+                .email("test@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
         entityManager.persist(drafter);
         Document document = Document.builder()
                 .drafter(drafter)

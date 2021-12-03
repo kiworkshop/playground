@@ -8,6 +8,7 @@ import playground.domain.user.User;
 import playground.repository.user.UserRepository;
 import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
+import playground.service.user.response.SelectUsersInTeamResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -56,5 +57,11 @@ public class UserService {
     public User findById(final Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 회원이 존재하지 않습니다.", userId)));
+    }
+
+    @Transactional(readOnly = true)
+    public SelectUsersInTeamResponse selectUsersInTeam(final Long teamId) {
+        Team team = teamService.findById(teamId);
+        return new SelectUsersInTeamResponse(team.getUsers());
     }
 }

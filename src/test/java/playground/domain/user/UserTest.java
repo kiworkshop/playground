@@ -3,6 +3,7 @@ package playground.domain.user;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import playground.domain.team.Team;
+import playground.domain.user.vo.JobPosition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -19,7 +20,13 @@ class UserTest {
         String name = "김성빈";
 
         //when
-        User user = new User(email, password, name, team);
+        User user = User.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
 
         //then
         assertThat(user)

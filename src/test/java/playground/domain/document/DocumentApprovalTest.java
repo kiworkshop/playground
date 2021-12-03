@@ -6,6 +6,7 @@ import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
 import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -17,8 +18,22 @@ class DocumentApprovalTest {
     void create() {
         //given
         Team team = mock(Team.class);
-        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
-        User approver = new User("test@naver.com", "Password123!", "approver", team);
+        User drafter = User.builder()
+                .email("test1@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+
+        User approver = User.builder()
+                .email("test2@naver.com")
+                .password("Password123!")
+                .name("approver")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+
         Document document = Document.builder()
                 .drafter(drafter)
                 .category(Category.EDUCATION)

@@ -21,8 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -113,5 +115,31 @@ class TeamServiceTest {
         assertThatThrownBy(() -> teamService.selectAll())
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("존재하는 팀이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("식별번호에 일치하는 팀을 조회한다.")
+    void findById() {
+        //given
+        Team mockTeam = mock(Team.class);
+        given(teamRepository.findById(anyLong())).willReturn(Optional.of(mockTeam));
+
+        //when
+        Team team = teamService.findById(1L);
+
+        //then
+        assertThat(team).isNotNull();
+    }
+
+    @Test
+    @DisplayName("식별번호에 일치하는 팀이 존재하지 않을 경우, 예외가 발생한다.")
+    void findById_fail_not_found_team() {
+        //given
+        given(teamRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> teamService.findById(1L))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("해당하는 팀이 존재하지 않습니다");
     }
 }

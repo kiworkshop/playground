@@ -2,12 +2,15 @@ package playground.controller.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.user.UserService;
 import playground.service.user.request.CreateUserRequest;
+import playground.service.user.response.SelectUsersInTeamResponse;
 
 import javax.validation.Valid;
 
@@ -25,5 +28,11 @@ public class UserController {
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateUserRequest createUserRequest) {
         userService.save(createUserRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<SelectUsersInTeamResponse> selectUsersInTeam(@RequestParam final Long teamId) {
+        SelectUsersInTeamResponse selectUsersInTeamResponse = userService.selectUsersInTeam(teamId);
+        return ResponseEntity.ok(selectUsersInTeamResponse);
     }
 }

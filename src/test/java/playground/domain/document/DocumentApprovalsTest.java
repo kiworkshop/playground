@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import playground.domain.document.vo.Category;
 import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,9 +21,29 @@ class DocumentApprovalsTest {
     void enroll() {
         //given
         Team team = mock(Team.class);
-        User drafter = new User("test1@naver.com", "Password123!", "drafter", team);
-        User approver1 = new User("test2@naver.com", "Password123!", "approver1", team);
-        User approver2 = new User("test3@naver.com", "Password123!", "approver2", team);
+        User drafter = User.builder()
+                .email("test1@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+
+        User approver1 = User.builder()
+                .email("test2@naver.com")
+                .password("Password123!")
+                .name("approver1")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+
+        User approver2 = User.builder()
+                .email("test2@naver.com")
+                .password("Password123!")
+                .name("approver2")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
 
         Document document = Document.builder()
                 .drafter(drafter)
@@ -45,9 +66,27 @@ class DocumentApprovalsTest {
     void enroll_fail() {
         //given
         Team team = mock(Team.class);
-        User drafter = new User("test1@naver.com", "Password123!", "drafter", team);
-        User approver1 = new User("test2@naver.com", "Password123!", "approver1", team);
-        User approver2 = new User("test3@naver.com", "Password123!", "approver2", team);
+        User drafter = User.builder()
+                .email("test1@naver.com")
+                .password("Password123!")
+                .name("drafter")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+        User approver1 = User.builder()
+                .email("test2@naver.com")
+                .password("Password123!")
+                .name("approver1")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
+        User approver2 = User.builder()
+                .email("test2@naver.com")
+                .password("Password123!")
+                .name("approver2")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
 
         Document document = Document.builder()
                 .drafter(drafter)
@@ -58,7 +97,13 @@ class DocumentApprovalsTest {
 
         DocumentApprovals documentApprovals = new DocumentApprovals();
         documentApprovals.enroll(Arrays.asList(approver1, approver2), document);
-        User approver3 = new User("test4@naver.com", "Password123!", "approver3", team);
+        User approver3 = User.builder()
+                .email("test4@naver.com")
+                .password("Password123!")
+                .name("approver3")
+                .team(team)
+                .jobPosition(JobPosition.TEAM_MEMBER)
+                .build();
 
         //when, then
         assertThatIllegalStateException()
