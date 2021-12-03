@@ -3,8 +3,10 @@ package playground.service.document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
 import playground.domain.document.vo.ApprovalState;
 import playground.domain.user.User;
+import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.request.CreateDocumentRequest;
 import playground.service.document.response.SelectCategoryResponse;
@@ -20,11 +22,14 @@ import java.util.stream.Collectors;
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
+    private final DocumentApprovalRepository documentApprovalRepository;
     private final UserService userService;
 
     public DocumentService(final DocumentRepository documentRepository,
+                           final DocumentApprovalRepository documentApprovalRepository,
                            final UserService userService) {
         this.documentRepository = documentRepository;
+        this.documentApprovalRepository = documentApprovalRepository;
         this.userService = userService;
     }
 
@@ -58,7 +63,14 @@ public class DocumentService {
     @Transactional(readOnly = true)
     public SelectDocumentResponse find(final Long documentId) {
         Document document = findDocumentAndDrafterById(documentId);
-        return new SelectDocumentResponse(document);
+
+        List<Long> documentApprovalIds = document.getDocumentApprovals()
+                .stream()
+                .map(DocumentApproval::getId)
+                .collect(Collectors.toList());
+        List<DocumentApproval> documentApprovals = documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(documentApprovalIds);
+
+        return new SelectDocumentResponse(document, documentApprovals);
     }
 
     private Document findDocumentAndDrafterById(final Long documentId) {

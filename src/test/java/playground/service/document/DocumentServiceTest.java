@@ -7,9 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
 import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
+import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
+import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.request.CreateDocumentRequest;
 import playground.service.document.response.SelectDocumentResponse;
@@ -38,6 +42,9 @@ class DocumentServiceTest {
 
     @Mock
     private DocumentRepository documentRepository;
+
+    @Mock
+    private DocumentApprovalRepository documentApprovalRepository;
 
     @Mock
     private UserService userService;
@@ -83,6 +90,10 @@ class DocumentServiceTest {
         User drafter = mock(User.class);
         given(drafter.getId()).willReturn(1L);
         given(drafter.getName()).willReturn("기안자");
+        given(drafter.getJobPosition()).willReturn(JobPosition.PART_MANAGER);
+
+        Team team = mock(Team.class);
+        given(drafter.getTeam()).willReturn(team);
 
         Document document = mock(Document.class);
         given(document.getId()).willReturn(1L);
@@ -92,6 +103,10 @@ class DocumentServiceTest {
         given(document.getContents()).willReturn("교육비");
         given(document.getApprovalState()).willReturn(ApprovalState.DRAFTING);
 
+        DocumentApproval documentApproval = mock(DocumentApproval.class);
+        given(documentApproval.getApprover()).willReturn(drafter);
+        given(documentApproval.getApprovalState()).willReturn(ApprovalState.DRAFTING);
+        given(documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(anyList())).willReturn(Collections.singletonList(documentApproval));
         given(documentRepository.findDocumentAndDrafterById(anyLong())).willReturn(Optional.of(document));
 
         //when
