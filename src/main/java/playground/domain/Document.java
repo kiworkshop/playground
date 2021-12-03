@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import playground.dto.DocumentRequest;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -17,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Document {
+public class Document extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -29,37 +28,46 @@ public class Document {
 
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drafter_id")
     private User drafter;
 
     @Enumerated(EnumType.STRING)
     private ApprovalState approvalState = ApprovalState.DRAFTING;
 
-    @Transient
+    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Transient
-    private int approvalIndex;
-
-    @CreatedDate
-    private Date createdAt;
+    private int approvalIndex = 0;
 
     @Builder
-    public Document(Long id, String title, Category category, String contents, User drafter, Date createdAt) {
+    public Document(Long id, String title, Category category, String contents, User drafter, List<DocumentApproval> documentApprovals) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
-        this.createdAt = createdAt;
+        this.documentApprovals = documentApprovals;
+    }
+
+    public Document(String title, Category category, String contents, User drafter) {
+        this.title = title;
+        this.category = category;
+        this.contents = contents;
+        this.drafter = drafter;
+    }
+
+    public void addDocumentApproval(final DocumentApproval documentApproval){
+        documentApprovals.add(documentApproval);
+        documentApproval.setDocument(this);
     }
 
     public void addApprovers(List<User> approvals) {
         AtomicInteger index = new AtomicInteger();
         index.getAndIncrement();
         approvalIndex = 0;
-        approvals.forEach(approver-> addDocumetApprovals(approver, index.getAndIncrement()));
+        approvals.forEach(approver -> addDocumetApprovals(approver, index.getAndIncrement()));
     }
 
     public List<DocumentApproval> getDocumentApprovals() {

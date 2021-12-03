@@ -11,7 +11,7 @@ public enum Category {
     EDUCATION("교육"),
     PRODUCT_PURCHASING("물품구매");
 
-    private final String category;
+    private final String name;
 
 
 }

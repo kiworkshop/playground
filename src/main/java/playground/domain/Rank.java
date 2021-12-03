@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ApprovalState {
+public enum Rank {
 
-    DRAFTING("결재중"),
-    APPROVED("승인"),
-    CANCELED("거절");
+    TEAM_LEADER("팀장"),
+    PART_MANAGER("파트장"),
+    TEAM_MEMBER("팀원");
 
     private final String name;
 
