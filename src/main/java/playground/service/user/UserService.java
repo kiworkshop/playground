@@ -1,0 +1,55 @@
+package playground.service.user;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import playground.domain.user.User;
+import playground.repository.user.UserRepository;
+import playground.service.user.request.CreateUserRequest;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public UserService(final UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Transactional
+    public void save(final CreateUserRequest createUserRequest) {
+        User user = createUserRequest.toUser();
+        save(user);
+    }
+
+    private void save(final User user) {
+        try {
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException(String.format("[%s] 이미 가입된 이메일입니다.", user.getEmail()));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findAllById(final List<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+        checkEmpty(userIds, users);
+
+        return users;
+    }
+
+    private void checkEmpty(final List<Long> userIds, final List<User> users) {
+        if (users.isEmpty()) {
+            throw new EntityNotFoundException(String.format("%s 식별번호에 해당하는 회원이 존재하지 않습니다.", userIds));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public User findById(final Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 회원이 존재하지 않습니다.", userId)));
+    }
+}

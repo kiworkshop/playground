@@ -1,0 +1,34 @@
+POST http://localhost:8080/api/documents
+Content-Type: application/json
+
+{
+  "title": "교육비 결재 요청",
+  "category": "EDUCATION",
+  "contents": "사외교육비 결재 요청드립니다.",
+  "drafterId": 1,
+  "approverIds": [
+    1,
+    2
+  ]
+}
+
+###
+POST http://localhost:8080/api/documents
+Content-Type: application/json
+
+{
+  "title": "운영비 결재 요청",
+  "category": "OPERATING_EXPENSES",
+  "contents": "팀 운영비 결재 요청드립니다.",
+  "drafterId": 1,
+  "approverIds": [
+    1,
+    2
+  ]
+}
+
+###
+GET http://localhost:8080/api/documents/1
+
+###
+GET http://localhost:8080/api/documents/outbox?drafterId=1
