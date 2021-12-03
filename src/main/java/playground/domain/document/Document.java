@@ -54,8 +54,15 @@ public class Document extends BaseTimeEntity {
         this.documentApprovals = new ArrayList<>();
     }
 
-    public void addDocumentApprovals(DocumentApproval documentApproval) {
-        this.documentApprovals.add(documentApproval);
-        documentApproval.setDocument(this);
+    public void createApprovals(List<User> aprovers) {
+        for (int i = 0; i < aprovers.size(); i++) {
+            DocumentApproval approval = DocumentApproval.builder()
+                    .approver(aprovers.get(i))
+                    .approvalOrder(i + 1)
+                    .build();
+
+            approval.upDateDocument(this);
+            this.documentApprovals.add(approval);
+        }
     }
 }

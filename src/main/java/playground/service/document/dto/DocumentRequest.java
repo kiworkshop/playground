@@ -18,12 +18,15 @@ public class DocumentRequest {
     private Long drafterId;
     private List<Long> approverIds;
 
-    public Document toDocument(User drafter) {
-        return Document.builder()
+    public Document toDocument(User drafter, List<User> aprovers) {
+        Document document = Document.builder()
                 .title(title)
                 .category(category)
                 .contents(contents)
                 .drafter(drafter)
                 .build();
+
+        document.createApprovals(aprovers);
+        return document;
     }
 }

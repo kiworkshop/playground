@@ -13,7 +13,9 @@ import playground.service.document.dto.DocumentRequest;
 import playground.service.document.dto.DocumentResponse;
 import playground.service.document.dto.OutboxResponse;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,27 +40,35 @@ public class DocumentService {
     }
 
     @Transactional
-    public DocumentResponse save(DocumentRequest dto) {
-        User drafter = findUser(dto.getDrafterId());
-        Document document = dto.toDocument(drafter);
+    public DocumentResponse save(DocumentRequest request) {
+        User drafter = findUser(request.getDrafterId());
+        List<User> aprovers = createApproversInOrder(request);
+        Document document = request.toDocument(drafter, aprovers);
 
-        setDocumentApproval(dto.getApproverIds(), document);
         documentRepository.save(document);
         return DocumentResponse.convertFrom(document);
+    }
+
+    private List<User> createApproversInOrder(DocumentRequest request) {
+        Map<Long, User> approvers = findApprovers(request);
+
+        List<User> orderApprovers = new ArrayList<>();
+        for (Long approverId : request.getApproverIds()) {
+            orderApprovers.add(approvers.get(approverId));
+        }
+
+        return orderApprovers;
+    }
+
+    private Map<Long, User> findApprovers(DocumentRequest request) {
+        List<User> approvers = userRepository.findAllById(request.getApproverIds());
+        return approvers.stream()
+                .collect(Collectors.toMap(User::getId, user -> user));
     }
 
     private User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("문서 기안 사용자를 찾을 수 없습니다."));
-    }
-
-    private void setDocumentApproval(List<Long> approvalIds, Document document) {
-        int approvalOrder = 0;
-        for (Long approvalId : approvalIds) {
-            User approver = findApprover(approvalId);
-            DocumentApproval documentApproval = DocumentApproval.create(approver, approvalOrder++);
-            document.addDocumentApprovals(documentApproval);
-        }
     }
 
     private User findApprover(Long approvalId) {

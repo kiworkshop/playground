@@ -1,5 +1,6 @@
 package playground.domain.document.approval;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.BaseTimeEntity;
@@ -25,7 +26,7 @@ public class DocumentApproval extends BaseTimeEntity {
     @JoinColumn(name = "document_id", foreignKey = @ForeignKey(name = "fk_approval_document"))
     private Document document;
 
-    @OneToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "approver_id", foreignKey = @ForeignKey(name = "fk_document_approver"))
     private User approver;
 
@@ -37,17 +38,14 @@ public class DocumentApproval extends BaseTimeEntity {
     @Lob
     private String approvalComment;
 
-    private DocumentApproval(User approver, int approvalOrder) {
+    @Builder
+    public DocumentApproval(User approver, int approvalOrder) {
         this.approver = approver;
         this.approvalState = DRAFTING;
         this.approvalOrder = approvalOrder;
     }
 
-    public static DocumentApproval create(User approver, int approvalOrder) {
-        return new DocumentApproval(approver, approvalOrder);
-    }
-
-    public void setDocument(Document document) {
+    public void upDateDocument(Document document) {
         this.document = document;
     }
 }

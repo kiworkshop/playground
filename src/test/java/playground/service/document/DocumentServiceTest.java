@@ -11,6 +11,8 @@ import playground.domain.document.approval.DocumentApproval;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +57,8 @@ class DocumentServiceTest {
     @Test
     void findOutBoxBy() {
         //given
-        document.addDocumentApprovals(DocumentApproval.create(user1, 1));
-        document.addDocumentApprovals(DocumentApproval.create(user2, 2));
+        List<User> approvers = Arrays.asList(user1, user2);
+        document.createApprovals(approvers);
 
         //when
         List<Document> outBox = documentRepository.findOutBox(user2.getId());
