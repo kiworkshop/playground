@@ -8,6 +8,7 @@ import playground.dto.UserResponse;
 import playground.repository.TeamRepositiory;
 import playground.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class UserService {
     @Autowired
     TeamRepositiory teamRepository;
 
+    @Transactional
     public List<UserResponse> findBy(Long teamId) {
         Team team = teamRepository.findById(teamId).get();
         List<User> users = userRepository.findByTeam(team);

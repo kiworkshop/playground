@@ -13,6 +13,7 @@ import playground.dto.TeamResponse;
 import playground.repository.TeamRepositiory;
 import playground.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class TeamService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public List<TeamResponse> findAll() {
         List<Team> teams = teamRepositiory.findAll();
         List<TeamResponse> teamResponses = new ArrayList<>();

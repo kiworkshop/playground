@@ -26,11 +26,13 @@ public class DocumentService {
     @Autowired
     DocumentApprovalRepository documentApprovalRepository;
 
+    @Transactional
     public DocumentResponse findDocumentBy(Long documentId) {
         Document document = documentRepository.findById(documentId).get();
         return new DocumentResponse(document);
     }
 
+    @Transactional
     public List<DocumentOutboxResponse> findDocumentsOutbox(Long userId) {
         List<Document> documents = documentRepository.findByDrafterIdOrderByCreatedDateDesc(userId);
         List<DocumentOutboxResponse> documentOutboxDtos = new ArrayList<>();
@@ -49,6 +51,7 @@ public class DocumentService {
         return document.getId();
     }
 
+    @Transactional
     private Document getDocumentBy(DocumentRequest documentRequest) {
         User drafter = userRepository.findById(documentRequest.getDrafterId()).get();
         return Document.builder()
@@ -59,7 +62,8 @@ public class DocumentService {
                 .build();
     }
 
-    public List<CategoryResponse> getCatcories() {
+    @Transactional
+    public List<CategoryResponse> getCategories() {
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         for (Category category : Category.values()) {
             categoryResponses.add(new CategoryResponse(category.toString(), category.getName()));

@@ -36,6 +36,6 @@ public class DocumentController {
     }
     @GetMapping("/categories")
     public List<CategoryResponse> getCategories(){
-        return documentService.getCatcories();
+        return documentService.getCategories();
     }
 }
