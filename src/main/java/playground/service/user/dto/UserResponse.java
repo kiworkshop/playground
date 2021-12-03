@@ -14,7 +14,7 @@ public class UserResponse {
     private LocalDateTime insertDate;
     private LocalDateTime updateDate;
 
-    public static UserResponse convertFrom(User user) {
+    public static UserResponse of(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())

@@ -1,0 +1,19 @@
+### 팀 저장1
+POST http://localhost:8080/api/team
+Content-Type: application/json
+
+{
+  "name": "정산시스템팀"
+}
+
+### 팀 저장2
+POST http://localhost:8080/api/team
+Content-Type: application/json
+
+{
+"name": "서비스개발팀"
+}
+
+
+### 전체 팀 조회
+GET http://localhost:8080/api/teams

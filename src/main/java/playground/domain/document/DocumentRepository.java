@@ -15,4 +15,5 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
             "on d.id = a.document.id " +
             "where a.approver.id = :userId order by a.insertDate asc")
     List<Document> findOutBox(@Param(value = "userId") Long userId);
+
 }

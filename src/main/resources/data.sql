@@ -1,14 +1,16 @@
-insert into user(id, name, insert_date)
-values (1, 'user1', '2021-11-17 15:50:57'),
-       (2, 'user2', '2021-11-17 15:50:57'),
-       (3, 'user3', '2021-11-17 15:50:57');
+insert into team(id, name, insert_date)
+values (1, '정산시스템팀', '2021-10-17 15:50:57'),
+       (2, '서비스개발팀', '2021-10-17 15:50:57');
 
+insert into user(id, name, password, email, team_id, job_position, insert_date)
+values (1, 'user1', 'pa@sw**d', 'user1@gmail.com', 1, 'TEAM_LEADER', '2021-11-17 15:50:57'),
+       (2, 'user2', 'pa@sw**d', 'user2@gmail.com', 1, 'TEAM_MEMBER', '2021-11-17 15:50:57'),
+       (3, 'user3', 'pa@sw**d', 'user3@gmail.com', 2, 'PART_MANAGER', '2021-11-17 15:50:57');
 
 insert into document(id, title, category, contents, drafter_id, approval_state, insert_date)
 values (1, '문서1', 'OPERATING_EXPENSES', '운영비 결재 요청드립니다.', 1, 'APPROVED', '2021-11-17 16:50:57'),
        (2, '문서2', 'EDUCATION', '사외교육비 결재 요청드립니다.', 2, 'DRAFTING', '2021-11-17 16:50:57'),
        (3, '문서3', 'EDUCATION', '사외교육비 결재 요청드립니다.', 3, 'CANCELED', '2021-11-17 16:50:57');
-
 
 insert into document_approval(id, approver_id, document_id, approval_state, approval_order, approval_comment, insert_date)
 values (1, 1, 1, 'APPROVED', 1, '', '2021-11-17 17:50:57'),

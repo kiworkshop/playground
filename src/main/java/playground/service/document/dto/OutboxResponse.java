@@ -15,7 +15,7 @@ public class OutboxResponse {
     private Category category;
     private ApprovalState approvalState;
 
-    public static OutboxResponse convertFrom(Document document) {
+    public static OutboxResponse of(Document document) {
         return OutboxResponse.builder()
                 .id(document.getId())
                 .title(document.getTitle())

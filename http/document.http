@@ -18,3 +18,6 @@ GET http://localhost:8080/api/documents/1
 
 ### OUT BOX 문서 조회
 GET http://localhost:8080/api/documents/out?userId=1
+
+### 문서 분류 조회
+GET http://localhost:8080/api/documents/categories

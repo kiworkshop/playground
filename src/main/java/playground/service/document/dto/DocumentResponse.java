@@ -5,6 +5,9 @@ import lombok.Getter;
 import playground.domain.document.Category;
 import playground.domain.document.Document;
 import playground.domain.document.approval.ApprovalState;
+import playground.service.user.dto.TeamUserResponse;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -14,18 +17,29 @@ public class DocumentResponse {
     private String title;
     private Category category;
     private String contents;
-    private Long userId;
+    private TeamUserResponse drafter;
     private ApprovalState approvalState;
-    private String userName;
+    private List<ApprovalResponse> approvers;
 
-    public static DocumentResponse convertFrom(Document document) {
+    public static DocumentResponse of(Document document, TeamUserResponse drafter) {
         return DocumentResponse.builder()
                 .id(document.getId())
                 .title(document.getTitle())
                 .category(document.getCategory())
                 .contents(document.getContents())
-                .userId(document.getDrafter().getId())
-                .userName(document.getDrafter().getName())
+                .drafter(drafter)
+                .approvalState(document.getApprovalState())
+                .build();
+    }
+
+    public static DocumentResponse of(Document document, TeamUserResponse drafter, List<ApprovalResponse> approvals) {
+        return DocumentResponse.builder()
+                .id(document.getId())
+                .title(document.getTitle())
+                .category(document.getCategory())
+                .contents(document.getContents())
+                .drafter(drafter)
+                .approvers(approvals)
                 .approvalState(document.getApprovalState())
                 .build();
     }

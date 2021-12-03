@@ -2,6 +2,7 @@ package learning;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Sql("data.sql")
 class DocumentTest {
 
     @DisplayName("문서 생성하기")

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -35,7 +36,7 @@ public class Document extends BaseTimeEntity {
     private String contents;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "drafter_id", foreignKey = @ForeignKey(name = "fk_document_drafter"))
+    @JoinColumn(name = "drafter_id", foreignKey = @ForeignKey(value = NO_CONSTRAINT))
     private User drafter;
 
     @Enumerated(EnumType.STRING)
@@ -54,8 +55,15 @@ public class Document extends BaseTimeEntity {
         this.documentApprovals = new ArrayList<>();
     }
 
-    public void addDocumentApprovals(DocumentApproval documentApproval) {
-        this.documentApprovals.add(documentApproval);
-        documentApproval.setDocument(this);
+    public void createApprovals(List<User> aprovers) {
+        for (int i = 0; i < aprovers.size(); i++) {
+            DocumentApproval approval = DocumentApproval.builder()
+                    .approver(aprovers.get(i))
+                    .approvalOrder(i + 1)
+                    .build();
+
+            approval.upDateDocument(this);
+            this.documentApprovals.add(approval);
+        }
     }
 }
