@@ -3,8 +3,10 @@ package playground.service.user;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.repository.user.UserRepository;
+import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,14 +16,17 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TeamService teamService;
 
-    public UserService(final UserRepository userRepository) {
+    public UserService(final UserRepository userRepository, final TeamService teamService) {
         this.userRepository = userRepository;
+        this.teamService = teamService;
     }
 
     @Transactional
     public void save(final CreateUserRequest createUserRequest) {
-        User user = createUserRequest.toUser();
+        Team team = teamService.findByName(createUserRequest.getTeamName());
+        User user = createUserRequest.toUser(team);
         save(user);
     }
 

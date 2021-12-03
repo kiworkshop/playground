@@ -7,8 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.repository.user.UserRepository;
+import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
 
 import java.util.Collections;
@@ -20,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -31,6 +34,9 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private TeamService teamService;
+
     @InjectMocks
     private UserService userService;
 
@@ -38,7 +44,9 @@ class UserServiceTest {
     @DisplayName("사용자를 저장한다.")
     void save() {
         //given
-        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈");
+        Team team = mock(Team.class);
+        given(teamService.findByName(anyString())).willReturn(team);
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀");
 
         //when
         userService.save(createUserRequest);
@@ -51,8 +59,25 @@ class UserServiceTest {
     @DisplayName("중복된 이메일일 경우, 예외가 발생한다.")
     void save_fail_duplicated_email() {
         //given
-        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈");
+        Team team = mock(Team.class);
+        given(teamService.findByName(anyString())).willReturn(team);
         given(userRepository.save(any(User.class))).willThrow(new DuplicateKeyException("이메일 중복"));
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀");
+
+        //when, then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> userService.save(createUserRequest))
+                .withMessageContaining("이미 가입된 이메일입니다.");
+    }
+
+    @Test
+    @DisplayName("팀이 존재하지 않을 경우, 에외가 발생한다.")
+    void save_fail_team_not_found() {
+        //given
+        Team team = mock(Team.class);
+        given(teamService.findByName(anyString())).willReturn(team);
+        given(userRepository.save(any(User.class))).willThrow(new DuplicateKeyException("이메일 중복"));
+        CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀");
 
         //when, then
         assertThatIllegalArgumentException()

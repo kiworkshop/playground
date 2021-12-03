@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import playground.domain.document.Document;
 import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 
 import javax.persistence.EntityManager;
@@ -41,7 +42,9 @@ class DocumentRepositoryTest {
     @DisplayName("기안자의 정보가 포함된 문서를 조회한다.")
     void findByIdWithDrafter() {
         //given
-        User drafter = new User("test@naver.com", "Password123!", "drafter");
+        Team team = new Team("정산시스템팀");
+        entityManager.persist(team);
+        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
         entityManager.persist(drafter);
         Document document = Document.builder()
                 .drafter(drafter)
@@ -66,7 +69,9 @@ class DocumentRepositoryTest {
     @DisplayName("기안자의 정보가 포함된 조건에 맞는 모든 문서를 조회한다.")
     void findAllWithDrafter() {
         //given
-        User drafter = new User("test@naver.com", "Password123!", "drafter");
+        Team team = new Team("정산시스템팀");
+        entityManager.persist(team);
+        User drafter = new User("test@naver.com", "Password123!", "drafter", team);
         entityManager.persist(drafter);
         Document document = Document.builder()
                 .drafter(drafter)

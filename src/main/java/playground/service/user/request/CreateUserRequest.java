@@ -3,6 +3,7 @@ package playground.service.user.request;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 
 import javax.validation.constraints.Email;
@@ -22,13 +23,17 @@ public class CreateUserRequest {
     @NotBlank
     private String name;
 
-    public CreateUserRequest(final String email, final String password, final String name) {
+    @NotBlank
+    private String teamName;
+
+    public CreateUserRequest(final String email, final String password, final String name, final String teamName) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.teamName = teamName;
     }
 
-    public User toUser() {
-        return new User(email, password, name);
+    public User toUser(final Team team) {
+        return new User(email, password, name, team);
     }
 }

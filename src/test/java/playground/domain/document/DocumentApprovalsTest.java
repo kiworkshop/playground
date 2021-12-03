@@ -3,6 +3,7 @@ package playground.domain.document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import playground.domain.document.vo.Category;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.mockito.Mockito.mock;
 
 class DocumentApprovalsTest {
 
@@ -17,9 +19,10 @@ class DocumentApprovalsTest {
     @DisplayName("결재자를 등록한다.")
     void enroll() {
         //given
-        User drafter = new User("test1@naver.com", "Password123!", "drafter");
-        User approver1 = new User("test2@naver.com", "Password123!", "approver1");
-        User approver2 = new User("test3@naver.com", "Password123!", "approver2");
+        Team team = mock(Team.class);
+        User drafter = new User("test1@naver.com", "Password123!", "drafter", team);
+        User approver1 = new User("test2@naver.com", "Password123!", "approver1", team);
+        User approver2 = new User("test3@naver.com", "Password123!", "approver2", team);
 
         Document document = Document.builder()
                 .drafter(drafter)
@@ -41,9 +44,10 @@ class DocumentApprovalsTest {
     @DisplayName("이미 결재자가 등록된 상태에서, 결재자를 추가할 경우 예외가 발생한다.")
     void enroll_fail() {
         //given
-        User drafter = new User("test1@naver.com", "Password123!", "drafter");
-        User approver1 = new User("test2@naver.com", "Password123!", "approver1");
-        User approver2 = new User("test3@naver.com", "Password123!", "approver2");
+        Team team = mock(Team.class);
+        User drafter = new User("test1@naver.com", "Password123!", "drafter", team);
+        User approver1 = new User("test2@naver.com", "Password123!", "approver1", team);
+        User approver2 = new User("test3@naver.com", "Password123!", "approver2", team);
 
         Document document = Document.builder()
                 .drafter(drafter)
@@ -54,7 +58,7 @@ class DocumentApprovalsTest {
 
         DocumentApprovals documentApprovals = new DocumentApprovals();
         documentApprovals.enroll(Arrays.asList(approver1, approver2), document);
-        User approver3 = new User("test4@naver.com", "Password123!", "approver3");
+        User approver3 = new User("test4@naver.com", "Password123!", "approver3", team);
 
         //when, then
         assertThatIllegalStateException()
