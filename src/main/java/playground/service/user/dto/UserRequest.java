@@ -1,6 +1,5 @@
 package playground.service.user.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.user.User;
@@ -10,13 +9,20 @@ import playground.domain.user.User;
 public class UserRequest {
 
     private String name;
+    private String password;
+    private String email;
 
-    @Builder
-    public UserRequest(String name) {
+    public UserRequest(String name, String password, String email) {
         this.name = name;
+        this.password = password;
+        this.email = email;
     }
 
     public User toUser() {
-        return new User(name);
+        return User.builder()
+                .name(name)
+                .password(password)
+                .email(email)
+                .build();
     }
 }

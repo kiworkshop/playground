@@ -16,15 +16,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
+    public UserResponse saveUser(UserRequest dto) {
+        User user = userRepository.save(dto.toUser());
+        return UserResponse.of(user);
+    }
+
     public UserResponse findOne(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
-        return UserResponse.convertFrom(user);
-    }
-
-    @Transactional
-    public UserResponse save(UserRequest dto) {
-        User user = userRepository.save(dto.toUser());
-        return findOne(user.getId());
+        return UserResponse.of(user);
     }
 }

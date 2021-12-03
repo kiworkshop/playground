@@ -3,7 +3,9 @@ POST http://localhost:8080/api/user
 Content-Type: application/json
 
 {
-  "name": "userA"
+  "name": "userA",
+  "password": "pa@sw**d",
+  "email": "userA@gmail.com"
 }
 
 ### 사용자 1명 조회

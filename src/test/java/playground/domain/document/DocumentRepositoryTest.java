@@ -1,4 +1,4 @@
-package playground.service.document;
+package playground.domain.document;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,21 +7,18 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import playground.domain.document.Category;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
-import playground.domain.document.approval.DocumentApproval;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static playground.domain.document.approval.ApprovalState.DRAFTING;
 
 @DataJpaTest
-class DocumentServiceTest {
+class DocumentRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -35,23 +32,10 @@ class DocumentServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = userRepository.save(new User("user1"));
-        user2 = userRepository.save(new User("user2"));
+        user1 = userRepository.save(createUser("user1", "pa@sw**d", "user1@gmail.com"));
+        user2 = userRepository.save(createUser("user2", "pa@sw**d", "user2@gmail.com"));
 
         document = documentRepository.save(createDocument("문서 제목", "제출합니다."));
-    }
-
-    @Test
-    void findById() {
-        //when
-        Optional<Document> findDocument = documentRepository.findById(document.getId());
-
-        //then
-        assertThat(findDocument).hasValueSatisfying(actual ->
-                assertThat(actual)
-                        .extracting("title", "contents", "category", "approvalState")
-                        .containsExactly(document.getTitle(), document.getContents(), document.getCategory(), document.getApprovalState())
-        );
     }
 
     @Test
@@ -77,6 +61,14 @@ class DocumentServiceTest {
                 .title(title)
                 .category(Category.PRODUCT_PURCHASING)
                 .contents(contents)
+                .build();
+    }
+
+    private User createUser(String name, String password, String email) {
+        return User.builder()
+                .name(name)
+                .password(password)
+                .email(email)
                 .build();
     }
 }

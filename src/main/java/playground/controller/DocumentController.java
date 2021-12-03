@@ -18,19 +18,19 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
-    @GetMapping("/documents/{id}")
+    @GetMapping(value = "/documents/{id}")
     public ResponseEntity<DocumentResponse> find(@PathVariable Long id) {
         DocumentResponse document = documentService.findOne(id);
         return ResponseEntity.ok(document);
     }
 
-    @GetMapping("/documents/out")
+    @GetMapping(value = "/documents/out")
     public ResponseEntity<List<OutboxResponse>> list(@RequestParam("userId") Long userId) {
         List<OutboxResponse> outBox = documentService.findOutBox(userId);
         return ResponseEntity.ok(outBox);
     }
 
-    @PostMapping("/document")
+    @PostMapping(value = "/document")
     public ResponseEntity<DocumentResponse> save(@RequestBody DocumentRequest requestDto) {
         DocumentResponse document = documentService.save(requestDto);
         return ResponseEntity.created(URI.create("/documents/" + document.getId())).body(document);

@@ -1,7 +1,7 @@
-insert into user(id, name, insert_date)
-values (1, 'user1', '2021-11-17 15:50:57'),
-       (2, 'user2', '2021-11-17 15:50:57'),
-       (3, 'user3', '2021-11-17 15:50:57');
+insert into user(id, name, password, email, insert_date)
+values (1, 'user1', 'pa@sw**d', 'user1@gmail.com', '2021-11-17 15:50:57'),
+       (2, 'user2', 'pa@sw**d', 'user2@gmail.com', '2021-11-17 15:50:57'),
+       (3, 'user3', 'pa@sw**d', 'user3@gmail.com', '2021-11-17 15:50:57');
 
 
 insert into document(id, title, category, contents, drafter_id, approval_state, insert_date)
