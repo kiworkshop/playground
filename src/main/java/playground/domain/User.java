@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,4 +30,11 @@ public class User {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    public User(String name, String email, String password, Rank rank, Team team) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.rank = rank;
+        this.team = team;
+    }
 }

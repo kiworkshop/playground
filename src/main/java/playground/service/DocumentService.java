@@ -32,7 +32,7 @@ public class DocumentService {
     }
 
     public List<DocumentOutboxResponse> findDocumentsOutbox(Long userId) {
-        List<Document> documents = documentRepository.findByDrafterId(userId);
+        List<Document> documents = documentRepository.findByDrafterIdOrderByCreatedDateDesc(userId);
         List<DocumentOutboxResponse> documentOutboxDtos = new ArrayList<>();
         for (Document document : documents) {
             documentOutboxDtos.add(new DocumentOutboxResponse(document));

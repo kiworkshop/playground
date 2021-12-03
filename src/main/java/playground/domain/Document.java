@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Document {
+public class Document extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,20 +39,23 @@ public class Document {
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Transient
-    private int approvalIndex;
-
-    @CreatedDate
-    private Date createdAt;
+    private int approvalIndex = 0;
 
     @Builder
-    public Document(Long id, String title, Category category, String contents, User drafter, List<DocumentApproval> documentApprovals, Date createdAt) {
+    public Document(Long id, String title, Category category, String contents, User drafter, List<DocumentApproval> documentApprovals) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.contents = contents;
         this.drafter = drafter;
         this.documentApprovals = documentApprovals;
-        this.createdAt = createdAt;
+    }
+
+    public Document(String title, Category category, String contents, User drafter) {
+        this.title = title;
+        this.category = category;
+        this.contents = contents;
+        this.drafter = drafter;
     }
 
     public void addDocumentApproval(final DocumentApproval documentApproval){

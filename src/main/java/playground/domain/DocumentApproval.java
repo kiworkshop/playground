@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-public class DocumentApproval {
+public class DocumentApproval extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +37,7 @@ public class DocumentApproval {
         this.approvalState = approvalState;
         this.approvalOrder = approvalOrder;
     }
+
     @Builder
     public DocumentApproval(User approver, int approvalOrder, Document document) {
         this.approver = approver;
@@ -44,6 +45,7 @@ public class DocumentApproval {
         this.approvalOrder = approvalOrder;
         this.document = document;
     }
+
     public DocumentApproval approveBy(User approver, String approvalComment) {
         this.approvalComment = approvalComment;
         this.approver = approver;
