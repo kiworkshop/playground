@@ -37,7 +37,7 @@ class UserServiceTest {
     @DisplayName("팀에 속한 회원 조회")
     void findUSerByTeam() {
         // given
-        Team team = teamRepository.save(new Team("정산시스템팀"));
+        Team team = teamRepository.save(new Team("새로운팀"));
 
         User user1 = createUser("user1", "pa@sw**d", "user1@gmail.com", team, TEAM_LEADER);
         User user2 = createUser("user2", "pa@sw**d", "user2@gmail.com", team, TEAM_MEMBER);
@@ -49,8 +49,8 @@ class UserServiceTest {
 
         // then
         assertThat(users).extracting("name", "teamName", "jobPositionText")
-                .containsExactly(tuple("user1", "정산시스템팀", "팀장"),
-                        tuple("user2", "정산시스템팀", "팀원"));
+                .containsExactly(tuple("user1", "새로운팀", "팀장"),
+                                 tuple("user2", "새로운팀", "팀원"));
     }
 
     private User createUser(String name, String password, String email, Team team, JobPosition jobPosition) {

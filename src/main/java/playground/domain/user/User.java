@@ -11,7 +11,7 @@ import java.util.List;
 
 import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
 import static javax.persistence.EnumType.STRING;
-import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
     @Column
     private String email;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "team_id", foreignKey = @ForeignKey(value = NO_CONSTRAINT))
     private Team team;
 
@@ -50,5 +50,9 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.team = team;
         this.jobPosition = jobPosition;
+    }
+
+    public String getTeamName() {
+        return team.getName();
     }
 }

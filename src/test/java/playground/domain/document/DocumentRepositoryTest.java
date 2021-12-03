@@ -4,9 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import playground.domain.document.Category;
-import playground.domain.document.Document;
-import playground.domain.document.DocumentRepository;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
 

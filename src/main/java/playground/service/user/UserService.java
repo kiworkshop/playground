@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.user.*;
-import playground.exception.NotFoundException;
 import playground.service.user.dto.TeamUserResponse;
 import playground.service.user.dto.UserRequest;
 import playground.service.user.dto.UserResponse;
@@ -39,6 +38,6 @@ public class UserService {
                 .orElseThrow(() -> error("팀을 찾을 수 없습니다."));
 
         List<User> users = userRepository.findUserByTeam(team);
-        return TeamUserResponse.ofList(users, team);
+        return TeamUserResponse.ofList(users);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.BaseTimeEntity;
 import playground.domain.document.Document;
+import playground.domain.user.Team;
 import playground.domain.user.User;
 
 import javax.persistence.*;
@@ -48,5 +49,9 @@ public class DocumentApproval extends BaseTimeEntity {
 
     public void upDateDocument(Document document) {
         this.document = document;
+    }
+
+    public Team getTeam() {
+        return approver.getTeam();
     }
 }

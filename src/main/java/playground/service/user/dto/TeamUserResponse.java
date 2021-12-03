@@ -3,7 +3,6 @@ package playground.service.user.dto;
 import lombok.Builder;
 import lombok.Getter;
 import playground.domain.user.JobPosition;
-import playground.domain.user.Team;
 import playground.domain.user.User;
 
 import java.util.List;
@@ -18,18 +17,18 @@ public class TeamUserResponse {
     private String name;
     private String jobPositionText;
 
-    public static TeamUserResponse of(User user, Team team) {
+    public static TeamUserResponse of(User user) {
         return TeamUserResponse.builder()
                 .id(user.getId())
                 .jobPosition(user.getJobPosition())
-                .teamName(team.getName())
+                .teamName(user.getTeamName())
                 .name(user.getName())
                 .build();
     }
 
-    public static List<TeamUserResponse> ofList(List<User> users, Team team) {
+    public static List<TeamUserResponse> ofList(List<User> users) {
         return users.stream()
-                .map(user -> of(user, team))
+                .map(TeamUserResponse::of)
                 .collect(Collectors.toList());
     }
 

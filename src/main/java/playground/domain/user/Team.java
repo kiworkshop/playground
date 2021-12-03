@@ -2,6 +2,7 @@ package playground.domain.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import playground.domain.document.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Entity
 @RequiredArgsConstructor(access = PROTECTED)
-public class Team {
+public class Team extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

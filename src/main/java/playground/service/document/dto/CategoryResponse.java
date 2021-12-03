@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import playground.domain.document.Category;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
