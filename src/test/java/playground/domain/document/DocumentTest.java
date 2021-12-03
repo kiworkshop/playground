@@ -32,7 +32,7 @@ class DocumentTest {
 
         //then
         assertThat(document)
-                .extracting("title", "category", "contents", "drafter", "approvalState", "team")
-                .containsExactly(title, category, contents, drafter, ApprovalState.DRAFTING, team);
+                .extracting("title", "category", "contents", "drafter", "approvalState")
+                .containsExactly(title, category, contents, drafter, ApprovalState.DRAFTING);
     }
 }
