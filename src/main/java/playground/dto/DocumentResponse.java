@@ -32,7 +32,6 @@ public class DocumentResponse {
     }
 
     private List<ApprovalResponse> getApprovars(List<DocumentApproval> approvars) {
-        System.out.println("---------------"+approvars.size());
         List<ApprovalResponse> approvarsResponse = new ArrayList<>();
         for (DocumentApproval documentApproval : approvars) {
             approvarsResponse.add(new ApprovalResponse(documentApproval));

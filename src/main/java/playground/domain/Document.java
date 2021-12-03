@@ -28,7 +28,7 @@ public class Document {
 
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drafter_id")
     private User drafter;
 

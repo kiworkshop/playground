@@ -22,7 +22,6 @@ public class UserService {
 
     public List<UserResponse> findBy(Long teamId) {
         Team team = teamRepository.findById(teamId).get();
-        System.out.println(team.getName());
         List<User> users = userRepository.findByTeam(team);
         List<UserResponse> usersResponse = new ArrayList<>();
         for (User user : users) {

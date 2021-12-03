@@ -26,7 +26,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Rank rank;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
