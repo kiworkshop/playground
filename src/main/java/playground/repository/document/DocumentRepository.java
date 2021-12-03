@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Query("select d from Document d join fetch d.drafter where d.id = :document_id")
-    Optional<Document> findByIdWithDrafter(@Param("document_id") final Long documentId);
+    Optional<Document> findDocumentAndDrafterById(@Param("document_id") final Long documentId);
 
     @Query("select d from Document d join fetch d.drafter where d.drafter.id = :drafter_id and d.approvalState = :approval_state")
-    List<Document> findAllWithDrafter(@Param("drafter_id") final Long drafterId, @Param("approval_state") final ApprovalState approvalState);
+    List<Document> findAllDocumentAndDrafterByDrafterIdAndApprovalState(@Param("drafter_id") final Long drafterId, @Param("approval_state") final ApprovalState approvalState);
 }

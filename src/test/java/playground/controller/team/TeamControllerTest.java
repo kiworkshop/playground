@@ -58,7 +58,7 @@ class TeamControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("모든 팀을 조회한다.")
-    void selectAll() throws Exception {
+    void findAll() throws Exception {
         mockMvc.perform(get("/api/teams")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

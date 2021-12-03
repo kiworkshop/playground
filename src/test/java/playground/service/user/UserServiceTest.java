@@ -52,7 +52,7 @@ class UserServiceTest {
         CreateUserRequest createUserRequest = new CreateUserRequest("a@naver.com", "Password123!", "김성빈", "정산시스템팀", TEAM_MEMBER.name());
 
         //when
-        userService.save(createUserRequest);
+        userService.create(createUserRequest);
 
         //then
         verify(userRepository, times(1)).save(any(User.class));
@@ -69,7 +69,7 @@ class UserServiceTest {
 
         //when, then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> userService.save(createUserRequest))
+                .isThrownBy(() -> userService.create(createUserRequest))
                 .withMessageContaining("이미 가입된 이메일입니다.");
     }
 
@@ -84,7 +84,7 @@ class UserServiceTest {
 
         //when, then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> userService.save(createUserRequest))
+                .isThrownBy(() -> userService.create(createUserRequest))
                 .withMessageContaining("이미 가입된 이메일입니다.");
     }
 

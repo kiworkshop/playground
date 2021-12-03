@@ -25,13 +25,13 @@ public class TeamController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateTeamRequest createTeamRequest) {
-        teamService.save(createTeamRequest);
+        teamService.create(createTeamRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<SelectTeamsResponse> selectAll() {
-        SelectTeamsResponse selectTeamsResponse = teamService.selectAll();
+    public ResponseEntity<SelectTeamsResponse> findAll() {
+        SelectTeamsResponse selectTeamsResponse = teamService.findAll();
         return ResponseEntity.ok(selectTeamsResponse);
     }
 }

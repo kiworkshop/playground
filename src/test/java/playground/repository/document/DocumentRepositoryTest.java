@@ -41,7 +41,7 @@ class DocumentRepositoryTest {
 
     @Test
     @DisplayName("기안자의 정보가 포함된 문서를 조회한다.")
-    void findByIdWithDrafter() {
+    void findDocumentAndDrafterById() {
         //given
         Team team = new Team("정산시스템팀");
         entityManager.persist(team);
@@ -64,7 +64,7 @@ class DocumentRepositoryTest {
         entityManager.clear();
 
         //when
-        Optional<Document> fetchedDocument = documentRepository.findByIdWithDrafter(document.getId());
+        Optional<Document> fetchedDocument = documentRepository.findDocumentAndDrafterById(document.getId());
 
         //then
         assertThat(fetchedDocument).isNotEmpty();
@@ -73,7 +73,7 @@ class DocumentRepositoryTest {
 
     @Test
     @DisplayName("기안자의 정보가 포함된 조건에 맞는 모든 문서를 조회한다.")
-    void findAllWithDrafter() {
+    void findAllDocumentAndDrafterByDrafterIdAndApprovalState() {
         //given
         Team team = new Team("정산시스템팀");
         entityManager.persist(team);
@@ -96,7 +96,7 @@ class DocumentRepositoryTest {
         entityManager.clear();
 
         //when
-        List<Document> documents = documentRepository.findAllWithDrafter(drafter.getId(), ApprovalState.DRAFTING);
+        List<Document> documents = documentRepository.findAllDocumentAndDrafterByDrafterIdAndApprovalState(drafter.getId(), ApprovalState.DRAFTING);
 
         //then
         assertThat(documents).hasSize(1);

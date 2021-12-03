@@ -27,7 +27,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void save(final CreateTeamRequest createTeamRequest) {
+    public void create(final CreateTeamRequest createTeamRequest) {
         Team team = createTeamRequest.toTeam();
         save(team);
     }
@@ -41,7 +41,7 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public SelectTeamsResponse selectAll() {
+    public SelectTeamsResponse findAll() {
         List<Team> teams = teamRepository.findAll();
         checkEmpty(teams);
         return new SelectTeamsResponse(teams);

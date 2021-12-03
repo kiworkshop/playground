@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SelectUsersInTeamResponse {
+public class SelectAllUserInTeamResponse {
 
     private List<SelectUserResponse> selectUserResponses;
 
-    public SelectUsersInTeamResponse(final List<User> users) {
+    public SelectAllUserInTeamResponse(final List<User> users) {
         this.selectUserResponses = users.stream()
                 .map(SelectUserResponse::new)
                 .collect(Collectors.toList());

@@ -29,19 +29,19 @@ public class DocumentController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateDocumentRequest createDocumentRequest) {
-        documentService.save(createDocumentRequest);
+        documentService.create(createDocumentRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{documentId}")
-    public ResponseEntity<SelectDocumentResponse> select(final @PathVariable Long documentId) {
-        SelectDocumentResponse selectDocumentResponse = documentService.select(documentId);
+    public ResponseEntity<SelectDocumentResponse> find(final @PathVariable Long documentId) {
+        SelectDocumentResponse selectDocumentResponse = documentService.find(documentId);
         return ResponseEntity.ok(selectDocumentResponse);
     }
 
     @GetMapping("/outbox")
-    public ResponseEntity<List<SelectSingleOutBoxResponse>> selectOutBox(final @RequestParam Long drafterId) {
-        List<SelectSingleOutBoxResponse> selectMultiOutBoxResponse = documentService.selectOutBox(drafterId);
+    public ResponseEntity<List<SelectSingleOutBoxResponse>> findOutBox(final @RequestParam Long drafterId) {
+        List<SelectSingleOutBoxResponse> selectMultiOutBoxResponse = documentService.findOutBox(drafterId);
         return ResponseEntity.ok(selectMultiOutBoxResponse);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.user.UserService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectUsersInTeamResponse;
+import playground.service.user.response.SelectAllUserInTeamResponse;
 
 import javax.validation.Valid;
 
@@ -26,13 +26,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateUserRequest createUserRequest) {
-        userService.save(createUserRequest);
+        userService.create(createUserRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public ResponseEntity<SelectUsersInTeamResponse> selectUsersInTeam(@RequestParam final Long teamId) {
-        SelectUsersInTeamResponse selectUsersInTeamResponse = userService.selectUsersInTeam(teamId);
-        return ResponseEntity.ok(selectUsersInTeamResponse);
+    public ResponseEntity<SelectAllUserInTeamResponse> findAllUserInTeam(@RequestParam final Long teamId) {
+        SelectAllUserInTeamResponse selectAllUserInTeamResponse = userService.findAllUserInTeam(teamId);
+        return ResponseEntity.ok(selectAllUserInTeamResponse);
     }
 }

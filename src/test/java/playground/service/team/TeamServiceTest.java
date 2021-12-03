@@ -66,12 +66,12 @@ class TeamServiceTest {
 
     @Test
     @DisplayName("팀을 저장한다.")
-    void save() {
+    void create() {
         //given
         CreateTeamRequest createTeamRequest = new CreateTeamRequest("정산시스템팀");
 
         //when
-        teamService.save(createTeamRequest);
+        teamService.create(createTeamRequest);
 
         //then
         verify(teamRepository, times(1)).save(any(Team.class));
@@ -79,27 +79,27 @@ class TeamServiceTest {
 
     @Test
     @DisplayName("중복된 팀 명으로 저장할경우, 예외가 발생한다.")
-    void save_fail_duplicated_name() {
+    void create_fail_duplicated_name() {
         //given
         CreateTeamRequest createTeamRequest = new CreateTeamRequest("정산시스템팀");
         given(teamRepository.save(any(Team.class))).willThrow(new DuplicateKeyException("이름 중복"));
 
         //when, then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> teamService.save(createTeamRequest))
+                .isThrownBy(() -> teamService.create(createTeamRequest))
                 .withMessageContaining("이미 존재하는 팀입니다.");
     }
 
     @Test
     @DisplayName("모든 팀을 조회한다.")
-    void selectAll() {
+    void findAll() {
         //given
         Team team1 = new Team("정산시스템팀");
         Team team2 = new Team("서비스개발팀");
         given(teamRepository.findAll()).willReturn(Arrays.asList(team1, team2));
 
         //when
-        SelectTeamsResponse selectTeamsResponse = teamService.selectAll();
+        SelectTeamsResponse selectTeamsResponse = teamService.findAll();
 
         //then
         assertThat(selectTeamsResponse).isNotNull();
@@ -107,12 +107,12 @@ class TeamServiceTest {
 
     @Test
     @DisplayName("존재하는 팀이 없을 경우, 예외가 발생한다.")
-    void selectAll_return_empty() {
+    void findAll_return_empty() {
         //given
         given(teamRepository.findAll()).willReturn(Collections.emptyList());
 
         //when, then
-        assertThatThrownBy(() -> teamService.selectAll())
+        assertThatThrownBy(() -> teamService.findAll())
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("존재하는 팀이 없습니다.");
     }

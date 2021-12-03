@@ -8,7 +8,7 @@ import playground.domain.user.User;
 import playground.repository.user.UserRepository;
 import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectUsersInTeamResponse;
+import playground.service.user.response.SelectAllUserInTeamResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -25,7 +25,7 @@ public class UserService {
     }
 
     @Transactional
-    public void save(final CreateUserRequest createUserRequest) {
+    public void create(final CreateUserRequest createUserRequest) {
         Team team = teamService.findByName(createUserRequest.getTeamName());
         User user = createUserRequest.toUser(team);
         save(user);
@@ -60,8 +60,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public SelectUsersInTeamResponse selectUsersInTeam(final Long teamId) {
+    public SelectAllUserInTeamResponse findAllUserInTeam(final Long teamId) {
         Team team = teamService.findById(teamId);
-        return new SelectUsersInTeamResponse(team.getUsers());
+        return new SelectAllUserInTeamResponse(team.getUsers());
     }
 }

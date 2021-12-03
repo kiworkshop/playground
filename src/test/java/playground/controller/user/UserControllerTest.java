@@ -12,7 +12,7 @@ import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.service.user.UserService;
 import playground.service.user.request.CreateUserRequest;
-import playground.service.user.response.SelectUsersInTeamResponse;
+import playground.service.user.response.SelectAllUserInTeamResponse;
 
 import java.util.Collections;
 
@@ -100,7 +100,7 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("특정 팀에 속한 사용자 조회 요청을 전달받아, 사용자들의 정보를 반환한다.")
-    void selectUsersInTeam() throws Exception {
+    void findAllUserInTeam() throws Exception {
         User user = mock(User.class);
         Team team = mock(Team.class);
         given(user.getId()).willReturn(1L);
@@ -108,8 +108,8 @@ public class UserControllerTest extends AbstractControllerTest {
         given(user.getJobPosition()).willReturn(TEAM_MEMBER);
         given(user.getTeam()).willReturn(team);
         given(team.getName()).willReturn("운영팀");
-        SelectUsersInTeamResponse selectUsersInTeamResponse = new SelectUsersInTeamResponse(Collections.singletonList(user));
-        given(userService.selectUsersInTeam(anyLong())).willReturn(selectUsersInTeamResponse);
+        SelectAllUserInTeamResponse selectAllUserInTeamResponse = new SelectAllUserInTeamResponse(Collections.singletonList(user));
+        given(userService.findAllUserInTeam(anyLong())).willReturn(selectAllUserInTeamResponse);
 
         mockMvc.perform(get("/api/users")
                 .param("teamId", "1")
