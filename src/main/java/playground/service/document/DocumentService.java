@@ -18,12 +18,17 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
 
     @Transactional
-    public Document createDocument(Document document) {
+    public Document create(Document document) {
         return documentRepository.save(document);
     }
 
     public Optional<Document> findById(Long documentId) {
         return documentRepository.findById(documentId);
+    }
+
+    public Document getById(Long documentId) {
+        return findById(documentId)
+            .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 문서입니다. documentId = %s", documentId)));
     }
 
     public List<Document> findAllByDrafterIdAndApprovalStateOrderByIdDesc(Long drafterId, ApprovalState approvalState) {

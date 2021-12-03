@@ -1,13 +1,13 @@
-package playground.web.document;
+package playground.web.document.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import playground.web.document.dto.DocumentCreateRequest;
-import playground.service.document.dto.DocumentResponse;
-import playground.service.document.dto.OutboxDocumentResponse;
-import playground.service.document.DocumentApplication;
-import playground.web.document.dto.OutboxDocumentRequest;
+import playground.web.document.api.request.DocumentCreateRequest;
+import playground.web.document.api.response.DocumentResponse;
+import playground.web.document.api.response.OutboxDocumentResponse;
+import playground.web.document.application.DocumentApplication;
+import playground.web.document.api.request.OutboxDocumentRequest;
 
 import java.util.List;
 

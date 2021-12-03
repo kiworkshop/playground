@@ -38,10 +38,7 @@ public class Document {
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User drafter;
 
-    @OneToMany(
-        mappedBy = "document", fetch = FetchType.LAZY,
-        cascade = CascadeType.ALL, orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Builder

@@ -1,4 +1,4 @@
-package playground.service.document.dto;
+package playground.web.document.api.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

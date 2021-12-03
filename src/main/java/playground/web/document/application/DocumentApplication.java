@@ -1,15 +1,16 @@
-package playground.service.document;
+package playground.web.document.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import playground.domain.user.User;
-import playground.service.document.dto.DocumentResponse;
-import playground.service.document.dto.OutboxDocumentResponse;
-import playground.service.user.UserService;
-import playground.web.document.dto.DocumentCreateRequest;
 import playground.domain.document.Document;
-import playground.web.document.dto.OutboxDocumentRequest;
+import playground.domain.user.User;
+import playground.service.document.DocumentService;
+import playground.service.user.UserService;
+import playground.web.document.api.request.DocumentCreateRequest;
+import playground.web.document.api.request.OutboxDocumentRequest;
+import playground.web.document.api.response.DocumentResponse;
+import playground.web.document.api.response.OutboxDocumentResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,15 @@ public class DocumentApplication {
     private final DocumentService documentService;
     private final UserService userService;
 
+    @Transactional
     public void create(DocumentCreateRequest request) {
         List<User> orderedApprovers = createOrderedApprovers(request);
-        User drafter = findUserById(request.getDrafterId());
+        User drafter = userService.getById(request.getDrafterId());
 
         Document document = request.toEntity(drafter);
         document.createApprovals(orderedApprovers);
 
-        documentService.createDocument(document);
+        documentService.create(document);
     }
 
     private List<User> createOrderedApprovers(DocumentCreateRequest request) {
@@ -52,21 +54,11 @@ public class DocumentApplication {
             .collect(Collectors.toMap(User::getId, user -> user));
     }
 
-    private User findUserById(Long userId) {
-        return userService.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 사용자입니다. userId = %s", userId)));
-    }
-
     public DocumentResponse findDocument(Long documentId) {
-        Document document = findDocumentById(documentId);
+        Document document = documentService.getById(documentId);
         User drafter = document.getDrafter();
 
         return new DocumentResponse(document, drafter);
-    }
-
-    private Document findDocumentById(Long documentId) {
-        return documentService.findById(documentId)
-            .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 문서입니다. documentId = %s", documentId)));
     }
 
     public List<OutboxDocumentResponse> findOutboxDocuments(OutboxDocumentRequest request) {

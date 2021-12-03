@@ -1,4 +1,4 @@
-package playground.web.document.dto;
+package playground.web.document.api.request;
 
 import lombok.Getter;
 import playground.domain.document.Document;
