@@ -12,11 +12,11 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    @Query("select d from Document d join fetch d.drafter where d.id = :document_id")
-    Optional<Document> findDocumentAndDrafterById(@Param("document_id") final Long documentId);
+    @Query("select d from Document d join fetch d.drafter join fetch d.documentApprovals.documentApprovals where d.id = :documentId")
+    Optional<Document> findDocumentAndDrafterAndDocumentApprovalsById(@Param("documentId") final Long documentId);
 
-    @Query("select d from Document d join fetch d.drafter where d.drafter.id = :drafter_id and d.approvalState = :approval_state")
-    List<Document> findAllDocumentAndDrafterByDrafterIdAndApprovalState(@Param("drafter_id") final Long drafterId, @Param("approval_state") final ApprovalState approvalState);
+    @Query("select d from Document d join fetch d.drafter where d.drafter.id = :documentId and d.approvalState = :approvalState")
+    List<Document> findAllDocumentAndDrafterByDrafterIdAndApprovalState(@Param("documentId") final Long drafterId, @Param("approvalState") final ApprovalState approvalState);
 
     @Query("select distinct new playground.service.document.response.SelectCategoryResponse(d.category) from Document d")
     List<SelectCategoryResponse> findCategories();

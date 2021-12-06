@@ -107,7 +107,7 @@ class DocumentServiceTest {
         given(documentApproval.getApprover()).willReturn(drafter);
         given(documentApproval.getApprovalState()).willReturn(ApprovalState.DRAFTING);
         given(documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(anyList())).willReturn(Collections.singletonList(documentApproval));
-        given(documentRepository.findDocumentAndDrafterById(anyLong())).willReturn(Optional.of(document));
+        given(documentRepository.findDocumentAndDrafterAndDocumentApprovalsById(anyLong())).willReturn(Optional.of(document));
 
         //when
         SelectDocumentResponse selectDocumentResponse = documentService.find(1L);

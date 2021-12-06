@@ -42,7 +42,7 @@ public class DocumentService {
         User drafter = userService.findById(drafterId);
         Document document = createDocumentRequest.toDocument(drafter);
         List<User> approvers = findAllUserById(approverIds);
-        document.enrollApprovals(approvers, document);
+        document.enrollApprovals(approvers);
         documentRepository.save(document);
     }
 
@@ -62,19 +62,20 @@ public class DocumentService {
 
     @Transactional(readOnly = true)
     public SelectDocumentResponse find(final Long documentId) {
-        Document document = findDocumentAndDrafterById(documentId);
+        Document document = findDocumentAndDrafterAndDocumentApprovalsById(documentId);
 
         List<Long> documentApprovalIds = document.getDocumentApprovals()
                 .stream()
                 .map(DocumentApproval::getId)
                 .collect(Collectors.toList());
+
         List<DocumentApproval> documentApprovals = documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(documentApprovalIds);
 
         return new SelectDocumentResponse(document, documentApprovals);
     }
 
-    private Document findDocumentAndDrafterById(final Long documentId) {
-        return documentRepository.findDocumentAndDrafterById(documentId)
+    private Document findDocumentAndDrafterAndDocumentApprovalsById(final Long documentId) {
+        return documentRepository.findDocumentAndDrafterAndDocumentApprovalsById(documentId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 문서가 존재하지 않습니다.", documentId)));
     }
 

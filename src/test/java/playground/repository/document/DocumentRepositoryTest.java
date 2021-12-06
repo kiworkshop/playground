@@ -16,6 +16,7 @@ import playground.service.document.response.SelectCategoryResponse;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnitUtil;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +42,8 @@ class DocumentRepositoryTest {
     }
 
     @Test
-    @DisplayName("기안자의 정보가 포함된 문서를 조회한다.")
-    void findDocumentAndDrafterById() {
+    @DisplayName("기안자의 정보, 결재 정보 리스트가 포함된 문서를 조회한다.")
+    void findDocumentAndDrafterAndDocumentApprovalsById() {
         //given
         Team team = new Team("정산시스템팀");
         entityManager.persist(team);
@@ -60,16 +61,18 @@ class DocumentRepositoryTest {
                 .title("교육비 정산")
                 .contents("교육비 정산 결재")
                 .build();
+        document.enrollApprovals(Collections.singletonList(drafter));
         documentRepository.save(document);
         entityManager.flush();
         entityManager.clear();
 
         //when
-        Optional<Document> fetchedDocument = documentRepository.findDocumentAndDrafterById(document.getId());
+        Optional<Document> fetchedDocument = documentRepository.findDocumentAndDrafterAndDocumentApprovalsById(document.getId());
 
         //then
         assertThat(fetchedDocument).isNotEmpty();
         assertThat(persistenceUnitUtil.isLoaded(fetchedDocument.get().getDrafter())).isTrue();
+        assertThat(persistenceUnitUtil.isLoaded(fetchedDocument.get().getDocumentApprovals())).isTrue();
     }
 
     @Test

@@ -67,8 +67,8 @@ public class Document {
         this.approvalState = ApprovalState.DRAFTING;
     }
 
-    public void enrollApprovals(final List<User> approvers, final Document document) {
-        documentApprovals.enroll(approvers, document);
+    public void enrollApprovals(final List<User> approvers) {
+        documentApprovals.enroll(approvers, this);
     }
 
     public List<DocumentApproval> getDocumentApprovals() {

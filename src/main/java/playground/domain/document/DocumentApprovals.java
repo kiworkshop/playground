@@ -1,8 +1,6 @@
 package playground.domain.document;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import playground.domain.user.User;
 
 import javax.persistence.CascadeType;
@@ -14,7 +12,6 @@ import java.util.List;
 
 @Getter
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class DocumentApprovals {
 
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
