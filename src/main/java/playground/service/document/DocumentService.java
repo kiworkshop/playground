@@ -3,12 +3,12 @@ package playground.service.document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.document.Category;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentRepository;
 import playground.domain.document.ApprovalState;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,5 +33,10 @@ public class DocumentService {
 
     public List<Document> findAllByDrafterIdAndApprovalStateOrderByIdDesc(Long drafterId, ApprovalState approvalState) {
         return documentRepository.findByDrafterIdAndApprovalStateOrderByIdDesc(drafterId, approvalState);
+    }
+
+    public List<Category> findAllDocumentCategories() {
+        Category[] categories = Category.values();
+        return Arrays.asList(categories);
     }
 }

@@ -3,6 +3,7 @@ package playground.web.document.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.document.Category;
 import playground.domain.document.Document;
 import playground.domain.document.DocumentApproval;
 import playground.domain.user.Team;
@@ -10,6 +11,7 @@ import playground.domain.user.User;
 import playground.service.document.DocumentService;
 import playground.web.document.api.request.OutboxDocumentRequest;
 import playground.web.document.api.response.DocumentApprovalResponse;
+import playground.web.document.api.response.DocumentCategoryResponse;
 import playground.web.document.api.response.DocumentResponse;
 import playground.web.document.api.response.OutboxDocumentResponse;
 import playground.web.user.api.response.UserResponse;
@@ -59,4 +61,16 @@ public class DocumentSearchApplication {
             .map(OutboxDocumentResponse::new)
             .collect(Collectors.toList());
     }
+
+    public List<DocumentCategoryResponse> findDocumentCategories() {
+        List<Category> documentCategories = documentService.findAllDocumentCategories();
+        return convertDocumentCategoryResponseFrom(documentCategories);
+    }
+
+    private List<DocumentCategoryResponse> convertDocumentCategoryResponseFrom(List<Category> documentCategories) {
+        return documentCategories.stream()
+            .map(DocumentCategoryResponse::new)
+            .collect(Collectors.toList());
+    }
+
 }
