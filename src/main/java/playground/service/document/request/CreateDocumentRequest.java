@@ -1,16 +1,15 @@
-package playground.controller.document.request;
+package playground.service.document.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.Document;
-import playground.domain.document.DocumentApproval;
+import playground.domain.document.vo.Category;
+import playground.domain.user.User;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -41,23 +40,12 @@ public class CreateDocumentRequest {
         this.approverIds = approverIds;
     }
 
-    public Document toDocument() {
+    public Document toDocument(final User drafter) {
         return Document.builder()
                 .title(title)
-                .category(category)
+                .category(Category.valueOf(category))
                 .contents(contents)
-                .drafterId(drafterId)
+                .drafter(drafter)
                 .build();
-    }
-
-    public List<DocumentApproval> toDocumentApprovals(final Long documentId) {
-        ArrayList<DocumentApproval> documentApprovals = new ArrayList<>();
-
-        for (int i = 0; i < approverIds.size(); i++) {
-            DocumentApproval documentApproval = DocumentApproval.of(approverIds.get(i), documentId, i);
-            documentApprovals.add(documentApproval);
-        }
-
-        return Collections.unmodifiableList(documentApprovals);
     }
 }

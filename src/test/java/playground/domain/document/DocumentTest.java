@@ -2,6 +2,9 @@ package playground.domain.document;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import playground.domain.document.vo.ApprovalState;
+import playground.domain.document.vo.Category;
+import playground.domain.user.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,21 +15,21 @@ class DocumentTest {
     void create() {
         //given
         String title = "교육비 결재";
-        String category = "EDUCATION";
+        Category category = Category.EDUCATION;
         String contents = "교육비";
-        long drafterId = 1L;
+        User drafter = new User("test@naver.com", "Password123!", "drafter");
 
         //when
         Document document = Document.builder()
                 .title(title)
                 .category(category)
                 .contents(contents)
-                .drafterId(drafterId)
+                .drafter(drafter)
                 .build();
 
         //then
         assertThat(document)
-                .extracting("title", "category", "contents", "drafterId", "approvalState")
-                .containsExactly(title, Category.valueOf(category), contents, drafterId, ApprovalState.DRAFTING);
+                .extracting("title", "category", "contents", "drafter", "approvalState")
+                .containsExactly(title, category, contents, drafter, ApprovalState.DRAFTING);
     }
 }

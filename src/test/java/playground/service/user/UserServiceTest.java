@@ -7,12 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
-import playground.controller.user.request.CreateUserRequest;
 import playground.domain.user.User;
 import playground.repository.user.UserRepository;
+import playground.service.user.request.CreateUserRequest;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -78,7 +79,7 @@ class UserServiceTest {
     void findById() {
         //given
         User mockUser = mock(User.class);
-        given(userRepository.findById(anyLong())).willReturn(mockUser);
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(mockUser));
 
         //when
         User user = userService.findById(1L);

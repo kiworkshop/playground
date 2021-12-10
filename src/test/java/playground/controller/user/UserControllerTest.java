@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import playground.common.AbstractControllerTest;
-import playground.controller.user.request.CreateUserRequest;
 import playground.service.user.UserService;
+import playground.service.user.request.CreateUserRequest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

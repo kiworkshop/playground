@@ -1,51 +1,72 @@
 package playground.domain.document;
 
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import playground.domain.document.vo.ApprovalState;
+import playground.domain.document.vo.Category;
+import playground.domain.user.User;
 
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.List;
 
+@Entity
 @Getter
+@EqualsAndHashCode(of = "id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "document")
 public class Document {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "document_id")
     private Long id;
+
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private Category category;
+
+    @Column(name = "contents", nullable = false)
     private String contents;
-    private Long drafterId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drafter_id")
+    private User drafter;
+
+    @Embedded
+    private DocumentApprovals documentApprovals = new DocumentApprovals();
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "approval_state", nullable = false)
     private ApprovalState approvalState;
 
     @Builder
-    private Document(final String title, final String category,
-                     final String contents, final Long drafterId) {
+    private Document(final String title, final Category category,
+                     final String contents, final User drafter) {
         this.title = title;
-        this.category = Category.valueOf(category);
+        this.category = category;
         this.contents = contents;
-        this.drafterId = drafterId;
+        this.drafter = drafter;
         this.approvalState = ApprovalState.DRAFTING;
     }
 
-    @Builder(builderMethodName = "builderForDao", builderClassName = "BuilderForDao")
-    private Document(final Long id, final String title, final String category,
-                     final String contents, final Long drafterId, final String approvalState) {
-        this.id = id;
-        this.title = title;
-        this.category = Category.valueOf(category);
-        this.contents = contents;
-        this.drafterId = drafterId;
-        this.approvalState = ApprovalState.valueOf(approvalState);
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Document document = (Document) o;
-        return Objects.equals(id, document.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void enrollApprovals(final List<User> approvers, final Document document) {
+        documentApprovals.enroll(approvers, document);
     }
 }

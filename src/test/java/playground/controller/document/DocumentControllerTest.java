@@ -7,8 +7,8 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import playground.common.AbstractControllerTest;
-import playground.controller.document.request.CreateDocumentRequest;
 import playground.service.document.DocumentService;
+import playground.service.document.request.CreateDocumentRequest;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package playground.controller.user.request;
+package playground.service.user.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

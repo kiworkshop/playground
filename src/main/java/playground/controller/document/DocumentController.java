@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import playground.controller.document.request.CreateDocumentRequest;
 import playground.service.document.DocumentService;
+import playground.service.document.request.CreateDocumentRequest;
 import playground.service.document.response.SelectDocumentResponse;
 import playground.service.document.response.SelectSingleOutBoxResponse;
 
