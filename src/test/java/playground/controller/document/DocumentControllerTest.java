@@ -111,7 +111,7 @@ class DocumentControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("문서를 조회한다.")
-    void select() throws Exception {
+    void find() throws Exception {
         mockMvc.perform(get("/api/documents/{documentId}", 1L)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -119,9 +119,17 @@ class DocumentControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("Outbox 문서 리스트를 조회한다.")
-    void selectOutBox() throws Exception {
+    void findOutBox() throws Exception {
         mockMvc.perform(get("/api/documents/outbox")
                 .param("drafterId", "1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("모든 문서 항목을 조회한다.")
+    void findCategories() throws Exception {
+        mockMvc.perform(get("/api/documents/categories")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

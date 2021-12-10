@@ -7,9 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
 import playground.domain.document.vo.ApprovalState;
 import playground.domain.document.vo.Category;
+import playground.domain.team.Team;
 import playground.domain.user.User;
+import playground.domain.user.vo.JobPosition;
+import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.request.CreateDocumentRequest;
 import playground.service.document.response.SelectDocumentResponse;
@@ -40,6 +44,9 @@ class DocumentServiceTest {
     private DocumentRepository documentRepository;
 
     @Mock
+    private DocumentApprovalRepository documentApprovalRepository;
+
+    @Mock
     private UserService userService;
 
     @InjectMocks
@@ -47,7 +54,7 @@ class DocumentServiceTest {
 
     @Test
     @DisplayName("문서를 저장한다.")
-    void save() {
+    void create() {
         //given
         User user = mock(User.class);
         CreateDocumentRequest createDocumentRequest = new CreateDocumentRequest("교육비 결재 요청", "EDUCATION",
@@ -55,7 +62,7 @@ class DocumentServiceTest {
         given(userService.findAllById(anyList())).willReturn(Arrays.asList(user, user));
 
         //when
-        documentService.save(createDocumentRequest);
+        documentService.create(createDocumentRequest);
 
         //then
         verify(userService, times(1)).findAllById(anyList());
@@ -64,25 +71,29 @@ class DocumentServiceTest {
 
     @Test
     @DisplayName("결재자가 한 명이라도 존재하지 않을 경우, 예외가 발생한다.")
-    void save_fail_not_exist_approver() {
+    void create_fail_not_exist_approver() {
         //given
         CreateDocumentRequest createDocumentRequest = new CreateDocumentRequest("교육비 결재 요청", "EDUCATION",
                 "교육비", 1L, Collections.singletonList(1L));
         String errorMessage = "식별번호와 일치하는 결재자를 모두 찾지 못했습니다.";
 
         //when, then
-        assertThatThrownBy(() -> documentService.save(createDocumentRequest))
+        assertThatThrownBy(() -> documentService.create(createDocumentRequest))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining(errorMessage);
     }
 
     @Test
     @DisplayName("문서를 조회한다.")
-    void select() {
+    void find() {
         //given
         User drafter = mock(User.class);
         given(drafter.getId()).willReturn(1L);
         given(drafter.getName()).willReturn("기안자");
+        given(drafter.getJobPosition()).willReturn(JobPosition.PART_MANAGER);
+
+        Team team = mock(Team.class);
+        given(drafter.getTeam()).willReturn(team);
 
         Document document = mock(Document.class);
         given(document.getId()).willReturn(1L);
@@ -92,10 +103,14 @@ class DocumentServiceTest {
         given(document.getContents()).willReturn("교육비");
         given(document.getApprovalState()).willReturn(ApprovalState.DRAFTING);
 
-        given(documentRepository.findByIdWithDrafter(anyLong())).willReturn(Optional.of(document));
+        DocumentApproval documentApproval = mock(DocumentApproval.class);
+        given(documentApproval.getApprover()).willReturn(drafter);
+        given(documentApproval.getApprovalState()).willReturn(ApprovalState.DRAFTING);
+        given(documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(anyList())).willReturn(Collections.singletonList(documentApproval));
+        given(documentRepository.findDocumentAndDrafterAndDocumentApprovalsById(anyLong())).willReturn(Optional.of(document));
 
         //when
-        SelectDocumentResponse selectDocumentResponse = documentService.select(1L);
+        SelectDocumentResponse selectDocumentResponse = documentService.find(1L);
 
         //then
         assertThat(selectDocumentResponse).isNotNull();
@@ -103,16 +118,16 @@ class DocumentServiceTest {
 
     @Test
     @DisplayName("문서가 존재하지 않을 시, 예외가 발생한다.")
-    void select_fail_not_found_document() {
+    void find_fail_not_found_document() {
         //when, then
-        assertThatThrownBy(() -> documentService.select(1L))
+        assertThatThrownBy(() -> documentService.find(1L))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("해당하는 문서가 존재하지 않습니다.");
     }
 
     @Test
     @DisplayName("Outbox 문서 리스트를 조회한다.")
-    void selectOutBox() {
+    void findOutBox() {
         //given
         Document document = mock(Document.class);
         given(document.getId()).willReturn(1L);
@@ -120,11 +135,11 @@ class DocumentServiceTest {
         given(document.getCategory()).willReturn(Category.EDUCATION);
         given(document.getApprovalState()).willReturn(ApprovalState.DRAFTING);
 
-        given(documentRepository.findAllWithDrafter(anyLong(), any(ApprovalState.class)))
+        given(documentRepository.findAllDocumentAndDrafterByDrafterIdAndApprovalState(anyLong(), any(ApprovalState.class)))
                 .willReturn(Collections.singletonList(document));
 
         //when
-        List<SelectSingleOutBoxResponse> selectMultiOutboxResponse = documentService.selectOutBox(1L);
+        List<SelectSingleOutBoxResponse> selectMultiOutboxResponse = documentService.findOutBox(1L);
 
         //then
         assertThat(selectMultiOutboxResponse).hasSize(1);
@@ -132,15 +147,15 @@ class DocumentServiceTest {
 
     @Test
     @DisplayName("Outbox 문서가 없다면, 예외가 발생한다.")
-    void selectOutBox_fail_empty_result() {
+    void findOutBox_fail_empty_result() {
         //given
         String errorMessage = "현재 결재중인 문서가 존재하지 않습니다.";
-        given(documentRepository.findAllWithDrafter(anyLong(), any(ApprovalState.class)))
+        given(documentRepository.findAllDocumentAndDrafterByDrafterIdAndApprovalState(anyLong(), any(ApprovalState.class)))
                 .willReturn(Collections.emptyList());
 
         //when, then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> documentService.selectOutBox(1L))
+                .isThrownBy(() -> documentService.findOutBox(1L))
                 .withMessageContaining(errorMessage);
     }
 }

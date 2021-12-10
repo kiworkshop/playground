@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -66,7 +67,11 @@ public class Document {
         this.approvalState = ApprovalState.DRAFTING;
     }
 
-    public void enrollApprovals(final List<User> approvers, final Document document) {
-        documentApprovals.enroll(approvers, document);
+    public void enrollApprovals(final List<User> approvers) {
+        documentApprovals.enroll(approvers, this);
+    }
+
+    public List<DocumentApproval> getDocumentApprovals() {
+        return Collections.unmodifiableList(documentApprovals.getDocumentApprovals());
     }
 }

@@ -3,10 +3,13 @@ package playground.service.document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
 import playground.domain.document.vo.ApprovalState;
 import playground.domain.user.User;
+import playground.repository.document.DocumentApprovalRepository;
 import playground.repository.document.DocumentRepository;
 import playground.service.document.request.CreateDocumentRequest;
+import playground.service.document.response.SelectCategoryResponse;
 import playground.service.document.response.SelectDocumentResponse;
 import playground.service.document.response.SelectSingleOutBoxResponse;
 import playground.service.user.UserService;
@@ -19,24 +22,27 @@ import java.util.stream.Collectors;
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
+    private final DocumentApprovalRepository documentApprovalRepository;
     private final UserService userService;
 
     public DocumentService(final DocumentRepository documentRepository,
+                           final DocumentApprovalRepository documentApprovalRepository,
                            final UserService userService) {
         this.documentRepository = documentRepository;
+        this.documentApprovalRepository = documentApprovalRepository;
         this.userService = userService;
     }
 
     @Transactional
-    public void save(final CreateDocumentRequest createDocumentRequest) {
+    public void create(final CreateDocumentRequest createDocumentRequest) {
         List<Long> approverIds = createDocumentRequest.getApproverIds();
         checkApprovalExistence(approverIds);
 
         Long drafterId = createDocumentRequest.getDrafterId();
         User drafter = userService.findById(drafterId);
         Document document = createDocumentRequest.toDocument(drafter);
-        List<User> approvers = findAllById(approverIds);
-        document.enrollApprovals(approvers, document);
+        List<User> approvers = findAllUserById(approverIds);
+        document.enrollApprovals(approvers);
         documentRepository.save(document);
     }
 
@@ -48,26 +54,34 @@ public class DocumentService {
         }
     }
 
-    private List<User> findAllById(final List<Long> approverIds) {
+    private List<User> findAllUserById(final List<Long> approverIds) {
         return approverIds.stream()
                 .map(userService::findById)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public SelectDocumentResponse select(final Long documentId) {
-        Document document = findByIdWithDrafter(documentId);
-        return new SelectDocumentResponse(document);
+    public SelectDocumentResponse find(final Long documentId) {
+        Document document = findDocumentAndDrafterAndDocumentApprovalsById(documentId);
+
+        List<Long> documentApprovalIds = document.getDocumentApprovals()
+                .stream()
+                .map(DocumentApproval::getId)
+                .collect(Collectors.toList());
+
+        List<DocumentApproval> documentApprovals = documentApprovalRepository.findAllDocumentApprovalAndApproverAndTeamByIds(documentApprovalIds);
+
+        return new SelectDocumentResponse(document, documentApprovals);
     }
 
-    private Document findByIdWithDrafter(final Long documentId) {
-        return documentRepository.findByIdWithDrafter(documentId)
+    private Document findDocumentAndDrafterAndDocumentApprovalsById(final Long documentId) {
+        return documentRepository.findDocumentAndDrafterAndDocumentApprovalsById(documentId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 문서가 존재하지 않습니다.", documentId)));
     }
 
     @Transactional(readOnly = true)
-    public List<SelectSingleOutBoxResponse> selectOutBox(final Long drafterId) {
-        List<Document> documents = documentRepository.findAllWithDrafter(drafterId, ApprovalState.DRAFTING);
+    public List<SelectSingleOutBoxResponse> findOutBox(final Long drafterId) {
+        List<Document> documents = documentRepository.findAllDocumentAndDrafterByDrafterIdAndApprovalState(drafterId, ApprovalState.DRAFTING);
         checkEmpty(documents);
 
         return documents.stream()
@@ -79,5 +93,9 @@ public class DocumentService {
         if (documents.isEmpty()) {
             throw new IllegalArgumentException("현재 결재중인 문서가 존재하지 않습니다.");
         }
+    }
+
+    public List<SelectCategoryResponse> findCategories() {
+        return documentRepository.findCategories();
     }
 }

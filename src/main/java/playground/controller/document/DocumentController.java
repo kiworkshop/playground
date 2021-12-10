@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import playground.service.document.DocumentService;
 import playground.service.document.request.CreateDocumentRequest;
+import playground.service.document.response.SelectCategoryResponse;
 import playground.service.document.response.SelectDocumentResponse;
 import playground.service.document.response.SelectSingleOutBoxResponse;
 
@@ -29,19 +30,25 @@ public class DocumentController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid final CreateDocumentRequest createDocumentRequest) {
-        documentService.save(createDocumentRequest);
+        documentService.create(createDocumentRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{documentId}")
-    public ResponseEntity<SelectDocumentResponse> select(final @PathVariable Long documentId) {
-        SelectDocumentResponse selectDocumentResponse = documentService.select(documentId);
+    public ResponseEntity<SelectDocumentResponse> find(final @PathVariable Long documentId) {
+        SelectDocumentResponse selectDocumentResponse = documentService.find(documentId);
         return ResponseEntity.ok(selectDocumentResponse);
     }
 
     @GetMapping("/outbox")
-    public ResponseEntity<List<SelectSingleOutBoxResponse>> selectOutBox(final @RequestParam Long drafterId) {
-        List<SelectSingleOutBoxResponse> selectMultiOutBoxResponse = documentService.selectOutBox(drafterId);
+    public ResponseEntity<List<SelectSingleOutBoxResponse>> findOutBox(final @RequestParam Long drafterId) {
+        List<SelectSingleOutBoxResponse> selectMultiOutBoxResponse = documentService.findOutBox(drafterId);
         return ResponseEntity.ok(selectMultiOutBoxResponse);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<SelectCategoryResponse>> findCategories() {
+        List<SelectCategoryResponse> selectCategoryResponses = documentService.findCategories();
+        return ResponseEntity.ok(selectCategoryResponses);
     }
 }

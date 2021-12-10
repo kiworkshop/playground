@@ -3,25 +3,32 @@ package playground.service.user;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import playground.domain.team.Team;
 import playground.domain.user.User;
 import playground.repository.user.UserRepository;
+import playground.service.team.TeamService;
 import playground.service.user.request.CreateUserRequest;
+import playground.service.user.response.SelectUserResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TeamService teamService;
 
-    public UserService(final UserRepository userRepository) {
+    public UserService(final UserRepository userRepository, final TeamService teamService) {
         this.userRepository = userRepository;
+        this.teamService = teamService;
     }
 
     @Transactional
-    public void save(final CreateUserRequest createUserRequest) {
-        User user = createUserRequest.toUser();
+    public void create(final CreateUserRequest createUserRequest) {
+        Team team = teamService.findById(createUserRequest.getTeamId());
+        User user = createUserRequest.toUser(team);
         save(user);
     }
 
@@ -51,5 +58,14 @@ public class UserService {
     public User findById(final Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("[%d] 식별번호에 해당하는 회원이 존재하지 않습니다.", userId)));
+    }
+
+    @Transactional(readOnly = true)
+    public List<SelectUserResponse> findAllUserInTeam(final Long teamId) {
+        Team team = teamService.findById(teamId);
+
+        return team.getUsers().stream()
+                .map(SelectUserResponse::new)
+                .collect(Collectors.toList());
     }
 }
