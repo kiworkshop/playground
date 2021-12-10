@@ -1,0 +1,5 @@
+### 전체 팀 조회
+GET http://localhost:8080/api/teams
+
+### 팀에 속한 회원 조회
+GET http://localhost:8080/api/users?teamId=1
