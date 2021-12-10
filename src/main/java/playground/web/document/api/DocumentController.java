@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import playground.web.document.api.request.DocumentCreateRequest;
 import playground.web.document.api.response.DocumentResponse;
 import playground.web.document.api.response.OutboxDocumentResponse;
-import playground.web.document.application.DocumentApplication;
+import playground.web.document.application.DocumentCreateApplication;
 import playground.web.document.api.request.OutboxDocumentRequest;
+import playground.web.document.application.DocumentSearchApplication;
 
 import java.util.List;
 
@@ -15,23 +16,25 @@ import java.util.List;
 @RestController
 public class DocumentController {
 
-    private final DocumentApplication documentApplication;
+    private final DocumentCreateApplication documentCreateApplication;
+    private final DocumentSearchApplication documentSearchApplication;
 
     @PostMapping(path = "/api/documents")
     public ResponseEntity<Void> createDocument(@RequestBody DocumentCreateRequest requestDto) {
-        documentApplication.create(requestDto);
+        documentCreateApplication.create(requestDto);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/api/documents/{documentId}")
     public ResponseEntity<DocumentResponse> findDocument(@PathVariable Long documentId) {
-        DocumentResponse documentResponseDto = documentApplication.findDocument(documentId);
+        DocumentResponse documentResponseDto = documentSearchApplication.findDocument(documentId);
         return ResponseEntity.ok(documentResponseDto);
     }
 
     @GetMapping(path = "/api/documents/outbox")
     public ResponseEntity<List<OutboxDocumentResponse>> findOutboxDocuments(OutboxDocumentRequest requestDto) {
-        List<OutboxDocumentResponse> outboxDocumentDtos = documentApplication.findOutboxDocuments(requestDto);
+        List<OutboxDocumentResponse> outboxDocumentDtos = documentSearchApplication.findOutboxDocuments(requestDto);
         return ResponseEntity.ok(outboxDocumentDtos);
     }
+
 }
