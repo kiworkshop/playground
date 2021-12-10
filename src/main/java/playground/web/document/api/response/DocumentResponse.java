@@ -1,25 +1,35 @@
-package playground.service.document.dto;
+package playground.web.document.api.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.Document;
-import playground.common.type.ApprovalState;
-import playground.common.type.Category;
+import playground.domain.document.ApprovalState;
+import playground.domain.document.Category;
+import playground.web.user.api.response.UserResponse;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class OutboxDocumentResponse {
+public class DocumentResponse {
 
     private Long id;
     private String title;
     private Category category;
+    private String contents;
     private ApprovalState approvalState;
+    private UserResponse drafter;
+    private List<DocumentApprovalResponse> approvers;
 
-    public OutboxDocumentResponse(Document document) {
+    public DocumentResponse(Document document, UserResponse drafter, List<DocumentApprovalResponse> approvers) {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory();
+        this.contents = document.getContents();
         this.approvalState = document.getApprovalState();
+
+        this.drafter = drafter;
+        this.approvers = approvers;
     }
 
     public String getCategoryText() {
@@ -29,4 +39,5 @@ public class OutboxDocumentResponse {
     public String getApprovalStateText() {
         return approvalState.getText();
     }
+
 }

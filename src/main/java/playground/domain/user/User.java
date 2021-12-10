@@ -23,10 +23,19 @@ public class User {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private JobPosition jobPosition;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Team team;
+
     @Builder
-    public User(String email, String password, String name) {
+    public User(String email, String password, String name, JobPosition jobPosition) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.jobPosition = jobPosition;
     }
+
 }

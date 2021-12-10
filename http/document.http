@@ -2,7 +2,10 @@
 GET http://localhost:8080/api/documents/1
 
 ### document outbox 조회
-GET http://localhost:8080/api/documents/outbox?drafterId=1
+GET http://localhost:8080/api/documents/outbox?drafterId=2
+
+### 문서 분류 조회
+GET http://localhost:8080/api/documents/categories
 
 ### document create
 POST http://localhost:8080/api/documents

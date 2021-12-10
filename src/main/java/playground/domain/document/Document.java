@@ -2,15 +2,13 @@ package playground.domain.document;
 
 import lombok.*;
 import playground.domain.user.User;
-import playground.common.type.ApprovalState;
-import playground.common.type.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static playground.common.type.ApprovalState.DRAFTING;
+import static playground.domain.document.ApprovalState.DRAFTING;
 
 @Getter
 @EqualsAndHashCode(of = "id")
@@ -40,10 +38,7 @@ public class Document {
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User drafter;
 
-    @OneToMany(
-        mappedBy = "document", fetch = FetchType.LAZY,
-        cascade = CascadeType.ALL, orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentApproval> documentApprovals = new ArrayList<>();
 
     @Builder

@@ -2,7 +2,6 @@ package playground.domain.document;
 
 import lombok.*;
 import playground.domain.user.User;
-import playground.common.type.ApprovalState;
 
 import javax.persistence.*;
 

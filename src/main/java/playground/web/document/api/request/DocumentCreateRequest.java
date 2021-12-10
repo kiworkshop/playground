@@ -1,13 +1,13 @@
-package playground.web.document.dto;
+package playground.web.document.api.request;
 
 import lombok.Getter;
 import playground.domain.document.Document;
 import playground.domain.user.User;
-import playground.common.type.Category;
+import playground.domain.document.Category;
 
 import java.util.List;
 
-import static playground.common.type.ApprovalState.DRAFTING;
+import static playground.domain.document.ApprovalState.DRAFTING;
 
 @Getter
 public class DocumentCreateRequest {
