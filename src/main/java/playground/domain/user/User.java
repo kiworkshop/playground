@@ -23,6 +23,9 @@ public class User {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private JobPosition jobPosition;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Team team;
