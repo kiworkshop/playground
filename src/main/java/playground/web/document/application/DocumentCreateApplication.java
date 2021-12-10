@@ -8,26 +8,20 @@ import playground.domain.user.User;
 import playground.service.document.DocumentService;
 import playground.service.user.UserService;
 import playground.web.document.api.request.DocumentCreateRequest;
-import playground.web.document.api.request.OutboxDocumentRequest;
-import playground.web.document.api.response.DocumentResponse;
-import playground.web.document.api.response.OutboxDocumentResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static playground.domain.document.ApprovalState.DRAFTING;
-
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Service
-public class DocumentApplication {
+public class DocumentCreateApplication {
 
     private final DocumentService documentService;
     private final UserService userService;
 
-    @Transactional
     public void create(DocumentCreateRequest request) {
         List<User> orderedApprovers = createOrderedApprovers(request);
         User drafter = userService.getById(request.getDrafterId());
@@ -52,24 +46,6 @@ public class DocumentApplication {
         List<User> approvers = userService.findAllById(request.getApproverIds());
         return approvers.stream()
             .collect(Collectors.toMap(User::getId, user -> user));
-    }
-
-    public DocumentResponse findDocument(Long documentId) {
-        Document document = documentService.getById(documentId);
-        User drafter = document.getDrafter();
-
-        return new DocumentResponse(document, drafter);
-    }
-
-    public List<OutboxDocumentResponse> findOutboxDocuments(OutboxDocumentRequest request) {
-        List<Document> documents = documentService.findAllByDrafterIdAndApprovalStateOrderByIdDesc(request.getDrafterId(), DRAFTING);
-        return convertOutboxDocumentResponseFrom(documents);
-    }
-
-    private List<OutboxDocumentResponse> convertOutboxDocumentResponseFrom(List<Document> documents) {
-        return documents.stream()
-            .map(OutboxDocumentResponse::new)
-            .collect(Collectors.toList());
     }
 
 }

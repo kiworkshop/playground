@@ -3,9 +3,11 @@ package playground.web.document.api.response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import playground.domain.document.Document;
-import playground.domain.user.User;
 import playground.domain.document.ApprovalState;
 import playground.domain.document.Category;
+import playground.web.user.api.response.UserResponse;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -15,19 +17,19 @@ public class DocumentResponse {
     private String title;
     private Category category;
     private String contents;
-    private Long userId;
     private ApprovalState approvalState;
-    private String userName;
+    private UserResponse drafter;
+    private List<DocumentApprovalResponse> approvers;
 
-    public DocumentResponse(Document document, User drafter) {
+    public DocumentResponse(Document document, UserResponse drafter, List<DocumentApprovalResponse> approvers) {
         this.id = document.getId();
         this.title = document.getTitle();
         this.category = document.getCategory();
         this.contents = document.getContents();
         this.approvalState = document.getApprovalState();
 
-        this.userId = drafter.getId();
-        this.userName = drafter.getName();
+        this.drafter = drafter;
+        this.approvers = approvers;
     }
 
     public String getCategoryText() {

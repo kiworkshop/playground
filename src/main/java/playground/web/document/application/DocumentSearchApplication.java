@@ -26,4 +26,37 @@ public class DocumentSearchApplication {
 
     private final DocumentService documentService;
 
+    public DocumentResponse findDocument(Long documentId) {
+        Document document = documentService.getById(documentId);
+        UserResponse drafter = convertUserResponseFrom(document.getDrafter());
+        List<DocumentApprovalResponse> approvers = convertDocumentApprovalResponse(document.getDocumentApprovals());
+
+        return new DocumentResponse(document, drafter, approvers);
+    }
+
+    private UserResponse convertUserResponseFrom(User user) {
+        Team team = user.getTeam();
+        return new UserResponse(user, team);
+    }
+
+    private List<DocumentApprovalResponse> convertDocumentApprovalResponse(List<DocumentApproval> documentApprovals) {
+        return documentApprovals.stream()
+            .map(documentApproval -> {
+                User approver = documentApproval.getApprover();
+                Team team = approver.getTeam();
+                return new DocumentApprovalResponse(documentApproval, approver, team);
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<OutboxDocumentResponse> findOutboxDocuments(OutboxDocumentRequest request) {
+        List<Document> documents = documentService.findAllByDrafterIdAndApprovalStateOrderByIdDesc(request.getDrafterId(), DRAFTING);
+        return convertOutboxDocumentResponseFrom(documents);
+    }
+
+    private List<OutboxDocumentResponse> convertOutboxDocumentResponseFrom(List<Document> documents) {
+        return documents.stream()
+            .map(OutboxDocumentResponse::new)
+            .collect(Collectors.toList());
+    }
 }
