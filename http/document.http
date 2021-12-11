@@ -4,6 +4,9 @@ GET http://localhost:8080/api/documents/1
 ### document outbox 조회
 GET http://localhost:8080/api/documents/outbox?drafterId=1
 
+### document category 조회
+GET http://localhost:8080/api/documents/categories
+
 ### document create
 POST http://localhost:8080/api/documents
 Content-Type: application/json

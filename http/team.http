@@ -1,0 +1,3 @@
+### 전체 team 조회
+GET http://localhost:8080/api/teams
+

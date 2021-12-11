@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import playground.dao.document.dto.DocumentTitleResponse;
 import playground.domain.document.Document;
+import playground.domain.document.DocumentApproval;
 import playground.domain.document.DocumentRepository;
 import playground.domain.user.User;
 import playground.domain.user.UserRepository;
-import playground.service.document.dto.DocumentResponseDto;
+import playground.service.document.dto.DocumentApprovalResponse;
+import playground.service.document.dto.DocumentResponse;
 import playground.web.document.dto.DocumentCreateRequest;
 import playground.web.document.dto.DocumentOutboxRequest;
 
@@ -32,11 +34,10 @@ public class DocumentService {
         return convertTitleDtoFrom(outboxDocuments);
     }
 
-    public DocumentResponseDto findDocument(Long documentId) {
+    public DocumentResponse findDocument(Long documentId) {
         Document document = findDocumentById(documentId);
-        User drafter = document.getDrafter();
 
-        return new DocumentResponseDto(document, drafter);
+        return new DocumentResponse(document);
     }
 
     @Transactional

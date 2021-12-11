@@ -20,7 +20,7 @@ public class UserDao {
         return jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> User.builder()
-                        .id(id)
+//                        .id(id)
                         .email(rs.getString("email"))
                         .password(rs.getString("password"))
                         .name(rs.getString("name"))
@@ -38,7 +38,7 @@ public class UserDao {
         return jdbcTemplate.query(
                 String.format(sql, inParams),
                 (rs, rowNum) -> User.builder()
-                        .id(rs.getLong("id"))
+//                        .id(rs.getLong("id"))
                         .email(rs.getString("email"))
                         .password(rs.getString("password"))
                         .name(rs.getString("name"))
